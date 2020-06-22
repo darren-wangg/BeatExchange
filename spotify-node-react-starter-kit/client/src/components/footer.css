@@ -1,0 +1,28 @@
+.footer {
+    height: 75px;
+    width: 100%;
+    background: #2B2B2C;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 100px;
+    color: rgba(0,0,0,0.3);
+    bottom: 0;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+}
+
+.footer-links a {
+    color: white;
+    opacity: 0.5;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 0px 10px;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
