@@ -26,29 +26,24 @@ export class home extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        // this.state.spotifyApi.searchTracks(this.state.song, { limit: 5 })
-        //     .then((data) => {
-        //         this.setState({
-        //             data: data
-        //         })
-        //         console.log(this.state.data.tracks.items[0].album.images[0]);
-        //     }
-        //     );
+
     }
 
     handleInputChange = (e) => {
         e.preventDefault();
         this.setState({
-            song: e.target.value
+            song: e.target.value.trim() === '' ? 'Nujabes' : e.target.value.trim()
         });
         this.state.spotifyApi.searchTracks(this.state.song, { limit: 5 })
             .then((data) => {
                 this.setState({
                     data: data
                 })
-                console.log(this.state.data.tracks.items[0].album.images[0]);
+                console.log(data);
             }
-            );
+            ).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -74,8 +69,10 @@ export class home extends Component {
                             </div>
                             {this.state.data &&
                                 <div>
-                                    <h3>{this.state.song}</h3>
+                                    <h2>{this.state.song}</h2>
                                     <img width="20%" src={this.state.data.tracks.items[0].album.images[0].url} alt="Album Art" />
+                                    <h3>{this.state.data.tracks.items[0].name}</h3>
+                                    <h3>{this.state.data.tracks.items[0].artists[0].name}</h3>
                                 </div>
                             }
                         </div>
