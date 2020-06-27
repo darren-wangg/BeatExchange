@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './home.css';
-import { MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
-import { MDBContainer, MDBScrollbar, MDBRow, MDBCard, MDBCardTitle, MDBCardText, MDBCardImage, MDBCardBody } from "mdbreact";
+import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 
 export class home extends Component {
     constructor(props) {
@@ -68,19 +67,19 @@ export class home extends Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-3 col-lg-2">
                         <div className="profile">
                             <h2>Profile</h2>
                         </div>
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-md-6 col-lg-8">
                         <div className="wall">
                             <div className="search">
                                 <MDBCol>
                                     <MDBFormInline className="md-form" onSubmit={this.handleSubmit}>
                                         <MDBIcon icon="search" />
-                                        <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="What do you want to share with the world?" aria-label="Search" onChange={this.handleInputChange} />
+                                        <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="What do you want to share with the world?" aria-label="Search" style={{ width: "100%" }} onChange={this.handleInputChange} />
                                         <button className="uk-button uk-button-primary">Search</button>
                                     </MDBFormInline>
                                 </MDBCol>
@@ -92,7 +91,7 @@ export class home extends Component {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                    <div className="col-md-3 col-lg-2">
                         <div className="trending">
                             <h2>Trending</h2>
                         </div>
