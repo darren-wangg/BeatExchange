@@ -1,3 +1,10 @@
 .content {
-    /* height: 100vh; */
+    max-width: 90%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 1000px) {
+    .content {
+        max-width: 100%;
+    }
 }

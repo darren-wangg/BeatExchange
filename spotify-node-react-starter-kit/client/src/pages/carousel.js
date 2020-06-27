@@ -15,15 +15,14 @@ export class carousel extends Component {
   render() {
     return (
       <div className="content">
-        <MDBContainer>
+        <MDBContainer className="content">
           <MDBCarousel
             interval={3000}
             activeItem={1}
             length={3}
-            showControls={false}
+            showControls={true}
             showIndicators={false}
             className="z-depth-1"
-            slide
           >
             <MDBCarouselInner>
               <MDBCarouselItem itemId="1">

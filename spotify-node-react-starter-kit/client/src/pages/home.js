@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './home.css';
 import { MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
+import { MDBContainer, MDBScrollbar, MDBRow, MDBCard, MDBCardTitle, MDBCardText, MDBCardImage, MDBCardBody } from "mdbreact";
 
 export class home extends Component {
     constructor(props) {
@@ -8,7 +9,8 @@ export class home extends Component {
         this.state = {
             spotifyApi: props.spotifyApi,
             song: '',
-            data: null
+            data: null,
+            search: []
         }
     }
 
@@ -26,24 +28,40 @@ export class home extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-
+        this.state.spotifyApi.searchTracks(this.state.song, { limit: 6 })
+            .then((data) => {
+                this.setState({
+                    data: data
+                }), this.searchSongs();
+            }
+            ).catch(error => {
+                console.log(error);
+            });
     }
 
     handleInputChange = (e) => {
         e.preventDefault();
         this.setState({
-            song: e.target.value.trim() === '' ? 'Nujabes' : e.target.value.trim()
+            song: e.target.value.trim()
         });
-        this.state.spotifyApi.searchTracks(this.state.song, { limit: 5 })
-            .then((data) => {
-                this.setState({
-                    data: data
-                })
-                console.log(data);
-            }
-            ).catch(error => {
-                console.log(error);
-            });
+    }
+
+    searchSongs = () => {
+        const cols = [];
+        if (this.state.data) {
+            this.state.data.tracks.items.forEach((song) =>
+                cols.push(
+                    <MDBCol key={song.id} sm="4" md="3" lg="2">
+                        <a href={song.external_urls.spotify} target="_blank"><img className="searchImg" src={song.album.images[0].url} alt="Album Art" /></a>
+                        <p style={{ wordWrap: "break-word" }}><strong>{song.name}</strong></p>
+                        <p>{song.artists[0].name}</p>
+                    </MDBCol>
+                )
+            );
+        }
+        this.setState({
+            search: cols
+        });
     }
 
     render() {
@@ -67,14 +85,10 @@ export class home extends Component {
                                     </MDBFormInline>
                                 </MDBCol>
                             </div>
-                            {this.state.data &&
-                                <div>
-                                    <h2>{this.state.song}</h2>
-                                    <img width="20%" src={this.state.data.tracks.items[0].album.images[0].url} alt="Album Art" />
-                                    <h3>{this.state.data.tracks.items[0].name}</h3>
-                                    <h3>{this.state.data.tracks.items[0].artists[0].name}</h3>
-                                </div>
-                            }
+                            <h3><strong>{this.state.song.toUpperCase()}</strong></h3>
+                            <MDBRow>
+                                {this.state.search}
+                            </MDBRow>
                         </div>
                     </div>
 
