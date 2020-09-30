@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # spotify-api-intro
 This Repo is the result of a tutorial that teaches how to use Spotify's API with react.
 It's a siple app that allos users to see what song they currently have playing on Spotify.
@@ -31,3 +32,6 @@ There are two parts to it, the auth-server, and the client.
 - Click the 'Check Now Playing' Button
 - Your currently playing song's name and album art should appear
 
+=======
+# Beat Exchange
+>>>>>>> 57c146ffeeed66522d5fb7b5b7ba8c402430783e
