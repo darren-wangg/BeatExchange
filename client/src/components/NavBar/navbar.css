@@ -24,13 +24,14 @@ nav {
     text-decoration: none;
 }
 
-.btn-flat {
+.login-btn {
+    background: #1EDD88;
     color: white;
     padding: 10px 15px 10px 15px;
-    border-radius: 5px;
-    background: #1EDD88;
+    border: none;
+    border-radius: 3px;
 }
   
-.btn-flat:hover {
+.login-btn:hover {
    background: #1BCB7F;
 }

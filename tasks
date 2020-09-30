@@ -1,0 +1,14 @@
+Beat Exchange Task Tracker
+
+Design:
+1) Finish "Messages" page
+2) Add wireframe flow/interactions to pages
+3) Brainstorm possible new pages
+
+Engineering:
+1) Search functionality, click on song adds to top of TextBox
+2) Make home page responsive, hide Profile and Trending if window too small, resize search image results
+3) Truncate search result name if too long, display "..." after two lines
+4) Find "Trending" API
+5) Load "Profile" sidebar data
+6) 

@@ -13,7 +13,7 @@ export class navbar extends Component {
                 </div>
                 <div className="nav">
                     <Link className="home" to="/home">Home</Link>
-                    <a className="btn btn-flat" href='http://localhost:8888'>Log In</a>
+                    <a href='http://localhost:8888'><button className="login-btn">Log In</button></a>
                 </div>
             </nav>
         )

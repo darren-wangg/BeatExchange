@@ -1,0 +1,46 @@
+body {
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.profile {
+  padding-top: 15px;
+  background-color: #f4f4f4;
+  text-align: center;
+  height: 100%;
+}
+
+.form-control {
+  background-color: #f4f4f4;
+}
+
+.search {
+  padding-top: 15px;
+}
+
+button {
+  border-radius: 5px;
+  margin-left: 20px !important;
+}
+
+.wall {
+  height: 100vh;
+}
+
+.song {
+  margin-top: 10px;
+}
+
+.trending {
+  padding-top: 15px;
+  background-color: #f4f4f4;
+  text-align: center;
+  height: 100%;
+}
+
+@media only screen and (max-width: 700px) {
+  .searchImg {
+    width: 50%;
+  }
+}

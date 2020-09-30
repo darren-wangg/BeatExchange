@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import first from "../imgs/first.jpg";
 import second from "../imgs/second.jpg";
 import third from "../imgs/third.jpg";
-import "./carousel.css";
+import "./Landing.css";
 import {
   MDBCarousel,
   MDBCarouselInner,
@@ -11,7 +11,7 @@ import {
   MDBContainer
 } from "mdbreact";
 
-export class carousel extends Component {
+export class Landing extends Component {
   render() {
     return (
       <div className="content">
@@ -60,4 +60,4 @@ export class carousel extends Component {
   }
 }
 
-export default carousel;
+export default Landing;
