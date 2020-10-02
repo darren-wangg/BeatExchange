@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import Navbar from "./components/NavBar/navbar";
-import Footer from "./components/Footer/footer";
+import Navbar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -18,8 +18,7 @@ class App extends Component {
       spotifyApi.setAccessToken(token);
     }
     this.state = {
-      loggedIn: token ? true : false,
-      song: ""
+      loggedIn: token ? true : false
     };
   }
 

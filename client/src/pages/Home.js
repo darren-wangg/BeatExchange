@@ -1,8 +1,37 @@
 import React, { Component } from "react";
-import "./Home.css";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 
-import TextBox from "../components/textbox";
+import Profile from "../components/Profile/Profile";
+import TextBox from "../components/TextBox/TextBox";
+import Trending from "../components/Trending/Trending";
+
+const styles = theme => ({
+  body: {
+    textAlign: "center",
+    width: "100%",
+    height: "100vh"
+  },
+  search: {
+    paddingTop: "15px"
+  },
+  button: {
+    borderRadius: "5px",
+    marginLeft: "20px !important"
+  },
+  wall: {
+    height: "100vh"
+  },
+  song: {
+    marginTop: "10px"
+  },
+  searchImg: {
+    [theme.breakpoints.down("md")]: {
+      width: "50%"
+    }
+  }
+});
 
 export class Home extends Component {
   constructor(props) {
@@ -56,6 +85,7 @@ export class Home extends Component {
   };
 
   searchSongs = () => {
+    const { classes } = this.props;
     const cols = [];
     if (this.state.data) {
       this.state.data.tracks.items.forEach(song =>
@@ -63,7 +93,7 @@ export class Home extends Component {
           <MDBCol key={song.id} sm="4" md="3" lg="2">
             <a href={song.external_urls.spotify} target="_blank">
               <img
-                className="searchImg"
+                className={classes.searchImg}
                 src={song.album.images[0].url}
                 alt="Album Art"
               />
@@ -82,19 +112,17 @@ export class Home extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
         <div className="row">
           <div className="col-md-3 col-lg-2">
-            {/* make component */}
-            <div className="profile">
-              <h2>Profile</h2>
-            </div>
+            <Profile />
           </div>
 
           <div className="col-md-6 col-lg-8">
-            <div className="wall">
-              <div className="search">
+            <div className={classes.wall}>
+              <div className={classes.search}>
                 <MDBCol>
                   <MDBFormInline
                     className="md-form"
@@ -106,16 +134,19 @@ export class Home extends Component {
                       type="text"
                       placeholder="What do you want to share with the world?"
                       aria-label="Search"
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", backgroundColor: "#f4f4f4" }}
                       onChange={this.handleInputChange}
                     />
-                    <button className="uk-button uk-button-primary">
+                    <button
+                      className="uk-button uk-button-primary"
+                      style={{ borderRadius: "5px" }}
+                    >
                       Search
                     </button>
                   </MDBFormInline>
                 </MDBCol>
               </div>
-              <h3 className="song">
+              <h3 className={classes.song}>
                 <strong>{this.state.song.toUpperCase()}</strong>
               </h3>
               <MDBRow>{this.state.search}</MDBRow>
@@ -124,10 +155,7 @@ export class Home extends Component {
           </div>
 
           <div className="col-md-3 col-lg-2">
-            {/* make component */}
-            <div className="trending">
-              <h2>Trending</h2>
-            </div>
+            <Trending />
           </div>
         </div>
       </div>
@@ -135,4 +163,8 @@ export class Home extends Component {
   }
 }
 
-export default Home;
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Home);

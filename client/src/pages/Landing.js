@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import first from "../imgs/first.jpg";
-import second from "../imgs/second.jpg";
-import third from "../imgs/third.jpg";
-import "./Landing.css";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import first from "../assets/images/first.jpg";
+import second from "../assets/images/second.jpg";
+import third from "../assets/images/third.jpg";
 import {
   MDBCarousel,
   MDBCarouselInner,
@@ -11,11 +12,25 @@ import {
   MDBContainer
 } from "mdbreact";
 
+const styles = theme => ({
+  body: {
+    backgroundColor: "#fafafa"
+  },
+  content: {
+    maxWidth: "90%",
+    margin: "auto",
+    [theme.breakpoints.down("md")]: {
+      maxWidth: "100%"
+    }
+  }
+});
+
 export class Landing extends Component {
   render() {
+    const { classes } = this.props;
     return (
-      <div className="content">
-        <MDBContainer className="content">
+      <div className={classes.content}>
+        <MDBContainer className={classes.content}>
           <MDBCarousel
             interval={3000}
             activeItem={1}
@@ -60,4 +75,8 @@ export class Landing extends Component {
   }
 }
 
-export default Landing;
+Landing.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Landing);
