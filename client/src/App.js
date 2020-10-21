@@ -55,5 +55,5 @@ class App extends Component {
   }
 }
 
-// client: npm start, authorization_code: nodemon server.js
+// client: npm start, authorization_code: nodemon app.js
 export default App;

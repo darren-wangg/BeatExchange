@@ -9,6 +9,7 @@ import Trending from "../components/Trending/Trending";
 
 const styles = theme => ({
   body: {
+    fontFamily: "Rubik",
     textAlign: "center",
     width: "100%",
     height: "100vh"
@@ -23,13 +24,8 @@ const styles = theme => ({
   wall: {
     height: "100vh"
   },
-  song: {
-    marginTop: "10px"
-  },
   searchImg: {
-    [theme.breakpoints.down("md")]: {
-      width: "50%"
-    }
+    marginTop: "25px"
   }
 });
 
@@ -44,18 +40,6 @@ export class Home extends Component {
     };
   }
 
-  // getNowPlaying() {
-  //     this.state.spotifyApi.getMyCurrentPlaybackState()
-  //         .then((response) => {
-  //             this.setState({
-  //                 nowPlaying: {
-  //                     name: response.item.name,
-  //                     albumArt: response.item.album.images[0].url
-  //                 }
-  //             });
-  //         });
-  // }
-
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.song.length > 0) {
@@ -68,9 +52,11 @@ export class Home extends Component {
             this.searchSongs();
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
-    } else {
+    }
+    // reset to default
+    else {
       this.setState({
         search: []
       });
@@ -117,7 +103,7 @@ export class Home extends Component {
       <div>
         <div className="row">
           <div className="col-md-3 col-lg-2">
-            <Profile />
+            <Profile spotifyApi={this.state.spotifyApi} />
           </div>
 
           <div className="col-md-6 col-lg-8">
@@ -134,7 +120,10 @@ export class Home extends Component {
                       type="text"
                       placeholder="What do you want to share with the world?"
                       aria-label="Search"
-                      style={{ width: "100%", backgroundColor: "#f4f4f4" }}
+                      style={{
+                        margin: "auto",
+                        backgroundColor: "#FAFAFA"
+                      }}
                       onChange={this.handleInputChange}
                     />
                     <button
@@ -146,16 +135,13 @@ export class Home extends Component {
                   </MDBFormInline>
                 </MDBCol>
               </div>
-              <h3 className={classes.song}>
-                <strong>{this.state.song.toUpperCase()}</strong>
-              </h3>
               <MDBRow>{this.state.search}</MDBRow>
               <TextBox />
             </div>
           </div>
 
           <div className="col-md-3 col-lg-2">
-            <Trending />
+            <Trending spotifyApi={this.state.spotifyApi} />
           </div>
         </div>
       </div>
@@ -164,7 +150,8 @@ export class Home extends Component {
 }
 
 Home.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  spotifyApi: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Home);

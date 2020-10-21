@@ -1,24 +1,30 @@
 import React, { Component } from "react";
 import "./footer.css";
 
+const GITHUB = "https://github.com/darren-wangg";
+const INSTA = "https://instagram.com";
+const FACEBOOK = "https://www.facebook.com/darrenwangg";
+const TWITTER = "https://www.twitter.com/darren_yupio";
+const LINKEDIN = "https://www.linkedin.com/in/darrenwangg/";
+
 export class Footer extends Component {
   render() {
     return (
       <div className="footer">
         <div className="footer-links">
-          <a href="https://github.com/darren-wangg">
+          <a href={GITHUB}>
             <i className="fab fa-github"></i>
           </a>
-          <a href="https://instagram.com">
+          <a href={INSTA}>
             <i className="fab fa-instagram"></i>
           </a>
-          <a href="https://www.facebook.com/darrenwangg">
+          <a href={FACEBOOK}>
             <i className="fab fa-facebook"></i>
           </a>
-          <a href="https://twitter.com">
+          <a href={TWITTER}>
             <i className="fab fa-twitter"></i>
           </a>
-          <a href="https://www.linkedin.com/in/darren-wang-073511163/">
+          <a href={LINKEDIN}>
             <i className="fab fa-linkedin"></i>
           </a>
         </div>

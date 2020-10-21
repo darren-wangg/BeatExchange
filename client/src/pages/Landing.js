@@ -17,10 +17,10 @@ const styles = theme => ({
     backgroundColor: "#fafafa"
   },
   content: {
-    maxWidth: "90%",
+    maxWidth: "80%",
     margin: "auto",
     [theme.breakpoints.down("md")]: {
-      maxWidth: "100%"
+      maxWidth: "90%"
     }
   }
 });

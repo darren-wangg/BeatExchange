@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   nav: {
+    fontFamily: "Rubik",
     height: "75px",
     width: "100%",
     display: "flex",
@@ -42,7 +43,7 @@ export class NavBar extends Component {
     const { classes } = this.props;
     return (
       <nav className={classes.nav}>
-        <div className="logo">
+        <div className={classes.logo}>
           <Link to="/">
             <i
               className="fas fa-compact-disc fa-2x"
@@ -50,12 +51,12 @@ export class NavBar extends Component {
             ></i>
           </Link>
         </div>
-        <div className="navbar">
-          <Link className="home" to="/home">
+        <div className={classes.navbar}>
+          <Link className={classes.home} to="/home">
             Home
           </Link>
           <a href="http://localhost:8888">
-            <button className="login-btn">Log In</button>
+            <button className={classes.loginBtn}>Log In</button>
           </a>
         </div>
       </nav>
