@@ -14,12 +14,29 @@ const styles = theme => ({
     width: "100%",
     height: "100vh"
   },
+  row: {
+    overflow: "hidden"
+  },
   search: {
     paddingTop: "15px"
   },
-  button: {
+  form: {
+    margin: "auto 10px",
+    height: "42px",
+    backgroundColor: "#FAFAFA",
+    [theme.breakpoints.down("md")]: {
+      width: "310px !important"
+    }
+  },
+  searchBtn: {
+    background: "#1D87F0",
+    color: "white",
+    padding: "10px 20px 10px 20px",
+    border: "none",
     borderRadius: "5px",
-    marginLeft: "20px !important"
+    [theme.breakpoints.down("md")]: {
+      padding: "7px 15px 7px 15px"
+    }
   },
   wall: {
     height: "100vh"
@@ -48,8 +65,8 @@ export class Home extends Component {
         .then(data => {
           this.setState({
             data: data
-          }),
-            this.searchSongs();
+          });
+          this.searchSongs();
         })
         .catch(error => {
           console.error(error);
@@ -102,45 +119,31 @@ export class Home extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-md-3 col-lg-2">
+          <div className="col-xs-0 col-sm-0 col-md-3 col-lg-2">
             <Profile spotifyApi={this.state.spotifyApi} />
           </div>
 
-          <div className="col-md-6 col-lg-8">
+          <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8">
             <div className={classes.wall}>
               <div className={classes.search}>
-                <MDBCol>
-                  <MDBFormInline
-                    className="md-form"
-                    onSubmit={this.handleSubmit}
-                  >
-                    <MDBIcon icon="search" />
-                    <input
-                      className="form-control form-control-sm ml-3 w-75"
-                      type="text"
-                      placeholder="What do you want to share with the world?"
-                      aria-label="Search"
-                      style={{
-                        margin: "auto",
-                        backgroundColor: "#FAFAFA"
-                      }}
-                      onChange={this.handleInputChange}
-                    />
-                    <button
-                      className="uk-button uk-button-primary"
-                      style={{ borderRadius: "5px" }}
-                    >
-                      Search
-                    </button>
-                  </MDBFormInline>
-                </MDBCol>
+                <MDBFormInline className="md-form" onSubmit={this.handleSubmit}>
+                  <MDBIcon icon="search" />
+                  <input
+                    className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
+                    type="text"
+                    placeholder="What do you want to share with the world?"
+                    aria-label="Search"
+                    onChange={this.handleInputChange}
+                  />
+                  <button className={classes.searchBtn}>Search</button>
+                </MDBFormInline>
               </div>
               <MDBRow>{this.state.search}</MDBRow>
               <TextBox />
             </div>
           </div>
 
-          <div className="col-md-3 col-lg-2">
+          <div className="col-xs-0 col-sm-0 col-md-3 col-lg-2">
             <Trending spotifyApi={this.state.spotifyApi} />
           </div>
         </div>

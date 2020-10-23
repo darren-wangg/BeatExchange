@@ -14,9 +14,9 @@ const styles = theme => ({
   postBtn: {
     background: "#1D87F0",
     color: "white",
-    padding: "5px 15px 5px 15px",
+    padding: "7px 17px 7px 17px",
     border: "none",
-    borderRadius: "3px",
+    borderRadius: "5px",
     position: "absolute",
     bottom: "10%",
     right: "2%"
