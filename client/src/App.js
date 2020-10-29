@@ -46,7 +46,6 @@ class App extends Component {
               path="/home"
               render={props => <Home {...props} spotifyApi={spotifyApi} />}
             />
-
             <Footer></Footer>
           </React.Fragment>
         </Switch>
