@@ -6,6 +6,8 @@ import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 import Profile from "../components/Profile/Profile";
 import TextBox from "../components/TextBox/TextBox";
 import Trending from "../components/Trending/Trending";
+import Fade from "react-reveal/Fade";
+import { StringDecoder } from "string_decoder";
 
 const styles = theme => ({
   body: {
@@ -43,6 +45,11 @@ const styles = theme => ({
   },
   searchImg: {
     marginTop: "25px"
+  },
+  searchResults: {
+    backgroundColor: "#FAFAFA",
+    borderBottomLeftRadius: "5px",
+    borderBottomRightRadius: "5px"
   }
 });
 
@@ -53,7 +60,8 @@ export class Home extends Component {
       spotifyApi: props.spotifyApi,
       song: "",
       data: null,
-      search: []
+      search: [],
+      chosen: null
     };
   }
 
@@ -63,6 +71,7 @@ export class Home extends Component {
       this.state.spotifyApi
         .searchTracks(this.state.song, { limit: 6 })
         .then(data => {
+          console.log("SEARCH: " + JSON.stringify(data, null, 2));
           this.setState({
             data: data
           });
@@ -87,14 +96,29 @@ export class Home extends Component {
     });
   };
 
+  setSearchResult = song => {
+    this.setState({
+      chosen: song,
+      search: []
+    });
+  };
+
   searchSongs = () => {
     const { classes } = this.props;
     const cols = [];
     if (this.state.data) {
       this.state.data.tracks.items.forEach(song =>
         cols.push(
-          <MDBCol key={song.id} sm="4" md="3" lg="2">
-            <a href={song.external_urls.spotify} target="_blank">
+          <MDBCol
+            key={song.id}
+            sm="4"
+            md="3"
+            lg="2"
+            onClick={() => {
+              this.setSearchResult(song);
+            }}
+          >
+            <a>
               <img
                 className={classes.searchImg}
                 src={song.album.images[0].url}
@@ -117,7 +141,7 @@ export class Home extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <Fade effect="fadeInUp">
         <div className="row">
           <div className="col-xs-0 col-sm-0 col-md-3 col-lg-2">
             <Profile spotifyApi={this.state.spotifyApi} />
@@ -138,8 +162,10 @@ export class Home extends Component {
                   <button className={classes.searchBtn}>Search</button>
                 </MDBFormInline>
               </div>
-              <MDBRow>{this.state.search}</MDBRow>
-              <TextBox />
+              <MDBRow className={classes.searchResults}>
+                {this.state.search}
+              </MDBRow>
+              <TextBox chosen={this.state.chosen} />
             </div>
           </div>
 
@@ -147,7 +173,7 @@ export class Home extends Component {
             <Trending spotifyApi={this.state.spotifyApi} />
           </div>
         </div>
-      </div>
+      </Fade>
     );
   }
 }

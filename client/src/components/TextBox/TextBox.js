@@ -25,7 +25,8 @@ const styles = theme => ({
 
 export class TextBox extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, chosen } = this.props;
+    console.log("TEXT BOX DATA: ", chosen);
     return (
       <div>
         <div className={`${classes.formGroup} blue-border-focus`}>
@@ -42,7 +43,8 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  chosen: PropTypes.object
 };
 
 export default withStyles(styles)(TextBox);

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Tabs, Tab } from "react-bootstrap";
-import billboard from "billboard-top-100";
 import axios from "axios";
+import { getChart } from "billboard-top-100";
 
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
@@ -14,8 +14,6 @@ const NEWS_DESCRIPTION_SUBSTR = 200;
 const NEWS_API_KEY = "0ae39ff91005420e99d096f5d224e223";
 const NEWS_QUERY =
   "https://newsapi.org/v2/everything?q=music&apiKey=" + NEWS_API_KEY;
-const TOP_SONGS = "https://www.billboard.com/charts/hot-100";
-const TOP_ALBUMS = "https://www.billboard.com/charts/billboard-200";
 
 const styles = theme => ({
   container: {
@@ -50,6 +48,17 @@ const styles = theme => ({
   releaseCol: {
     display: "inline-block",
     float: "none"
+  },
+  playlistCol: {
+    display: "inline-block",
+    float: "none",
+    bottom: "50px",
+    width: "300px",
+    wordBreak: "break-all",
+    whiteSpace: "normal",
+    [theme.breakpoints.down("md")]: {
+      width: "250px"
+    }
   },
   newsCol: {
     display: "inline-block",
@@ -161,20 +170,9 @@ export class Trending extends Component {
   getWorldReleases() {
     const { classes } = this.props;
     const cols = [];
-    console.log("CHARTS: ", billboard);
-    // billboard.getChart((err, chart) => {
+    // getChart((err, chart) => {
     //   if (err) console.log(err);
-    //   console.log(chart.week); // prints the week of the chart in the date format YYYY-MM-DD
-    //   console.log(chart.previousWeek.url); // prints the URL of the previous week's chart
-    //   console.log(chart.previousWeek.date); // prints the date of the previous week's chart in the date format YYYY-MM-DD
-    //   console.log(chart.nextWeek.url); // prints the URL of the next week's chart
-    //   console.log(chart.nextWeek.date); // prints the date of the next week's chart in the date format YYYY-MM-DD
-    //   console.log(chart.songs); // prints array of top 100 songs for week of August 27, 2016
-    //   console.log(chart.songs[3]); // prints song with rank: 4 for week of August 27, 2016
-    //   console.log(chart.songs[0].title); // prints title of top song for week of August 27, 2016
-    //   console.log(chart.songs[0].artist); // prints artist of top songs for week of August 27, 2016
-    //   console.log(chart.songs[0].rank); // prints rank of top song (1) for week of August 27, 2016
-    //   console.log(chart.songs[0].cover); // prints URL for Billboard cover image of top song for week of August 27, 2016
+    //   console.log("CHARTS: ", chart.songs); // prints the week of the chart in the date format YYYY-MM-DD
     // });
 
     // .then(data => {
@@ -212,18 +210,41 @@ export class Trending extends Component {
     const { classes } = this.props;
     const cols = [];
     this.state.spotifyApi
-      .getMyTopArtists({ limit: TOTAL_RELEASES })
+      .getUserPlaylists()
       .then(data => {
-        console.log("ARTISTS: ", data);
+        data.items.forEach(playlist =>
+          cols.push(
+            <MDBCol className={classes.playlistCol} key={playlist.id}>
+              <a href={playlist.external_urls.spotify} target="_blank">
+                <img
+                  className={classes.searchImg}
+                  src={playlist.images[0].url}
+                  alt="Playlist Art"
+                />
+              </a>
+              <p style={{ wordWrap: "break-word", margin: "7px" }}>
+                <strong>
+                  {playlist.name.length > TITLE_SUBSTR
+                    ? playlist.name.substring(0, TITLE_SUBSTR) + "..."
+                    : playlist.name}
+                </strong>
+              </p>
+              <p style={{ margin: "5px" }}>
+                {playlist.owner.display_name} | <em>{playlist.tracks.total}</em>
+              </p>
+            </MDBCol>
+          )
+        );
+        this.setState({
+          myArtists: cols
+        });
       })
       .catch(error => {
         console.error(error);
       });
     this.state.spotifyApi
-      .getMyTopTracks({ limit: TOTAL_RELEASES })
-      .then(data => {
-        console.log("SONGS: ", data);
-      })
+      .getMyRecentlyPlayedTracks()
+      .then(data => {})
       .catch(error => {
         console.error(error);
       });
@@ -288,15 +309,15 @@ export class Trending extends Component {
         </Tabs>
         {this.state.key === "me" ? (
           <div className={classes.me}>
-            <p className={classes.releases}>Albums</p>
+            <p className={classes.releases}>New Albums</p>
             <MDBRow className={classes.releaseMenu}>
               {this.state.myAlbums}
             </MDBRow>
-            <p className={classes.releases}>Artists</p>
+            <p className={classes.releases}>My Playlists</p>
             <MDBRow className={classes.releaseMenu}>
               {this.state.myArtists}
             </MDBRow>
-            <p className={classes.releases}>Songs</p>
+            <p className={classes.releases}>Top Songs</p>
             <MDBRow className={classes.releaseMenu}>
               {this.state.mySongs}
             </MDBRow>
