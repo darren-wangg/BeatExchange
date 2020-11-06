@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
 import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
+import { Typography, Tooltip } from "@material-ui/core";
 
 import Profile from "../components/Profile/Profile";
-import TextBox from "../components/TextBox/TextBox";
+import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
 import Fade from "react-reveal/Fade";
-import { StringDecoder } from "string_decoder";
+
+const TOTAL_RESULTS = 15;
 
 const styles = theme => ({
   body: {
@@ -49,7 +55,43 @@ const styles = theme => ({
   searchResults: {
     backgroundColor: "#FAFAFA",
     borderBottomLeftRadius: "5px",
-    borderBottomRightRadius: "5px"
+    borderBottomRightRadius: "5px",
+    display: "block",
+    overflowX: "auto",
+    whiteSpace: "nowrap"
+  },
+  searchCol: {
+    margin: "auto",
+    textAlign: "center",
+    display: "inline-block",
+    float: "none"
+  }
+});
+
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark"
+  }
+});
+
+const lightTheme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary: { main: "#fff" },
+    secondary: { main: "#fafafa" }
+  },
+  typography: {
+    fontFamily: `"Rubik", "Helvetica", sans-serif`,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    h6: {
+      display: "block",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      fontSize: "18px"
+    }
   }
 });
 
@@ -57,7 +99,6 @@ export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spotifyApi: props.spotifyApi,
       song: "",
       data: null,
       search: [],
@@ -68,10 +109,9 @@ export class Home extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.song.length > 0) {
-      this.state.spotifyApi
-        .searchTracks(this.state.song, { limit: 6 })
+      this.props.spotifyApi
+        .searchTracks(this.state.song, { limit: TOTAL_RESULTS })
         .then(data => {
-          console.log("SEARCH: " + JSON.stringify(data, null, 2));
           this.setState({
             data: data
           });
@@ -114,6 +154,7 @@ export class Home extends Component {
             sm="4"
             md="3"
             lg="2"
+            className={classes.searchCol}
             onClick={() => {
               this.setSearchResult(song);
             }}
@@ -125,10 +166,10 @@ export class Home extends Component {
                 alt="Album Art"
               />
             </a>
-            <p style={{ wordWrap: "break-word" }}>
+            <Typography variant="h6">
               <strong>{song.name}</strong>
-            </p>
-            <p>{song.artists[0].name}</p>
+            </Typography>
+            <Typography variant="subtitle1">{song.artists[0].name}</Typography>
           </MDBCol>
         )
       );
@@ -142,37 +183,48 @@ export class Home extends Component {
     const { classes } = this.props;
     return (
       <Fade effect="fadeInUp">
-        <div className="row">
-          <div className="col-xs-0 col-sm-0 col-md-3 col-lg-2">
-            <Profile spotifyApi={this.state.spotifyApi} />
-          </div>
+        <MuiThemeProvider theme={lightTheme}>
+          <div className="row">
+            <div
+              className="col-xs-0 col-sm-0 col-md-3 col-lg-2"
+              style={{ padding: "0px" }}
+            >
+              <Profile spotifyApi={this.props.spotifyApi} />
+            </div>
 
-          <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8">
-            <div className={classes.wall}>
-              <div className={classes.search}>
-                <MDBFormInline className="md-form" onSubmit={this.handleSubmit}>
-                  <MDBIcon icon="search" />
-                  <input
-                    className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
-                    type="text"
-                    placeholder="What do you want to share with the world?"
-                    aria-label="Search"
-                    onChange={this.handleInputChange}
-                  />
-                  <button className={classes.searchBtn}>Search</button>
-                </MDBFormInline>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+              <div className={classes.wall}>
+                <div className={classes.search}>
+                  <MDBFormInline
+                    className="md-form"
+                    onSubmit={this.handleSubmit}
+                  >
+                    <MDBIcon icon="search" />
+                    <input
+                      className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
+                      type="text"
+                      placeholder="What do you want to share with the world?"
+                      aria-label="Search"
+                      onChange={this.handleInputChange}
+                    />
+                    <button className={classes.searchBtn}>Search</button>
+                  </MDBFormInline>
+                </div>
+                <MDBRow className={classes.searchResults}>
+                  {this.state.search}
+                </MDBRow>
+                <PostBox chosen={this.state.chosen} />
               </div>
-              <MDBRow className={classes.searchResults}>
-                {this.state.search}
-              </MDBRow>
-              <TextBox chosen={this.state.chosen} />
+            </div>
+
+            <div
+              className="col-xs-0 col-sm-0 col-md-3 col-lg-2"
+              style={{ padding: "0px" }}
+            >
+              <Trending spotifyApi={this.props.spotifyApi} />
             </div>
           </div>
-
-          <div className="col-xs-0 col-sm-0 col-md-3 col-lg-2">
-            <Trending spotifyApi={this.state.spotifyApi} />
-          </div>
-        </div>
+        </MuiThemeProvider>
       </Fade>
     );
   }

@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Tabs, Tab } from "react-bootstrap";
 import axios from "axios";
-import { getChart } from "billboard-top-100";
 
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
@@ -14,6 +13,19 @@ const NEWS_DESCRIPTION_SUBSTR = 200;
 const NEWS_API_KEY = "0ae39ff91005420e99d096f5d224e223";
 const NEWS_QUERY =
   "https://newsapi.org/v2/everything?q=music&apiKey=" + NEWS_API_KEY;
+const LAST_FM_KEY = "f6fb36743399303c53f0c7dbdcc4ea06";
+const LAST_FM_TRACKS_QUERY =
+  "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=" +
+  LAST_FM_KEY +
+  "&format=json" +
+  "&limit=" +
+  TOTAL_RELEASES;
+const LAST_FM_ARTISTS_QUERY =
+  "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=" +
+  LAST_FM_KEY +
+  "&format=json" +
+  "&limit=" +
+  TOTAL_RELEASES;
 
 const styles = theme => ({
   container: {
@@ -46,6 +58,7 @@ const styles = theme => ({
     whiteSpace: "nowrap"
   },
   releaseCol: {
+    width: "250px",
     display: "inline-block",
     float: "none"
   },
@@ -53,7 +66,7 @@ const styles = theme => ({
     display: "inline-block",
     float: "none",
     bottom: "50px",
-    width: "300px",
+    width: "250px",
     wordBreak: "break-all",
     whiteSpace: "normal",
     [theme.breakpoints.down("md")]: {
@@ -63,7 +76,7 @@ const styles = theme => ({
   newsCol: {
     display: "inline-block",
     float: "none",
-    bottom: "50px",
+    bottom: "100px",
     height: "400px",
     width: "300px",
     wordBreak: "break-all",
@@ -76,8 +89,18 @@ const styles = theme => ({
   searchImg: {
     width: "175px",
     height: "auto",
+    boxShadow: "0 8px 6px -6px #2B2B2C",
+    "&:hover": {
+      transform: "scale(1.05)"
+    },
     [theme.breakpoints.down("md")]: {
       width: "125px"
+    }
+  },
+  newsImg: {
+    boxShadow: "0 8px 6px -6px #2B2B2C",
+    "&:hover": {
+      transform: "scale(1.05)"
     }
   }
 });
@@ -86,12 +109,11 @@ export class Trending extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spotifyApi: props.spotifyApi,
       key: "me",
       myAlbums: [],
       myArtists: [],
       mySongs: [],
-      albums: [],
+      artists: [],
       songs: [],
       news: []
     };
@@ -112,8 +134,9 @@ export class Trending extends Component {
   setupReleases() {
     const { classes } = this.props;
     const cols = [];
+    let key = 1;
     cols.push(
-      <MDBCol className={classes.releaseCol}>
+      <MDBCol className={classes.releaseCol} key={key++}>
         <img
           className={classes.searchImg}
           src={loading}
@@ -125,7 +148,7 @@ export class Trending extends Component {
       myAlbums: cols,
       myArtists: cols,
       mySongs: cols,
-      albums: cols,
+      artists: cols,
       songs: cols,
       news: cols
     });
@@ -134,7 +157,7 @@ export class Trending extends Component {
   getMyReleases() {
     const { classes } = this.props;
     const cols = [];
-    this.state.spotifyApi
+    this.props.spotifyApi
       .getNewReleases({ limit: TOTAL_RELEASES })
       .then(data => {
         data.albums.items.forEach(album =>
@@ -169,47 +192,90 @@ export class Trending extends Component {
 
   getWorldReleases() {
     const { classes } = this.props;
-    const cols = [];
-    // getChart((err, chart) => {
-    //   if (err) console.log(err);
-    //   console.log("CHARTS: ", chart.songs); // prints the week of the chart in the date format YYYY-MM-DD
-    // });
-
-    // .then(data => {
-    //   data.albums.items.forEach(album =>
-    //     cols.push(
-    //       <MDBCol className={classes.releaseCol} key={album.id}>
-    //         <a href={album.external_urls.spotify} target="_blank">
-    //           <img
-    //             className={classes.searchImg}
-    //             src={album.images[0].url}
-    //             alt="Album Art"
-    //           />
-    //         </a>
-    //         <p style={{ wordWrap: "break-word", margin: "7px" }}>
-    //           <strong>
-    //             {album.name.length > TITLE_SUBSTR
-    //               ? album.name.substring(0, TITLE_SUBSTR) + "..."
-    //               : album.name}
-    //           </strong>
-    //         </p>
-    //         <p style={{ margin: "5px" }}>{album.artists[0].name}</p>
-    //       </MDBCol>
-    //     )
-    //   );
-    //   this.setState({
-    //     albums: cols
-    //   });
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
+    const artistCols = [];
+    const trackCols = [];
+    axios.get(LAST_FM_ARTISTS_QUERY).then(res => {
+      res.data.artists.artist.forEach(artist =>
+        this.props.spotifyApi
+          .searchArtists(artist.name, { limit: 1 })
+          .then(data => {
+            artistCols.push(
+              <MDBCol className={classes.releaseCol} key={artist.name}>
+                <a
+                  href={data.artists.items[0].external_urls.spotify}
+                  target="_blank"
+                >
+                  <img
+                    className={classes.searchImg}
+                    src={data.artists.items[0].images[0].url} // LastFM API image url's not setup... look for new API in future
+                    alt="Album Art"
+                  />
+                </a>
+                <p style={{ wordWrap: "break-word", margin: "7px" }}>
+                  <strong>
+                    {artist.name.length > TITLE_SUBSTR
+                      ? artist.name.substring(0, TITLE_SUBSTR) + "..."
+                      : artist.name}
+                  </strong>
+                </p>
+                <p style={{ margin: "5px" }}>
+                  {artist.playcount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  Plays
+                </p>
+              </MDBCol>
+            );
+          })
+      );
+      this.setState({
+        artists: artistCols
+      });
+    });
+    axios
+      .get(LAST_FM_TRACKS_QUERY)
+      .then(res => {
+        res.data.tracks.track.forEach(track =>
+          this.props.spotifyApi
+            .searchTracks(track.name, { limit: 1 })
+            .then(data => {
+              trackCols.push(
+                <MDBCol className={classes.releaseCol} key={track.name}>
+                  <a
+                    href={data.tracks.items[0].external_urls.spotify}
+                    target="_blank"
+                  >
+                    <img
+                      className={classes.searchImg}
+                      src={data.tracks.items[0].album.images[0].url}
+                      alt="Album Art"
+                    />
+                  </a>
+                  <p style={{ wordWrap: "break-word", margin: "7px" }}>
+                    <strong>
+                      {track.name.length > TITLE_SUBSTR
+                        ? track.name.substring(0, TITLE_SUBSTR) + "..."
+                        : track.name}
+                    </strong>
+                  </p>
+                  <p style={{ margin: "5px" }}>{track.artist.name}</p>
+                </MDBCol>
+              );
+            })
+        );
+        this.setState({
+          songs: trackCols
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   getMyTop() {
     const { classes } = this.props;
     const cols = [];
-    this.state.spotifyApi
+    this.props.spotifyApi
       .getUserPlaylists()
       .then(data => {
         data.items.forEach(playlist =>
@@ -242,7 +308,7 @@ export class Trending extends Component {
       .catch(error => {
         console.error(error);
       });
-    this.state.spotifyApi
+    this.props.spotifyApi
       .getMyRecentlyPlayedTracks()
       .then(data => {})
       .catch(error => {
@@ -259,7 +325,7 @@ export class Trending extends Component {
         data = data.data;
         data.articles.slice(0, TOTAL_RELEASES).map(article =>
           cols.push(
-            <MDBCol className={classes.newsCol} key={article.source.title}>
+            <MDBCol className={classes.newsCol} key={article.title}>
               <a href={article.url} target="_blank">
                 <img
                   className={classes.newsImg}
@@ -313,20 +379,22 @@ export class Trending extends Component {
             <MDBRow className={classes.releaseMenu}>
               {this.state.myAlbums}
             </MDBRow>
+            <p className={classes.releases}>My Songs</p>
+            <MDBRow className={classes.releaseMenu}>
+              {this.state.mySongs}
+            </MDBRow>
             <p className={classes.releases}>My Playlists</p>
             <MDBRow className={classes.releaseMenu}>
               {this.state.myArtists}
             </MDBRow>
-            <p className={classes.releases}>Top Songs</p>
-            <MDBRow className={classes.releaseMenu}>
-              {this.state.mySongs}
-            </MDBRow>
           </div>
         ) : (
           <div className={classes.world}>
-            <p className={classes.releases}>Albums</p>
-            <MDBRow className={classes.releaseMenu}>{this.state.albums}</MDBRow>
-            <p className={classes.releases}>Songs</p>
+            <p className={classes.releases}>Top Artists</p>
+            <MDBRow className={classes.releaseMenu}>
+              {this.state.artists}
+            </MDBRow>
+            <p className={classes.releases}>Top Songs</p>
             <MDBRow className={classes.releaseMenu}>{this.state.songs}</MDBRow>
             <p className={classes.releases}>News</p>
             <MDBRow className={classes.releaseMenu}>{this.state.news}</MDBRow>
