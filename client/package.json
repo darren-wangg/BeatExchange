@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/icons": "^4.9.1",
     "axios": "^0.20.0",
     "billboard-crawler": "^1.0.1",
     "billboard-top-100": "^2.5.9",

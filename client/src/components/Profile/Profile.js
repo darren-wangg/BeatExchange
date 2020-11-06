@@ -56,7 +56,7 @@ export class Profile extends Component {
   }
 
   fetchUser() {
-    this.state.spotifyApi
+    this.props.spotifyApi
       .getMe()
       .then(data => {
         this.setState({
