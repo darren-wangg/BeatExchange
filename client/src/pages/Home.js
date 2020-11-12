@@ -31,7 +31,7 @@ const styles = theme => ({
   form: {
     margin: "auto 10px",
     height: "42px",
-    backgroundColor: "#FAFAFA",
+    backgroundColor: "#EDEDED",
     [theme.breakpoints.down("md")]: {
       width: "310px !important"
     }
@@ -50,10 +50,17 @@ const styles = theme => ({
     height: "100vh"
   },
   searchImg: {
-    marginTop: "25px"
+    width: "150px",
+    height: "auto",
+    marginTop: "25px",
+    [theme.breakpoints.down("md")]: {
+      width: "100px"
+    }
   },
   searchResults: {
-    backgroundColor: "#FAFAFA",
+    width: "90%",
+    margin: "auto",
+    backgroundColor: "#EDEDED",
     borderBottomLeftRadius: "5px",
     borderBottomRightRadius: "5px",
     display: "block",
@@ -61,10 +68,14 @@ const styles = theme => ({
     whiteSpace: "nowrap"
   },
   searchCol: {
+    width: "225px",
     margin: "auto",
     textAlign: "center",
     display: "inline-block",
-    float: "none"
+    float: "none",
+    [theme.breakpoints.down("md")]: {
+      width: "175px"
+    }
   }
 });
 
@@ -150,11 +161,8 @@ export class Home extends Component {
       this.state.data.tracks.items.forEach(song =>
         cols.push(
           <MDBCol
-            key={song.id}
-            sm="4"
-            md="3"
-            lg="2"
             className={classes.searchCol}
+            key={song.id}
             onClick={() => {
               this.setSearchResult(song);
             }}
