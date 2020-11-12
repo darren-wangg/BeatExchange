@@ -60,7 +60,10 @@ const styles = theme => ({
   releaseCol: {
     width: "250px",
     display: "inline-block",
-    float: "none"
+    float: "none",
+    [theme.breakpoints.down("md")]: {
+      width: "200px"
+    }
   },
   playlistCol: {
     display: "inline-block",
@@ -70,7 +73,8 @@ const styles = theme => ({
     wordBreak: "break-all",
     whiteSpace: "normal",
     [theme.breakpoints.down("md")]: {
-      width: "250px"
+      width: "200px",
+      bottom: "30px"
     }
   },
   newsCol: {
@@ -276,7 +280,7 @@ export class Trending extends Component {
     const { classes } = this.props;
     const cols = [];
     this.props.spotifyApi
-      .getUserPlaylists()
+      .getUserPlaylists({ limit: TOTAL_RELEASES })
       .then(data => {
         data.items.forEach(playlist =>
           cols.push(
@@ -309,8 +313,10 @@ export class Trending extends Component {
         console.error(error);
       });
     this.props.spotifyApi
-      .getMyRecentlyPlayedTracks()
-      .then(data => {})
+      .getMyTopTracks({ limit: TOTAL_RELEASES })
+      .then(data => {
+        console.log(data);
+      })
       .catch(error => {
         console.error(error);
       });

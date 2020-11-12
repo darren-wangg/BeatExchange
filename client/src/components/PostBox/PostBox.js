@@ -24,7 +24,7 @@ const styles = theme => ({
     margin: "auto",
     marginBottom: "10px",
     backgroundColor: "#2B2B2C",
-    borderRadius: "3px",
+    borderRadius: "5px",
     boxShadow: "0 12px 10px -10px #000",
     "&:hover": {
       transform: "scale(1.01)"
