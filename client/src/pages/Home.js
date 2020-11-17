@@ -6,12 +6,13 @@ import {
   MuiThemeProvider
 } from "@material-ui/core/styles";
 import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
-import { Typography, Tooltip } from "@material-ui/core";
+import { Grid, Typography, Tooltip } from "@material-ui/core";
 
 import Profile from "../components/Profile/Profile";
 import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
 import Fade from "react-reveal/Fade";
+import axios from "axios";
 
 const TOTAL_RESULTS = 15;
 
@@ -26,15 +27,14 @@ const styles = theme => ({
     overflow: "hidden"
   },
   search: {
-    paddingTop: "15px"
+    width: "100%",
+    margin: "20px 25px 0px 25px"
   },
   form: {
     margin: "auto 10px",
-    height: "42px",
+    height: "50px",
     backgroundColor: "#EDEDED",
-    [theme.breakpoints.down("md")]: {
-      width: "310px !important"
-    }
+    width: "85% !important"
   },
   searchBtn: {
     background: "#1D87F0",
@@ -50,15 +50,15 @@ const styles = theme => ({
     height: "100vh"
   },
   searchImg: {
-    width: "150px",
+    width: "125px",
     height: "auto",
-    marginTop: "25px",
+    margin: "25px 0px 5px 0px",
     [theme.breakpoints.down("md")]: {
-      width: "100px"
+      width: "75px"
     }
   },
   searchResults: {
-    width: "90%",
+    width: "95%",
     margin: "auto",
     backgroundColor: "#EDEDED",
     borderBottomLeftRadius: "5px",
@@ -70,6 +70,7 @@ const styles = theme => ({
   searchCol: {
     width: "225px",
     margin: "auto",
+    padding: "10px",
     textAlign: "center",
     display: "inline-block",
     float: "none",
@@ -96,12 +97,11 @@ const lightTheme = createMuiTheme({
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    h6: {
+    subtitle1: {
       display: "block",
-      whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      fontSize: "18px"
+      fontSize: "14px"
     }
   }
 });
@@ -117,8 +117,22 @@ export class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchPosts();
+    console.log("CHOSEN: " + this.state.chosen);
+  }
+
+  fetchPosts() {
+    axios.get("/api/posts").then(res => {
+      console.log("MONGO DB DATA: " + JSON.stringify(res, null, 2));
+    });
+  }
+
   handleSubmit = e => {
     e.preventDefault();
+    this.setState({
+      search: []
+    });
     if (this.state.song.length > 0) {
       this.props.spotifyApi
         .searchTracks(this.state.song, { limit: TOTAL_RESULTS })
@@ -126,7 +140,7 @@ export class Home extends Component {
           this.setState({
             data: data
           });
-          this.searchSongs();
+          this.createSongs();
         })
         .catch(error => {
           console.error(error);
@@ -154,7 +168,7 @@ export class Home extends Component {
     });
   };
 
-  searchSongs = () => {
+  createSongs = () => {
     const { classes } = this.props;
     const cols = [];
     if (this.state.data) {
@@ -167,17 +181,15 @@ export class Home extends Component {
               this.setSearchResult(song);
             }}
           >
-            <a>
-              <img
-                className={classes.searchImg}
-                src={song.album.images[0].url}
-                alt="Album Art"
-              />
-            </a>
-            <Typography variant="h6">
+            <img
+              className={classes.searchImg}
+              src={song.album.images[0].url}
+              alt="Album Art"
+            />
+            <Typography variant="subtitle1">
               <strong>{song.name}</strong>
             </Typography>
-            <Typography variant="subtitle1">{song.artists[0].name}</Typography>
+            <Typography variant="body1">{song.artists[0].name}</Typography>
           </MDBCol>
         )
       );
@@ -202,22 +214,39 @@ export class Home extends Component {
 
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8">
               <div className={classes.wall}>
-                <div className={classes.search}>
-                  <MDBFormInline
-                    className="md-form"
-                    onSubmit={this.handleSubmit}
-                  >
+                <Grid
+                  container
+                  direction="row"
+                  spacing={2}
+                  justify="center"
+                  alignItems="center"
+                  className={classes.search}
+                >
+                  <Grid item xs={0} md={0}>
                     <MDBIcon icon="search" />
-                    <input
-                      className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
-                      type="text"
-                      placeholder="What do you want to share with the world?"
-                      aria-label="Search"
-                      onChange={this.handleInputChange}
-                    />
-                    <button className={classes.searchBtn}>Search</button>
-                  </MDBFormInline>
-                </div>
+                  </Grid>
+                  <Grid item xs={10} md={10}>
+                    <MDBFormInline
+                      className="md-form"
+                      onSubmit={this.handleSubmit}
+                    >
+                      <input
+                        className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
+                        type="text"
+                        placeholder="What do you want to share with the world?"
+                        aria-label="Search"
+                        onChange={this.handleInputChange}
+                      />
+                    </MDBFormInline>
+                  </Grid>
+                  <Grid item xs={0} md={0}>
+                    {!this.state.chosen ? (
+                      <button className={classes.searchBtn}>Search</button>
+                    ) : (
+                      <br />
+                    )}
+                  </Grid>
+                </Grid>
                 <MDBRow className={classes.searchResults}>
                   {this.state.search}
                 </MDBRow>
