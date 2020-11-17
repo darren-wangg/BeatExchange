@@ -4,6 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Tabs, Tab } from "react-bootstrap";
 import axios from "axios";
+import Fade from "react-reveal/Fade";
+import { CircularProgress } from "@material-ui/core";
 
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
@@ -119,20 +121,22 @@ export class Trending extends Component {
       mySongs: [],
       artists: [],
       songs: [],
-      news: []
+      news: [],
+      loading: true
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // setup menu with default results
     this.setupReleases();
-  }
 
-  componentDidMount() {
     this.getMyReleases();
     this.getMyTop();
     this.getWorldReleases();
     this.getNews();
+    this.setState({
+      loading: false
+    });
   }
 
   setupReleases() {
@@ -364,49 +368,60 @@ export class Trending extends Component {
 
   render() {
     const { classes } = this.props;
+    if (this.state.loading) {
+      return (
+        <MDBCol className={classes.container}>
+          <CircularProgress size={80} style={{ color: "#1edd88" }} />
+        </MDBCol>
+      );
+    }
 
     return (
-      <MDBCol className={classes.container}>
-        <h2>
-          <u>Trending</u>
-        </h2>
-        <Tabs
-          className={classes.tabs}
-          id="controlled-tab-example"
-          activeKey={this.state.key}
-          onSelect={k => this.setState({ key: k })}
-        >
-          <Tab eventKey="me" title="Me" />
-          <Tab eventKey="world" title="World" />
-        </Tabs>
-        {this.state.key === "me" ? (
-          <div className={classes.me}>
-            <p className={classes.releases}>New Albums</p>
-            <MDBRow className={classes.releaseMenu}>
-              {this.state.myAlbums}
-            </MDBRow>
-            <p className={classes.releases}>My Songs</p>
-            <MDBRow className={classes.releaseMenu}>
-              {this.state.mySongs}
-            </MDBRow>
-            <p className={classes.releases}>My Playlists</p>
-            <MDBRow className={classes.releaseMenu}>
-              {this.state.myArtists}
-            </MDBRow>
-          </div>
-        ) : (
-          <div className={classes.world}>
-            <p className={classes.releases}>Top Artists</p>
-            <MDBRow className={classes.releaseMenu}>
-              {this.state.artists}
-            </MDBRow>
-            <p className={classes.releases}>Top Songs</p>
-            <MDBRow className={classes.releaseMenu}>{this.state.songs}</MDBRow>
-            <p className={classes.releases}>News</p>
-            <MDBRow className={classes.releaseMenu}>{this.state.news}</MDBRow>
-          </div>
-        )}
-      </MDBCol>
+      <Fade>
+        <MDBCol className={classes.container}>
+          <h2>
+            <u>Trending</u>
+          </h2>
+          <Tabs
+            className={classes.tabs}
+            id="controlled-tab-example"
+            activeKey={this.state.key}
+            onSelect={k => this.setState({ key: k })}
+          >
+            <Tab eventKey="me" title="Me" />
+            <Tab eventKey="world" title="World" />
+          </Tabs>
+          {this.state.key === "me" ? (
+            <div className={classes.me}>
+              <p className={classes.releases}>New Albums</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.myAlbums}
+              </MDBRow>
+              <p className={classes.releases}>My Songs</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.mySongs}
+              </MDBRow>
+              <p className={classes.releases}>My Playlists</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.myArtists}
+              </MDBRow>
+            </div>
+          ) : (
+            <div className={classes.world}>
+              <p className={classes.releases}>Top Artists</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.artists}
+              </MDBRow>
+              <p className={classes.releases}>Top Songs</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.songs}
+              </MDBRow>
+              <p className={classes.releases}>News</p>
+              <MDBRow className={classes.releaseMenu}>{this.state.news}</MDBRow>
+            </div>
+          )}
+        </MDBCol>
+      </Fade>
     );
   }
 }

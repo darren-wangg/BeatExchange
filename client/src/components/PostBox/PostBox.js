@@ -6,18 +6,21 @@ import {
   MuiThemeProvider
 } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import CancelIcon from "@material-ui/icons/Cancel";
+import axios from "axios";
 
 const styles = theme => ({
   container: {
     maxHeight: "500px",
-    position: "absolute",
-    bottom: "0",
-    left: "0",
     margin: "auto",
     width: "100%",
     display: "block",
     fontFamily: "Rubik"
+  },
+  close: {
+    width: "30px",
+    height: "auto",
+    cursor: "pointer"
   },
   songContainer: {
     width: "70%",
@@ -43,17 +46,27 @@ const styles = theme => ({
     }
   },
   formGroup: {
+    position: "relative",
     width: "100%"
+  },
+  textArea: {
+    width: "80%",
+    height: "150px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "auto",
+    borderRadius: "5px"
   },
   postBtn: {
     background: "#1D87F0",
     color: "white",
-    padding: "7px 17px 7px 17px",
+    padding: "10px 20px 10px 20px",
     border: "none",
     borderRadius: "5px",
     position: "absolute",
-    bottom: "10%",
-    right: "2%"
+    right: "15%",
+    bottom: "15%"
   }
 });
 
@@ -67,7 +80,8 @@ const lightTheme = createMuiTheme({
   palette: {
     type: "light",
     primary: { main: "#fff" },
-    secondary: { main: "#CCCCCC" }
+    secondary: { main: "#CCCCCC" },
+    textPrimary: { main: "#000000" }
   },
   typography: {
     subtitle1: {
@@ -80,13 +94,17 @@ const lightTheme = createMuiTheme({
 });
 
 export class PostBox extends Component {
-  state = {
-    active: false,
-    currTime: new Date().toLocaleString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    })
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: false,
+      message: "",
+      currTime: new Date().toLocaleString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
+    };
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.chosen != nextProps.chosen) {
@@ -102,50 +120,103 @@ export class PostBox extends Component {
     });
   }
 
+  handleInputChange = e => {
+    e.preventDefault();
+    this.setState({
+      message: e.target.value
+    });
+  };
+
+  millisToMinutesAndSeconds(millis) {
+    const minutes = Math.floor(millis / 60000);
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  }
+
+  submitPost = e => {
+    e.preventDefault();
+    // axios({
+    //   url: '/api/posts',
+    //   method: 'POST',
+    //   data: payload
+    // })
+    //   .then(() => {
+
+    //   })
+    //   .catch(() => {
+
+    //   });
+  };
+
   render() {
     const { classes, chosen } = this.props;
+    if (!chosen) {
+      return <div />;
+    }
+
     return (
       <div className={classes.container}>
         <MuiThemeProvider theme={lightTheme}>
           {this.state.active ? (
             <div>
-              <CloseIcon
-                style={{ cursor: "pointer" }}
-                onClick={() => this.deleteChosen()}
-              />
               <Grid
                 container
                 direction="row"
-                spacing={24}
+                spacing={8}
                 justify="center"
                 alignItems="center"
-                className={classes.songContainer}
               >
                 <Grid item xs={2} md={2}>
-                  <a href={chosen.external_urls.spotify} target="_blank">
-                    <img
-                      className={classes.songImg}
-                      src={chosen.album.images[0].url}
-                    />
-                  </a>
+                  <CancelIcon
+                    className={classes.close}
+                    onClick={() => this.deleteChosen()}
+                  />
                 </Grid>
-                <Grid item xs={4} md={4}>
-                  <Typography variant="subtitle1" color="primary">
-                    {chosen.name}
-                  </Typography>
+                <Grid item xs={8} md={8}>
+                  <Grid
+                    container
+                    direction="row"
+                    spacing={8}
+                    justify="center"
+                    alignItems="center"
+                    className={classes.songContainer}
+                  >
+                    <Grid item xs={2} md={2}>
+                      <a href={chosen.external_urls.spotify} target="_blank">
+                        <img
+                          className={classes.songImg}
+                          src={chosen.album.images[0].url}
+                        />
+                      </a>
+                    </Grid>
+                    <Grid item xs={4} md={4}>
+                      <Typography variant="subtitle1" color="primary">
+                        {chosen.name}
+                      </Typography>
+                      <Typography variant="body1" color="secondary">
+                        {chosen.artists[0].name}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} md={4}>
+                      <Typography variant="subtitle1" color="primary">
+                        {chosen.album.name}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} md={2}>
+                      {chosen.type == "track" ? (
+                        <Typography variant="body1" color="secondary">
+                          {this.millisToMinutesAndSeconds(chosen.duration_ms)}
+                        </Typography>
+                      ) : (
+                        <Typography variant="body1" color="secondary">
+                          {chosen.release_date}
+                        </Typography>
+                      )}
+                    </Grid>
+                  </Grid>
                 </Grid>
                 <Grid item xs={2} md={2}>
-                  <Typography variant="subtitle1" color="primary">
-                    {chosen.artists[0].name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} md={3}>
-                  <Typography variant="subtitle1" color="primary">
-                    {chosen.album.name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={1} md={1}>
-                  <Typography variant="caption" color="secondary">
+                  <Typography variant="body1" color="textPrimary">
                     {this.state.currTime}
                   </Typography>
                 </Grid>
@@ -154,14 +225,19 @@ export class PostBox extends Component {
           ) : (
             <div style={{ display: "none" }} />
           )}
-          <div className={classes.formGroup}>
+          <form className={classes.formGroup} onSubmit={this.submitPost}>
             <textarea
-              className="form-control rounded-0"
+              className={classes.textArea}
               id="exampleFormControlTextarea2"
               rows="3"
+              type="text"
+              maxLength="200"
+              name="message"
+              value={this.state.message}
+              onChange={this.handleInputChange}
             ></textarea>
             <button className={classes.postBtn}>Post</button>
-          </div>
+          </form>
         </MuiThemeProvider>
       </div>
     );

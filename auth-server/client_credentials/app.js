@@ -25,7 +25,7 @@ var authOptions = {
   json: true
 };
 
-request.post(authOptions, function (error, response, body) {
+request.post(authOptions, function(error, response, body) {
   if (!error && response.statusCode === 200) {
     // use the access token to access the Spotify Web API
     var token = body.access_token;
@@ -36,14 +36,5 @@ request.post(authOptions, function (error, response, body) {
       },
       json: true
     };
-    request.get(options, function (error, response, body) {
-      console.log(body);
-      console.log(body.display_name);
-      console.log(body.images[0].url);
-      console.log(body.followers.total);
-      console.log(body.product);
-      console.log(body.email);
-      console.log(body.country);
-    });
   }
 });
