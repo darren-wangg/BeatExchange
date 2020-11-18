@@ -11,7 +11,8 @@ const styles = theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#2b2b2c"
+    backgroundColor: "#2b2b2c",
+    fontSize: "1.2rem"
   },
   logo: {
     marginLeft: "10%"
@@ -29,7 +30,7 @@ const styles = theme => ({
   loginBtn: {
     background: "#1edd88",
     color: "white",
-    padding: "10px 15px 10px 15px",
+    padding: "10px 20px",
     border: "none",
     borderRadius: "5px",
     "&:hover": {

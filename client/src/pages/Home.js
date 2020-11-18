@@ -28,13 +28,18 @@ const styles = theme => ({
   },
   search: {
     width: "100%",
-    margin: "20px 25px 0px 25px"
+    margin: "auto",
+    padding: "25px",
+    backgroundColor: "#FAFAFA",
+    boxShadow: "0 7px 10px -10px #2b2b2c",
+    zIndex: "99999"
   },
   form: {
     margin: "auto 10px",
     height: "50px",
-    backgroundColor: "#EDEDED",
-    width: "85% !important"
+    backgroundColor: "#FAFAFA",
+    width: "85% !important",
+    border: "1px solid #E0E0E0"
   },
   searchBtn: {
     background: "#1D87F0",
@@ -52,20 +57,26 @@ const styles = theme => ({
   searchImg: {
     width: "125px",
     height: "auto",
-    margin: "25px 0px 5px 0px",
+    margin: "20px 0px 5px 0px",
+    cursor: "pointer",
+    boxShadow: "0 8px 6px -6px #2B2B2C",
+    "&:hover": {
+      transform: "scale(1.03)"
+    },
     [theme.breakpoints.down("md")]: {
       width: "75px"
     }
   },
   searchResults: {
-    width: "95%",
+    width: "100%",
     margin: "auto",
-    backgroundColor: "#EDEDED",
+    backgroundColor: "#E0E0E0",
     borderBottomLeftRadius: "5px",
     borderBottomRightRadius: "5px",
     display: "block",
     overflowX: "auto",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
+    zIndex: "-1"
   },
   searchCol: {
     width: "225px",
@@ -110,6 +121,15 @@ export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: {
+        id: null,
+        profile: null,
+        url: null,
+        username: null,
+        country: null,
+        followers: null,
+        type: null
+      },
       song: "",
       data: null,
       search: [],
@@ -119,7 +139,7 @@ export class Home extends Component {
 
   componentDidMount() {
     this.fetchPosts();
-    console.log("CHOSEN: " + this.state.chosen);
+    this.fetchUser();
   }
 
   fetchPosts() {
@@ -128,10 +148,32 @@ export class Home extends Component {
     });
   }
 
+  fetchUser() {
+    this.props.spotifyApi
+      .getMe()
+      .then(data => {
+        this.setState({
+          user: {
+            id: data.id,
+            profile: data.images[0].url,
+            url: data.external_urls.spotify,
+            username: data.display_name,
+            country: data.country,
+            followers: data.followers.total,
+            type: data.product
+          }
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.setState({
-      search: []
+      search: [],
+      chosen: null
     });
     if (this.state.song.length > 0) {
       this.props.spotifyApi
@@ -149,7 +191,8 @@ export class Home extends Component {
     // reset to default
     else {
       this.setState({
-        search: []
+        search: [],
+        chosen: null
       });
     }
   };
@@ -209,10 +252,13 @@ export class Home extends Component {
               className="col-xs-0 col-sm-0 col-md-3 col-lg-2"
               style={{ padding: "0px" }}
             >
-              <Profile spotifyApi={this.props.spotifyApi} />
+              <Profile user={this.state.user} />
             </div>
 
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+            <div
+              className="col-xs-12 col-sm-12 col-md-6 col-lg-8"
+              style={{ padding: "0px" }}
+            >
               <div className={classes.wall}>
                 <Grid
                   container
@@ -250,7 +296,7 @@ export class Home extends Component {
                 <MDBRow className={classes.searchResults}>
                   {this.state.search}
                 </MDBRow>
-                <PostBox chosen={this.state.chosen} />
+                <PostBox user={this.state.user} chosen={this.state.chosen} />
               </div>
             </div>
 
