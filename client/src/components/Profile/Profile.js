@@ -17,6 +17,7 @@ const styles = theme => ({
   profileImg: {
     width: "275px",
     height: "auto",
+    borderRadius: "3px",
     [theme.breakpoints.down("md")]: {
       width: "200px"
     }
@@ -40,60 +41,29 @@ const styles = theme => ({
 export class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      spotifyApi: props.spotifyApi,
-      profile: null,
-      link: null,
-      username: null,
-      country: null,
-      followers: 0,
-      type: null
-    };
-  }
-
-  componentDidMount() {
-    this.fetchUser();
-  }
-
-  fetchUser() {
-    this.props.spotifyApi
-      .getMe()
-      .then(data => {
-        this.setState({
-          profile: data.images[0].url,
-          link: data.external_urls.spotify,
-          username: data.display_name,
-          country: data.country,
-          followers: data.followers.total,
-          type: data.product
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     return (
       <MDBCol className={classes.container}>
         <h2>
           <u>Profile</u>
         </h2>
-        {this.state.username ? (
+        {user.username ? (
           <div>
-            <a href={this.state.link} target="_blank">
+            <a href={user.link} target="_blank">
               <img
                 className={classes.profileImg}
-                src={this.state.profile}
+                src={user.profile}
                 alt="Profile"
               />
             </a>
-            <h3 className={classes.name}>{this.state.username}</h3>
-            <p>Country: {this.state.country}</p>
-            <p>Followers: {this.state.followers}</p>
-            <p>Type: {this.state.type}</p>
-            <a href={this.state.link} target="_blank">
+            <h3 className={classes.name}>{user.username}</h3>
+            <p>Country: {user.country}</p>
+            <p>Followers: {user.followers}</p>
+            <p>Type: {user.type}</p>
+            <a href={user.link} target="_blank">
               <button className={classes.profileBtn}>Full Profile</button>
             </a>
           </div>
@@ -107,7 +77,7 @@ export class Profile extends Component {
 
 Profile.propTypes = {
   classes: PropTypes.object.isRequired,
-  spotifyApi: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Profile);

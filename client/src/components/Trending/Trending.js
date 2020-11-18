@@ -57,7 +57,9 @@ const styles = theme => ({
   releaseMenu: {
     display: "block",
     overflowX: "auto",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
+    paddingBottom: "25px",
+    borderBottom: "2px solid #E0E0E0"
   },
   releaseCol: {
     width: "250px",
@@ -65,18 +67,6 @@ const styles = theme => ({
     float: "none",
     [theme.breakpoints.down("md")]: {
       width: "200px"
-    }
-  },
-  playlistCol: {
-    display: "inline-block",
-    float: "none",
-    bottom: "50px",
-    width: "250px",
-    wordBreak: "break-all",
-    whiteSpace: "normal",
-    [theme.breakpoints.down("md")]: {
-      width: "200px",
-      bottom: "30px"
     }
   },
   newsCol: {
@@ -95,6 +85,7 @@ const styles = theme => ({
   searchImg: {
     width: "175px",
     height: "auto",
+    borderRadius: "3px",
     boxShadow: "0 8px 6px -6px #2B2B2C",
     "&:hover": {
       transform: "scale(1.05)"
@@ -104,6 +95,7 @@ const styles = theme => ({
     }
   },
   newsImg: {
+    borderRadius: "3px",
     boxShadow: "0 8px 6px -6px #2B2B2C",
     "&:hover": {
       transform: "scale(1.05)"
@@ -118,7 +110,7 @@ export class Trending extends Component {
       key: "me",
       myAlbums: [],
       myArtists: [],
-      mySongs: [],
+      myTracks: [],
       artists: [],
       songs: [],
       news: [],
@@ -155,7 +147,7 @@ export class Trending extends Component {
     this.setState({
       myAlbums: cols,
       myArtists: cols,
-      mySongs: cols,
+      myTracks: cols,
       artists: cols,
       songs: cols,
       news: cols
@@ -282,44 +274,67 @@ export class Trending extends Component {
 
   getMyTop() {
     const { classes } = this.props;
-    const cols = [];
+    const artists = [];
     this.props.spotifyApi
-      .getUserPlaylists({ limit: TOTAL_RELEASES })
+      .getMyTopArtists({ limit: TOTAL_RELEASES })
       .then(data => {
-        data.items.forEach(playlist =>
-          cols.push(
-            <MDBCol className={classes.playlistCol} key={playlist.id}>
-              <a href={playlist.external_urls.spotify} target="_blank">
+        data.items.forEach(artist =>
+          artists.push(
+            <MDBCol className={classes.releaseCol} key={artist.id}>
+              <a href={artist.external_urls.spotify} target="_blank">
                 <img
                   className={classes.searchImg}
-                  src={playlist.images[0].url}
-                  alt="Playlist Art"
+                  src={artist.images[0].url}
+                  alt="Artist Art"
                 />
               </a>
               <p style={{ wordWrap: "break-word", margin: "7px" }}>
                 <strong>
-                  {playlist.name.length > TITLE_SUBSTR
-                    ? playlist.name.substring(0, TITLE_SUBSTR) + "..."
-                    : playlist.name}
+                  {artist.name.length > TITLE_SUBSTR
+                    ? artist.name.substring(0, TITLE_SUBSTR) + "..."
+                    : artist.name}
                 </strong>
-              </p>
-              <p style={{ margin: "5px" }}>
-                {playlist.owner.display_name} | <em>{playlist.tracks.total}</em>
               </p>
             </MDBCol>
           )
         );
         this.setState({
-          myArtists: cols
+          myArtists: artists
         });
       })
       .catch(error => {
         console.error(error);
       });
+
+    const tracks = [];
     this.props.spotifyApi
       .getMyTopTracks({ limit: TOTAL_RELEASES })
       .then(data => {
-        console.log(data);
+        data.items.forEach(track =>
+          tracks.push(
+            <MDBCol className={classes.releaseCol} key={track.id}>
+              <a href={track.external_urls.spotify} target="_blank">
+                <img
+                  className={classes.searchImg}
+                  src={track.album.images[0].url}
+                  alt="Track Art"
+                />
+              </a>
+              <p style={{ wordWrap: "break-word", margin: "7px" }}>
+                <strong>
+                  {track.name.length > TITLE_SUBSTR
+                    ? track.name.substring(0, TITLE_SUBSTR) + "..."
+                    : track.name}
+                </strong>
+                <br />
+                <em>{track.popularity}</em>
+              </p>
+            </MDBCol>
+          )
+        );
+        this.setState({
+          myTracks: tracks
+        });
       })
       .catch(error => {
         console.error(error);
@@ -397,13 +412,13 @@ export class Trending extends Component {
               <MDBRow className={classes.releaseMenu}>
                 {this.state.myAlbums}
               </MDBRow>
-              <p className={classes.releases}>My Songs</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.mySongs}
-              </MDBRow>
-              <p className={classes.releases}>My Playlists</p>
+              <p className={classes.releases}>My Artists</p>
               <MDBRow className={classes.releaseMenu}>
                 {this.state.myArtists}
+              </MDBRow>
+              <p className={classes.releases}>My Songs</p>
+              <MDBRow className={classes.releaseMenu}>
+                {this.state.myTracks}
               </MDBRow>
             </div>
           ) : (
