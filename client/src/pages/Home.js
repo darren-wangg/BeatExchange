@@ -3,80 +3,89 @@ import PropTypes from "prop-types";
 import {
   withStyles,
   createMuiTheme,
-  MuiThemeProvider
+  MuiThemeProvider,
 } from "@material-ui/core/styles";
 import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 import { Grid, Typography, Tooltip } from "@material-ui/core";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 import Profile from "../components/Profile/Profile";
+import Feed from "../components/Feed/Feed";
 import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
 import Fade from "react-reveal/Fade";
-import axios from "axios";
+import Tour from "reactour";
 
 const TOTAL_RESULTS = 15;
 
-const styles = theme => ({
+const styles = (theme) => ({
   body: {
     fontFamily: "Rubik",
     textAlign: "center",
     width: "100%",
-    height: "100vh"
+    height: "100vh",
   },
   row: {
-    overflow: "hidden"
+    overflow: "hidden",
   },
   search: {
     width: "100%",
     margin: "auto",
-    padding: "25px",
+    padding: "35px",
     backgroundColor: "#FAFAFA",
-    boxShadow: "0 7px 10px -10px #2b2b2c",
-    zIndex: "99999"
+    borderBottom: "1px solid #E0E0E0",
+    boxShadow: "0 10px 15px -15px #2b2b2c",
+    zIndex: "99999",
   },
   form: {
     margin: "auto 10px",
     height: "50px",
-    backgroundColor: "#FAFAFA",
+    backgroundColor: "#EFEFEF",
     width: "85% !important",
-    border: "1px solid #E0E0E0"
+    border: "1px solid #E0E0E0",
   },
   searchBtn: {
     background: "#1D87F0",
     color: "white",
     padding: "10px 20px 10px 20px",
     border: "none",
-    borderRadius: "5px",
-    [theme.breakpoints.down("md")]: {
-      padding: "7px 15px 7px 15px"
-    }
-  },
-  wall: {
-    height: "100vh"
+    borderRadius: "5px"
   },
   searchImg: {
     width: "125px",
     height: "auto",
     margin: "20px 0px 5px 0px",
     cursor: "pointer",
+    borderRadius: "3px",
     boxShadow: "0 8px 6px -6px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.03)"
+      transform: "scale(1.03)",
     },
     [theme.breakpoints.down("md")]: {
-      width: "75px"
-    }
+      width: "75px",
+    },
+  },
+  close: {
+    width: "25px",
+    height: "auto",
+    cursor: "pointer",
+    position: "absolute",
+    margin: "5px",
+    zIndex: "99999",
   },
   searchResults: {
     width: "100%",
     margin: "auto",
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#EFEFEF",
     borderBottomLeftRadius: "5px",
     borderBottomRightRadius: "5px",
     display: "block",
     overflowX: "auto",
     whiteSpace: "nowrap",
-    zIndex: "-1"
+    zIndex: "99999",
+    position: "absolute",
+    borderBottom: "1px solid #E0E0E0",
+    boxShadow: "0 25px 15px -15px #2B2B2C",
   },
   searchCol: {
     width: "225px",
@@ -86,22 +95,22 @@ const styles = theme => ({
     display: "inline-block",
     float: "none",
     [theme.breakpoints.down("md")]: {
-      width: "175px"
-    }
-  }
+      width: "175px",
+    },
+  },
 });
 
 const darkTheme = createMuiTheme({
   palette: {
-    type: "dark"
-  }
+    type: "dark",
+  },
 });
 
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
     primary: { main: "#fff" },
-    secondary: { main: "#fafafa" }
+    secondary: { main: "#fafafa" },
   },
   typography: {
     fontFamily: `"Rubik", "Helvetica", sans-serif`,
@@ -112,9 +121,9 @@ const lightTheme = createMuiTheme({
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      fontSize: "14px"
-    }
-  }
+      fontSize: "14px",
+    },
+  },
 });
 
 export class Home extends Component {
@@ -128,30 +137,23 @@ export class Home extends Component {
         username: null,
         country: null,
         followers: null,
-        type: null
+        type: null,
       },
       song: "",
       data: null,
-      search: [],
-      chosen: null
+      search: null,
+      chosen: null,
     };
   }
 
   componentDidMount() {
-    this.fetchPosts();
     this.fetchUser();
-  }
-
-  fetchPosts() {
-    axios.get("/api/posts").then(res => {
-      console.log("MONGO DB DATA: " + JSON.stringify(res, null, 2));
-    });
   }
 
   fetchUser() {
     this.props.spotifyApi
       .getMe()
-      .then(data => {
+      .then((data) => {
         this.setState({
           user: {
             id: data.id,
@@ -160,54 +162,58 @@ export class Home extends Component {
             username: data.display_name,
             country: data.country,
             followers: data.followers.total,
-            type: data.product
-          }
+            type: data.product,
+          },
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
+  reset() {
     this.setState({
+      song: "",
+      data: null,
       search: [],
-      chosen: null
+      chosen: null,
     });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.reset();
     if (this.state.song.length > 0) {
       this.props.spotifyApi
         .searchTracks(this.state.song, { limit: TOTAL_RESULTS })
-        .then(data => {
+        .then((data) => {
           this.setState({
-            data: data
+            data: data,
           });
           this.createSongs();
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     }
     // reset to default
     else {
-      this.setState({
-        search: [],
-        chosen: null
-      });
+      this.reset();
     }
   };
 
-  handleInputChange = e => {
+  handleInputChange = (e) => {
     e.preventDefault();
     this.setState({
-      song: e.target.value.trim()
+      song: e.target.value.trim(),
     });
   };
 
-  setSearchResult = song => {
+  setSearchResult = (song) => {
     this.setState({
+      song: "",
       chosen: song,
-      search: []
+      search: [],
     });
   };
 
@@ -215,7 +221,7 @@ export class Home extends Component {
     const { classes } = this.props;
     const cols = [];
     if (this.state.data) {
-      this.state.data.tracks.items.forEach(song =>
+      this.state.data.tracks.items.forEach((song) =>
         cols.push(
           <MDBCol
             className={classes.searchCol}
@@ -238,70 +244,74 @@ export class Home extends Component {
       );
     }
     this.setState({
-      search: cols
+      search: cols,
     });
   };
 
   render() {
     const { classes } = this.props;
     return (
-      <Fade effect="fadeInUp">
+      <Fade>
         <MuiThemeProvider theme={lightTheme}>
           <div className="row">
             <div
-              className="col-xs-0 col-sm-0 col-md-3 col-lg-2"
+              className="col-xs-0 col-sm-0 col-md-0 col-lg-2"
               style={{ padding: "0px" }}
             >
               <Profile user={this.state.user} />
             </div>
 
             <div
-              className="col-xs-12 col-sm-12 col-md-6 col-lg-8"
+              className="col-xs-12 col-sm-12 col-md-12 col-lg-8"
               style={{ padding: "0px" }}
             >
-              <div className={classes.wall}>
-                <Grid
-                  container
-                  direction="row"
-                  spacing={2}
-                  justify="center"
-                  alignItems="center"
-                  className={classes.search}
-                >
-                  <Grid item xs={0} md={0}>
-                    <MDBIcon icon="search" />
-                  </Grid>
-                  <Grid item xs={10} md={10}>
-                    <MDBFormInline
-                      className="md-form"
-                      onSubmit={this.handleSubmit}
-                    >
-                      <input
-                        className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
-                        type="text"
-                        placeholder="What do you want to share with the world?"
-                        aria-label="Search"
-                        onChange={this.handleInputChange}
-                      />
-                    </MDBFormInline>
-                  </Grid>
-                  <Grid item xs={0} md={0}>
-                    {!this.state.chosen ? (
-                      <button className={classes.searchBtn}>Search</button>
-                    ) : (
-                      <br />
-                    )}
-                  </Grid>
+              <Grid
+                container
+                direction="row"
+                spacing={0}
+                justify="center"
+                alignItems="center"
+                className={classes.search}
+              >
+                <Grid item xs={false} md={false}>
+                  <MDBIcon icon="search" />
                 </Grid>
+                <Grid item xs={10} md={10}>
+                  <MDBFormInline
+                    className="md-form"
+                    onSubmit={this.handleSubmit}
+                  >
+                    <input
+                      className={`form-control form-control-sm ml-3 w-75 ${classes.form}`}
+                      type="text"
+                      placeholder="What do you want to share with the world?"
+                      aria-label="Search"
+                      onChange={this.handleInputChange}
+                    />
+                  </MDBFormInline>
+                </Grid>
+                <Grid item xs={false} md={false}>
+                  <button className={classes.searchBtn}>Search</button>
+                </Grid>
+              </Grid>
+
+              {this.state.search && (
                 <MDBRow className={classes.searchResults}>
+                  <CancelIcon
+                    className={classes.close}
+                    onClick={() => this.reset()}
+                  />
                   {this.state.search}
                 </MDBRow>
-                <PostBox user={this.state.user} chosen={this.state.chosen} />
-              </div>
+              )}
+
+              <PostBox user={this.state.user} chosen={this.state.chosen} />
+
+              <Feed user={this.state.user} />
             </div>
 
             <div
-              className="col-xs-0 col-sm-0 col-md-3 col-lg-2"
+              className="col-xs-0 col-sm-0 col-md-0 col-lg-2"
               style={{ padding: "0px" }}
             >
               <Trending spotifyApi={this.props.spotifyApi} />
@@ -315,7 +325,7 @@ export class Home extends Component {
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
-  spotifyApi: PropTypes.object.isRequired
+  spotifyApi: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Home);

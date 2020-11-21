@@ -10,7 +10,7 @@ const styles = theme => ({
     backgroundColor: "#FAFAFA",
     textAlign: "center",
     height: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       display: "none"
     }
   },
@@ -60,9 +60,10 @@ export class Profile extends Component {
               />
             </a>
             <h3 className={classes.name}>{user.username}</h3>
-            <p>Country: {user.country}</p>
             <p>Followers: {user.followers}</p>
+            <p>Country: {user.country}</p>
             <p>Type: {user.type}</p>
+            <p>ID: {user.id}</p>
             <a href={user.link} target="_blank">
               <button className={classes.profileBtn}>Full Profile</button>
             </a>

@@ -17,11 +17,11 @@ const PostSchema = new Schema({
   },
   tags: {
     type: Array,
-    required: false
+    default: []
   },
   likes: {
-    type: Number,
-    default: 0
+    type: Array,
+    default: []
   },
   text: {
     type: String,
@@ -32,8 +32,8 @@ const PostSchema = new Schema({
     default: Date.now
   },
   comments: {
-    type: Object,
-    required: false
+    type: Array,
+    default: []
   }
 });
 

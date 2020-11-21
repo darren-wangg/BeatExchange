@@ -36,7 +36,7 @@ const styles = theme => ({
     backgroundColor: "#FAFAFA",
     textAlign: "center",
     height: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       display: "none"
     }
   },
