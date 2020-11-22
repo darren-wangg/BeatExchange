@@ -116,13 +116,13 @@ export class PostBox extends Component {
         id: null,
         user: null,
         post: null,
-        text: null,
+        text: null
       },
       response: {
         open: false,
         severity: null,
-        msg: null,
-      },
+        msg: null
+      }
     };
   }
 
@@ -284,6 +284,10 @@ export class PostBox extends Component {
                       />
                     </Grid>
                     <Grid item xs={9} md={9}>
+                      <a
+                        href={chosen.external_urls.spotify}
+                        target="_blank"
+                      >
                       <Grid
                         container
                         direction="row"
@@ -293,15 +297,10 @@ export class PostBox extends Component {
                         className={classes.songContainer}
                       >
                         <Grid item xs={2} md={2}>
-                          <a
-                            href={chosen.external_urls.spotify}
-                            target="_blank"
-                          >
-                            <img
-                              className={classes.songImg}
-                              src={chosen.album.images[0].url}
-                            />
-                          </a>
+                          <img
+                            className={classes.songImg}
+                            src={chosen.album.images[0].url}
+                          />
                         </Grid>
                         <Grid item xs={4} md={4}>
                           <Typography variant="subtitle1" color="primary">
@@ -330,6 +329,7 @@ export class PostBox extends Component {
                           )}
                         </Grid>
                       </Grid>
+                      </a>
                     </Grid>
                     <Grid item xs={1} md={1}>
                       <Typography variant="body1" color="textPrimary">
@@ -351,8 +351,12 @@ export class PostBox extends Component {
                   name="message"
                   value={this.state.message}
                   onChange={this.handleInputChange}
+                  required
                 ></textarea>
-                <button className={classes.postBtn}>Post</button>
+                <button
+                  className={classes.postBtn}
+                  style={{ pointerEvents: this.state.message ? "" : "none", opacity: this.state.message ? "1" : "0.7" }}
+                >Post</button>
               </form>
             </MuiThemeProvider>
           </div>

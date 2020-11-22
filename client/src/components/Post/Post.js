@@ -37,7 +37,7 @@ const styles = (theme) => ({
     height: "auto"
   },
   songContainer: {
-    width: "90%",
+    width: "95%",
     margin: "auto",
     marginBottom: "15px",
     padding: "15px",
@@ -46,7 +46,7 @@ const styles = (theme) => ({
     boxShadow: "0 10px 7px -7px #2B2B2C",
     textAlign: "left",
     [theme.breakpoints.down("md")]: {
-      width: "70%",
+      width: "75%"
     },
   },
   songImg: {

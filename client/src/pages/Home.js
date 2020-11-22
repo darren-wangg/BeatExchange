@@ -98,6 +98,10 @@ const styles = (theme) => ({
       width: "175px",
     },
   },
+  disabled: {
+    opacity: "0.7",
+    pointerEvents: "none"
+  }
 });
 
 const darkTheme = createMuiTheme({
@@ -123,7 +127,7 @@ const lightTheme = createMuiTheme({
       textOverflow: "ellipsis",
       fontSize: "14px",
     },
-  },
+  }
 });
 
 export class Home extends Component {
@@ -137,12 +141,12 @@ export class Home extends Component {
         username: null,
         country: null,
         followers: null,
-        type: null,
+        type: null
       },
       song: "",
       data: null,
       search: null,
-      chosen: null,
+      chosen: null
     };
   }
 
@@ -291,7 +295,10 @@ export class Home extends Component {
                   </MDBFormInline>
                 </Grid>
                 <Grid item xs={false} md={false}>
-                  <button className={classes.searchBtn}>Search</button>
+                  <button
+                    className={classes.searchBtn}
+                    style={{ pointerEvents: this.state.song ? "" : "none", opacity: this.state.song ? "1" : "0.7" }}
+                  >Search</button>
                 </Grid>
               </Grid>
 

@@ -7,16 +7,46 @@
       href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
     />
     <style type="text/css">
+      .body {
+        background-color: #2b2b2c;
+        text-align: center;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       #login,
       #loggedin {
         display: none;
+        text-align: center;
+        margin: auto;
       }
-
       .text-overflow {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 500px;
+      }
+      img {
+        width: 100%;
+        padding: 50px 0px;
+      }
+      .btn {
+        margin: auto;
+        margin-bottom: 25px;
+        display: flex;
+        width: 150px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+      }
+      .btn:hover {
+        opacity: 0.7;
+      }
+      .signup {
+        color: #EFEFEF;
+        text-decoration: underline;
       }
     </style>
   </head>
@@ -25,12 +55,29 @@
     <div class="container">
       <div id="login">
         <h3>Share and discover music with the world</h3>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <img src="advtime.gif" alt="gif" />
+            </div>
+            <div class="col-md-4">
+              <img src="regshow.gif" alt="gif" />
+            </div>
+            <div class="col-md-4">
+              <img src="sponge.gif" alt="gif" />
+            </div>
+          </div>
+        </div>
         <a
           href="/login"
           class="btn btn-primary"
           style="background-color: #17A0FB"
           >Log In With Spotify</a
         >
+        <a
+          href="https://www.spotify.com/us/signup/"
+          class="signup"
+        >Sign Up For Spotify</a>
       </div>
       <div id="loggedin">
         <div id="user-profile"></div>

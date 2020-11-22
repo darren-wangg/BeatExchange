@@ -341,6 +341,17 @@ export class Trending extends Component {
       });
   }
 
+  getMyRecommendations() {
+    // seed_artists (use users top artists ids)
+    // seed_genres (*?)
+    // seed_tracks (use users top tracks ids)
+    // this.props.spotifyApi
+    // .getRecommendations()
+    // .then(data => {
+    //   console.log("RECOMMENDATIONS: " + JSON.stringify(data, null, 2));
+    // })
+  }
+
   getNews() {
     const { classes } = this.props;
     const cols = [];

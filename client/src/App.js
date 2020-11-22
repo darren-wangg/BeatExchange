@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Navbar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
@@ -40,7 +40,7 @@ class App extends Component {
       <Router>
         <Switch>
           <React.Fragment>
-            <Navbar></Navbar>
+            <NavBar></NavBar>
             <Route exact path="/" component={Landing} />
             <Route
               path="/home"
