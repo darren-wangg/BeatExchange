@@ -49,7 +49,7 @@ const styles = (theme) => ({
     color: "white",
     padding: "10px 20px 10px 20px",
     border: "none",
-    borderRadius: "5px"
+    borderRadius: "5px",
   },
   searchImg: {
     width: "125px",
@@ -100,8 +100,12 @@ const styles = (theme) => ({
   },
   disabled: {
     opacity: "0.7",
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
+  tooltip: {
+    fontSize: "0.8rem",
+    margin: "10px auto",
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -127,7 +131,7 @@ const lightTheme = createMuiTheme({
       textOverflow: "ellipsis",
       fontSize: "14px",
     },
-  }
+  },
 });
 
 export class Home extends Component {
@@ -141,12 +145,12 @@ export class Home extends Component {
         username: null,
         country: null,
         followers: null,
-        type: null
+        type: null,
       },
       song: "",
       data: null,
       search: null,
-      chosen: null
+      chosen: null,
     };
   }
 
@@ -297,17 +301,27 @@ export class Home extends Component {
                 <Grid item xs={false} md={false}>
                   <button
                     className={classes.searchBtn}
-                    style={{ pointerEvents: this.state.song ? "" : "none", opacity: this.state.song ? "1" : "0.7" }}
-                  >Search</button>
+                    style={{
+                      pointerEvents: this.state.song ? "" : "none",
+                      opacity: this.state.song ? "1" : "0.7",
+                    }}
+                  >
+                    Search
+                  </button>
                 </Grid>
               </Grid>
 
               {this.state.search && (
                 <MDBRow className={classes.searchResults}>
-                  <CancelIcon
-                    className={classes.close}
-                    onClick={() => this.reset()}
-                  />
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>Close search</p>}
+                  >
+                    <CancelIcon
+                      className={classes.close}
+                      onClick={() => this.reset()}
+                    />
+                  </Tooltip>
                   {this.state.search}
                 </MDBRow>
               )}

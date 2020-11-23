@@ -6,7 +6,7 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 import { MDBCol, MDBRow } from "mdbreact";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Tooltip } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -20,21 +20,20 @@ const styles = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     borderBottom: "2px solid #E0E0E0",
-    textAlign: "center"
+    textAlign: "center",
   },
-  user: {
-  },
+  user: {},
   userImg: {
     width: "100px",
     height: "auto",
     margin: "auto",
-    borderRadius: "3px"
+    borderRadius: "3px",
   },
   like: {
     cursor: "pointer",
     marginTop: "10px",
     width: "35px",
-    height: "auto"
+    height: "auto",
   },
   songContainer: {
     width: "95%",
@@ -46,7 +45,7 @@ const styles = (theme) => ({
     boxShadow: "0 10px 7px -7px #2B2B2C",
     textAlign: "left",
     [theme.breakpoints.down("md")]: {
-      width: "75%"
+      width: "75%",
     },
   },
   songImg: {
@@ -61,17 +60,21 @@ const styles = (theme) => ({
   },
   textContainer: {
     margin: "auto",
-    marginTop: "25px"
+    marginTop: "25px",
   },
   tags: {
     color: "#17A0FB",
     display: "inline",
     marginRight: "8px",
-    textDecoration: "underline"
+    textDecoration: "underline",
   },
   comments: {
-    color: "#17A0FB"
-  }
+    color: "#17A0FB",
+  },
+  tooltip: {
+    fontSize: "0.8rem",
+    margin: "10px auto",
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -98,21 +101,17 @@ const lightTheme = createMuiTheme({
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      fontSize: "16px"
+      fontSize: "16px",
     },
-  }
+  },
 });
 
 const Post = (props) => {
   const { classes, data, user } = props;
 
-  function deleteLike() {
-    ;
-  }
+  function deleteLike() {}
 
-  function submitLike() {
-    ;
-  }
+  function submitLike() {}
 
   function millisToMinutesAndSeconds(millis) {
     const minutes = Math.floor(millis / 60000);
@@ -153,14 +152,13 @@ const Post = (props) => {
       <ul>
         {tags.map((tag, index) => {
           return (
-            <li
-              key={index}
-              className={classes.tags}
-            >#{tag}</li>
-          )
+            <li key={index} className={classes.tags}>
+              #{tag}
+            </li>
+          );
         })}
       </ul>
-    )
+    );
   }
 
   return (
@@ -187,16 +185,26 @@ const Post = (props) => {
               {data.user.name}
             </Typography>
             {data.likes.includes(user.id) ? (
-              <FavoriteIcon
-                className={classes.like}
-                style={{ color: "#1EDD88" }}
-                onClick={() => deleteLike()}
-              />
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>Unlike this post</p>}
+              >
+                <FavoriteIcon
+                  className={classes.like}
+                  style={{ color: "#1EDD88" }}
+                  onClick={() => deleteLike()}
+                />
+              </Tooltip>
             ) : (
-              <FavoriteBorderIcon
-                className={classes.like}
-                onClick={() => submitLike()}
-              />
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>Like this post</p>}
+              >
+                <FavoriteBorderIcon
+                  className={classes.like}
+                  onClick={() => submitLike()}
+                />
+              </Tooltip>
             )}
             <Typography variany="body1" color="textPrimary">
               {data.likes.length} Likes
@@ -216,36 +224,48 @@ const Post = (props) => {
               <Grid item xs={10} md={10}>
                 {/* song data */}
                 <a href={data.post.url} target="_blank">
-                <Grid
-                  container
-                  direction="row"
-                  spacing={8}
-                  justify="center"
-                  alignItems="center"
-                  className={classes.songContainer}
-                >
-                  <Grid item xs={2} md={2}>
-                    <img className={classes.songImg} src={data.post.image} />
-                  </Grid>
-                  <Grid item xs={4} md={4}>
-                    <Typography variant="subtitle1" color="primary">
-                      {data.post.name}
-                    </Typography>
-                    <Typography variant="body1" color="secondary">
-                      {data.post.artist}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} md={4}>
-                    <Typography variant="subtitle1" color="primary">
-                      {data.post.album}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} md={2}>
-                    <Typography variant="subtitle1" color="secondary">
-                      {millisToMinutesAndSeconds(data.post.duration)}
-                    </Typography>
-                  </Grid>
-                </Grid>
+                  <Tooltip
+                    placement="bottom"
+                    title={
+                      <p className={classes.tooltip}>
+                        Click for full song info
+                      </p>
+                    }
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      spacing={8}
+                      justify="center"
+                      alignItems="center"
+                      className={classes.songContainer}
+                    >
+                      <Grid item xs={2} md={2}>
+                        <img
+                          className={classes.songImg}
+                          src={data.post.image}
+                        />
+                      </Grid>
+                      <Grid item xs={4} md={4}>
+                        <Typography variant="subtitle1" color="primary">
+                          {data.post.name}
+                        </Typography>
+                        <Typography variant="body1" color="secondary">
+                          {data.post.artist}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4} md={4}>
+                        <Typography variant="subtitle1" color="primary">
+                          {data.post.album}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2} md={2}>
+                        <Typography variant="subtitle1" color="secondary">
+                          {millisToMinutesAndSeconds(data.post.duration)}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Tooltip>
                 </a>
               </Grid>
               <Grid item xs={2} md={2}>
@@ -275,11 +295,17 @@ const Post = (props) => {
                   {data.text}
                 </Typography>
               </Grid>
-              <Grid item xs={3} md={3}>
-                {/* tags, comments */}
-                <Typography variant="body1">{displayTags(data.tags)}</Typography>
-                {/* <Typography variant="body1">{<Comments comments={data.comments} />}</Typography> */}
-              </Grid>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>Related tags</p>}
+              >
+                <Grid item xs={3} md={3}>
+                  {/* tags, comments */}
+                  <Typography variant="body1">
+                    {displayTags(data.tags)}
+                  </Typography>
+                </Grid>
+              </Tooltip>
             </Grid>
           </MDBRow>
         </Grid>
@@ -291,7 +317,7 @@ const Post = (props) => {
 Post.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Post);

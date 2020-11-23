@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { MDBCol } from "mdbreact";
+import { Tooltip } from "@material-ui/core";
 
 const styles = theme => ({
   container: {
@@ -10,6 +11,7 @@ const styles = theme => ({
     backgroundColor: "#FAFAFA",
     textAlign: "center",
     height: "100%",
+    margin: "auto",
     [theme.breakpoints.down("md")]: {
       display: "none"
     }
@@ -35,6 +37,10 @@ const styles = theme => ({
     "&:hover": {
       backgroundColor: "#1bcb7f"
     }
+  },
+  tooltip: {
+    fontSize: "0.8rem",
+    margin: "10px auto"
   }
 });
 
@@ -47,9 +53,14 @@ export class Profile extends Component {
     const { classes, user } = this.props;
     return (
       <MDBCol className={classes.container}>
-        <h2>
-          <u>Profile</u>
-        </h2>
+        <Tooltip
+          placement="bottom"
+          title={<p className={classes.tooltip}>Your Spotify account</p>}
+        >
+          <h2>
+            <u>Profile</u>
+          </h2>
+        </Tooltip>
         {user.username ? (
           <div>
             <a href={user.link} target="_blank">
@@ -64,12 +75,17 @@ export class Profile extends Component {
             <p>Country: {user.country}</p>
             <p>Type: {user.type}</p>
             <p>ID: {user.id}</p>
-            <a href={user.link} target="_blank">
-              <button className={classes.profileBtn}>Full Profile</button>
-            </a>
+            <Tooltip
+              placement="bottom"
+              title={<p className={classes.tooltip}>See your full Spotify account information</p>}
+            >
+              <a href={user.link} target="_blank">
+                <button className={classes.profileBtn}>Full Profile</button>
+              </a>
+            </Tooltip>
           </div>
         ) : (
-          <p>Please sign in...</p>
+          <h3>Please sign in...</h3>
         )}
       </MDBCol>
     );

@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  withStyles,
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core/styles";
-import { Typography, Tooltip } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import { MDBCol, MDBRow } from "mdbreact";
 import { CircularProgress } from "@material-ui/core";
 import Post from "../Post/Post";
@@ -22,7 +17,7 @@ const styles = (theme) => ({
     top: "10%",
     display: "flex",
     justifyContent: "center",
-    aligntItems: "center"
+    aligntItems: "center",
   },
   row: {
     display: "flex",
@@ -34,8 +29,8 @@ const styles = (theme) => ({
   },
   wall: {
     width: "100%",
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 });
 
 export class Feed extends Component {
@@ -50,6 +45,10 @@ export class Feed extends Component {
   }
 
   componentDidMount() {
+    this.fetchPosts();
+  }
+
+  componentDidUpdate() {
     this.fetchPosts();
   }
 
@@ -79,8 +78,6 @@ export class Feed extends Component {
       posts: items,
     });
   };
-
-  test() {}
 
   render() {
     const { classes } = this.props;
@@ -112,17 +109,13 @@ export class Feed extends Component {
       );
     }
 
-    return (
-        <MDBCol className={classes.wall}>
-            {this.state.posts}
-        </MDBCol>
-    );
+    return <MDBCol className={classes.wall}>{this.state.posts}</MDBCol>;
   }
 }
 
 Feed.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Feed);

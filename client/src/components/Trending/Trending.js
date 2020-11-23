@@ -5,7 +5,7 @@ import { MDBRow, MDBCol } from "mdbreact";
 import { Tabs, Tab } from "react-bootstrap";
 import axios from "axios";
 import Fade from "react-reveal/Fade";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Tooltip } from "@material-ui/core";
 
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
@@ -100,6 +100,9 @@ const styles = theme => ({
     "&:hover": {
       transform: "scale(1.05)"
     }
+  },
+  tooltip: {
+    fontSize: "0.8rem"
   }
 });
 
@@ -419,30 +422,50 @@ export class Trending extends Component {
           </Tabs>
           {this.state.key === "me" ? (
             <div className={classes.me}>
-              <p className={classes.releases}>New Albums</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.myAlbums}
-              </MDBRow>
-              <p className={classes.releases}>My Artists</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.myArtists}
-              </MDBRow>
-              <p className={classes.releases}>My Songs</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.myTracks}
-              </MDBRow>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>New album releases tailored for you</p>}
+              >
+                <p className={classes.releases}>New Albums</p>
+              </Tooltip>
+              <MDBRow className={classes.releaseMenu}>{this.state.myAlbums}</MDBRow>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>Your all-time top artists on Spotify</p>}
+              >
+                <p className={classes.releases}>My Artists</p>
+              </Tooltip>
+              <MDBRow className={classes.releaseMenu}>{this.state.myArtists}</MDBRow>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>Your all-time top songs on Spotify</p>}
+              >
+                <p className={classes.releases}>My Songs</p>
+              </Tooltip>
+              <MDBRow className={classes.releaseMenu}>{this.state.myTracks}</MDBRow>
             </div>
           ) : (
             <div className={classes.world}>
-              <p className={classes.releases}>Top Artists</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.artists}
-              </MDBRow>
-              <p className={classes.releases}>Top Songs</p>
-              <MDBRow className={classes.releaseMenu}>
-                {this.state.songs}
-              </MDBRow>
-              <p className={classes.releases}>News</p>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>World top artists</p>}
+              >
+                <p className={classes.releases}>Top Artists</p>
+              </Tooltip>
+              <MDBRow className={classes.releaseMenu}>{this.state.artists}</MDBRow>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>World top songs</p>}
+              >
+                <p className={classes.releases}>Top Songs</p>
+              </Tooltip>
+              <MDBRow className={classes.releaseMenu}>{this.state.songs}</MDBRow>
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>World music news</p>}
+              >
+                <p className={classes.releases}>News</p>
+              </Tooltip>
               <MDBRow className={classes.releaseMenu}>{this.state.news}</MDBRow>
             </div>
           )}
