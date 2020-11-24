@@ -8,13 +8,13 @@ import {
 import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 import { Grid, Typography, Tooltip } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
+import Fade from "react-reveal/Fade";
+import Tour from "reactour";
 
 import Profile from "../components/Profile/Profile";
 import Feed from "../components/Feed/Feed";
 import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
-import Fade from "react-reveal/Fade";
-import Tour from "reactour";
 
 const TOTAL_RESULTS = 15;
 
@@ -57,7 +57,7 @@ const styles = (theme) => ({
     margin: "20px 0px 5px 0px",
     cursor: "pointer",
     borderRadius: "3px",
-    boxShadow: "0 8px 6px -6px #2B2B2C",
+    boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
       transform: "scale(1.03)",
     },
@@ -69,7 +69,7 @@ const styles = (theme) => ({
     width: "25px",
     height: "auto",
     cursor: "pointer",
-    position: "absolute",
+    position: "fixed",
     margin: "5px",
     zIndex: "99999",
   },
@@ -311,7 +311,7 @@ export class Home extends Component {
                 </Grid>
               </Grid>
 
-              {this.state.search && (
+              {this.state.search && !this.state.chosen && (
                 <MDBRow className={classes.searchResults}>
                   <Tooltip
                     placement="bottom"

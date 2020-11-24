@@ -8,6 +8,7 @@ import {
 import { MDBCol, MDBRow } from "mdbreact";
 import { Grid, Typography, Tooltip } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
@@ -42,7 +43,7 @@ const styles = (theme) => ({
     padding: "15px",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
-    boxShadow: "0 10px 7px -7px #2B2B2C",
+    boxShadow: "0 10px 8px -8px #2B2B2C",
     textAlign: "left",
     [theme.breakpoints.down("md")]: {
       width: "75%",
@@ -74,6 +75,12 @@ const styles = (theme) => ({
   tooltip: {
     fontSize: "0.8rem",
     margin: "10px auto",
+  },
+  more: {
+    width: "30px",
+    height: "auto",
+    cursor: "pointer",
+    color: "#CCCCCC",
   },
 });
 
@@ -223,50 +230,52 @@ const Post = (props) => {
             >
               <Grid item xs={10} md={10}>
                 {/* song data */}
-                <a href={data.post.url} target="_blank">
-                  <Tooltip
-                    placement="bottom"
-                    title={
-                      <p className={classes.tooltip}>
-                        Click for full song info
-                      </p>
-                    }
-                  >
-                    <Grid
-                      container
-                      direction="row"
-                      spacing={8}
-                      justify="center"
-                      alignItems="center"
-                      className={classes.songContainer}
-                    >
-                      <Grid item xs={2} md={2}>
-                        <img
-                          className={classes.songImg}
-                          src={data.post.image}
-                        />
-                      </Grid>
-                      <Grid item xs={4} md={4}>
-                        <Typography variant="subtitle1" color="primary">
-                          {data.post.name}
-                        </Typography>
-                        <Typography variant="body1" color="secondary">
-                          {data.post.artist}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={4} md={4}>
-                        <Typography variant="subtitle1" color="primary">
-                          {data.post.album}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={2} md={2}>
-                        <Typography variant="subtitle1" color="secondary">
-                          {millisToMinutesAndSeconds(data.post.duration)}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Tooltip>
-                </a>
+                <Grid
+                  container
+                  direction="row"
+                  spacing={8}
+                  justify="center"
+                  alignItems="center"
+                  className={classes.songContainer}
+                >
+                  <Grid item xs={2} md={2}>
+                    <a href={data.post.url} target="_blank">
+                      <img className={classes.songImg} src={data.post.image} />
+                    </a>
+                  </Grid>
+                  <Grid item xs={4} md={4}>
+                    <Typography variant="subtitle1" color="primary">
+                      {data.post.name}
+                    </Typography>
+                    <Typography variant="body1" color="secondary">
+                      {data.post.artist}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={3} md={3}>
+                    <Typography variant="subtitle1" color="primary">
+                      {data.post.album}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} md={2}>
+                    <Typography variant="subtitle1" color="secondary">
+                      {millisToMinutesAndSeconds(data.post.duration)}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={1} md={1}>
+                    <a href={data.post.url} target="_blank">
+                      <Tooltip
+                        placement="bottom"
+                        title={
+                          <p className={classes.tooltip}>
+                            Click for full song info
+                          </p>
+                        }
+                      >
+                        <MoreVertIcon className={classes.more} />
+                      </Tooltip>
+                    </a>
+                  </Grid>
+                </Grid>
               </Grid>
               <Grid item xs={2} md={2}>
                 {/* time stamp */}

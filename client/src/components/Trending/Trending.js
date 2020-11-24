@@ -62,6 +62,7 @@ const styles = theme => ({
     borderBottom: "2px solid #E0E0E0"
   },
   releaseCol: {
+    marginTop: "10px",
     width: "250px",
     display: "inline-block",
     float: "none",
@@ -86,9 +87,9 @@ const styles = theme => ({
     width: "175px",
     height: "auto",
     borderRadius: "3px",
-    boxShadow: "0 8px 6px -6px #2B2B2C",
+    boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.05)"
+      transform: "scale(1.08)"
     },
     [theme.breakpoints.down("md")]: {
       width: "125px"
@@ -96,7 +97,7 @@ const styles = theme => ({
   },
   newsImg: {
     borderRadius: "3px",
-    boxShadow: "0 8px 6px -6px #2B2B2C",
+    boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
       transform: "scale(1.05)"
     }

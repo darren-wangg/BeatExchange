@@ -5,7 +5,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { Grid, Typography, Tooltip, Snackbar } from "@material-ui/core";
+import { Grid, Typography, Tooltip, Snackbar, Input, InputLabel, MenuItem, FormControl, Select, Chip } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CancelIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
@@ -58,12 +58,15 @@ const styles = (theme) => ({
   },
   textArea: {
     width: "80%",
-    height: "150px",
+    height: "200px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     margin: "auto",
     borderRadius: "5px",
+    [theme.breakpoints.down("md")]: {
+      height: "150px",
+    }
   },
   postBtn: {
     background: "#1D87F0",
@@ -79,6 +82,22 @@ const styles = (theme) => ({
     fontSize: "0.8rem",
     margin: "10px auto",
   },
+  formControl: {
+    margin: "auto",
+    minWidth: "100px",
+    maxWidth: "250px",
+    position: "absolute",
+    left: "15%",
+    bottom: "15%",
+  },
+  tags: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  tag: {
+    margin: "3px",
+    color: "#1D87F0"
+  }
 });
 
 const darkTheme = createMuiTheme({
@@ -104,15 +123,42 @@ const lightTheme = createMuiTheme({
   },
 });
 
+const tags = [
+  "alt",
+  "ambient",
+  "blues",
+  "classical",
+  "comedy",
+  "country",
+  "dance",
+  "EDM",
+  "disco",
+  "folk",
+  "hiphop",
+  "house",
+  "indie",
+  "jazz",
+  "metal",
+  "piano",
+  "pop",
+  "r&b",
+  "rap",
+  "reggae",
+  "rock",
+  "soul",
+  "soundtrack",
+  "trap",
+  "world",
+];
+
 export class PostBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
       active: false,
       message: "",
+      tags: [],
       currTime: new Date().toLocaleString([], {
-        month: "2-digit",
-        day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
       }),
@@ -122,7 +168,7 @@ export class PostBox extends Component {
         post: null,
         text: null,
       },
-      response: {
+      snackbar: {
         open: false,
         severity: null,
         msg: null,
@@ -141,7 +187,7 @@ export class PostBox extends Component {
   handleClose = (e, reason) => {
     if (reason === "clickaway") return;
     this.setState({
-      response: {
+      snackbar: {
         open: false,
       },
     });
@@ -160,6 +206,13 @@ export class PostBox extends Component {
     });
   };
 
+  handleTagChange = (e) => {
+    e.preventDefault();
+    this.setState({
+      tags: e.target.value
+    })
+  }
+
   millisToMinutesAndSeconds(millis) {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -170,7 +223,7 @@ export class PostBox extends Component {
     e.preventDefault();
     if (this.state.message.length < 2) {
       this.setState({
-        response: {
+        snackbar: {
           open: true,
           severity: "error",
           msg: "Message is too short. Please try again.",
@@ -199,6 +252,7 @@ export class PostBox extends Component {
         url: this.props.chosen.external_urls.spotify,
       },
       text: this.state.message,
+      tags: this.state.tags
     };
     this.setState(
       {
@@ -217,9 +271,9 @@ export class PostBox extends Component {
       data: this.state.data,
     })
       .then((res) => {
-        console.log("SNACKBAR: ", this.state.response);
+        console.log("SNACKBAR: ", this.state.snackbar);
         this.setState({
-          response: {
+          snackbar: {
             open: true,
             severity: res.status === 200 ? "success" : "error",
             msg:
@@ -230,10 +284,10 @@ export class PostBox extends Component {
         });
       })
       .catch((error) => {
-        console.log("SNACKBAR: ", this.state.response);
+        console.log("SNACKBAR: ", this.state.snackbar);
         console.error(error);
         this.setState({
-          response: {
+          snackbar: {
             open: true,
             severity: "error",
             msg: "There was an error submitting your post. Please try again.",
@@ -257,17 +311,17 @@ export class PostBox extends Component {
       return (
         <React.Fragment>
           <Snackbar
-            open={this.state.response.open}
+            open={this.state.snackbar.open}
             autoHideDuration={6000}
             onClose={this.handleClose}
-            message={this.state.response.msg}
+            message={this.state.snackbar.msg}
           >
             <Alert
               onClose={this.handleClose}
-              severity={this.state.response.severity}
+              severity={this.state.snackbar.severity}
               variant="filled"
             >
-              {this.state.response.msg}
+              {this.state.snackbar.msg}
             </Alert>
           </Snackbar>
           <div className={classes.container}>
@@ -359,6 +413,39 @@ export class PostBox extends Component {
                   onChange={this.handleInputChange}
                   required
                 ></textarea>
+
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="tags">Tags</InputLabel>
+                  <Select
+                    labelId="tags"
+                    id="post tags"
+                    multiple
+                    value={this.state.tags}
+                    onChange={this.handleTagChange}
+                    input={<Input id="post tags" />}
+                    renderValue={(selected) => (
+                      <div className={classes.tags}>
+                        {selected.map((value) => (
+                          <Chip
+                            key={value}
+                            label={value}
+                            className={classes.tag}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  >
+                    {tags.map((tag) => (
+                      <MenuItem
+                        key={tag}
+                        value={tag}
+                      >
+                        {tag}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <button
                   className={classes.postBtn}
                   style={{

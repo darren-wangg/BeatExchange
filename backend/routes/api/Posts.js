@@ -21,7 +21,8 @@ router.post("/", (req, res) => {
     id: req.body.id,
     user: req.body.user,
     post: req.body.post,
-    text: req.body.text
+    text: req.body.text,
+    tags: req.body.tags
   });
 
   newPost.save().then(post => res.json(post));
