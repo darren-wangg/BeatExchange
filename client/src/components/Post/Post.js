@@ -11,6 +11,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import axios from "axios";
 
 const styles = (theme) => ({
   container: {
@@ -22,6 +23,14 @@ const styles = (theme) => ({
     alignItems: "center",
     borderBottom: "2px solid #E0E0E0",
     textAlign: "center",
+  },
+  close: {
+    position: "absolute",
+    width: "20px",
+    height: "auto",
+    cursor: "pointer",
+    margin: "5px",
+    color: "#2B2B2C"
   },
   user: {},
   userImg: {
@@ -116,6 +125,14 @@ const lightTheme = createMuiTheme({
 const Post = (props) => {
   const { classes, data, user } = props;
 
+  function deletePost() {
+    // axios({
+    //   url: "/api/posts",
+    //   method: "DELETE",
+    //   data: data.id
+    // })
+  }
+
   function deleteLike() {}
 
   function submitLike() {}
@@ -170,6 +187,14 @@ const Post = (props) => {
 
   return (
     <MuiThemeProvider theme={lightTheme}>
+      {user.id === data.user.id && (
+        <Tooltip
+          placement="bottom"
+          title={<p className={classes.tooltip}>Delete your post</p>}
+        >
+          <CancelIcon className={classes.close} onClick={() => deletePost()} />
+        </Tooltip>
+      )}
       <Grid
         container
         direction="row"

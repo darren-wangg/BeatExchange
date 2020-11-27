@@ -73,7 +73,7 @@ const styles = theme => ({
   newsCol: {
     display: "inline-block",
     float: "none",
-    bottom: "100px",
+    bottom: "50px",
     height: "400px",
     width: "300px",
     wordBreak: "break-all",
@@ -83,16 +83,17 @@ const styles = theme => ({
       width: "250px"
     }
   },
-  searchImg: {
+  trendImg: {
     width: "175px",
-    height: "auto",
+    height: "175px",
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
       transform: "scale(1.08)"
     },
     [theme.breakpoints.down("md")]: {
-      width: "125px"
+      width: "125px",
+      height: "125px"
     }
   },
   newsImg: {
@@ -142,7 +143,7 @@ export class Trending extends Component {
     cols.push(
       <MDBCol className={classes.releaseCol} key={key++}>
         <img
-          className={classes.searchImg}
+          className={classes.trendImg}
           src={loading}
           alt="Please log in..."
         />
@@ -169,7 +170,7 @@ export class Trending extends Component {
             <MDBCol className={classes.releaseCol} key={album.id}>
               <a href={album.external_urls.spotify} target="_blank">
                 <img
-                  className={classes.searchImg}
+                  className={classes.trendImg}
                   src={album.images[0].url}
                   alt="Album Art"
                 />
@@ -210,7 +211,7 @@ export class Trending extends Component {
                   target="_blank"
                 >
                   <img
-                    className={classes.searchImg}
+                    className={classes.trendImg}
                     src={data.artists.items[0].images[0].url} // LastFM API image url's not setup... look for new API in future
                     alt="Album Art"
                   />
@@ -250,7 +251,7 @@ export class Trending extends Component {
                     target="_blank"
                   >
                     <img
-                      className={classes.searchImg}
+                      className={classes.trendImg}
                       src={data.tracks.items[0].album.images[0].url}
                       alt="Album Art"
                     />
@@ -287,7 +288,7 @@ export class Trending extends Component {
             <MDBCol className={classes.releaseCol} key={artist.id}>
               <a href={artist.external_urls.spotify} target="_blank">
                 <img
-                  className={classes.searchImg}
+                  className={classes.trendImg}
                   src={artist.images[0].url}
                   alt="Artist Art"
                 />
@@ -319,7 +320,7 @@ export class Trending extends Component {
             <MDBCol className={classes.releaseCol} key={track.id}>
               <a href={track.external_urls.spotify} target="_blank">
                 <img
-                  className={classes.searchImg}
+                  className={classes.trendImg}
                   src={track.album.images[0].url}
                   alt="Track Art"
                 />

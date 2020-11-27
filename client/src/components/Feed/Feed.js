@@ -17,7 +17,7 @@ const styles = (theme) => ({
     top: "10%",
     display: "flex",
     justifyContent: "center",
-    aligntItems: "center",
+    alignItems: "center",
   },
   row: {
     display: "flex",
@@ -30,6 +30,8 @@ const styles = (theme) => ({
   wall: {
     width: "100%",
     margin: "auto",
+    height: "100vh",
+    overflowY: "scroll"
   },
 });
 
@@ -40,15 +42,10 @@ export class Feed extends Component {
       loading: true,
       data: null,
       posts: [],
-      index: 0,
     };
   }
 
   componentDidMount() {
-    this.fetchPosts();
-  }
-
-  componentDidUpdate() {
     this.fetchPosts();
   }
 

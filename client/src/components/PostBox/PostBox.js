@@ -342,7 +342,7 @@ export class PostBox extends Component {
                       >
                         <CancelIcon
                           className={classes.close}
-                          onClick={() => this.deleteChosen()}
+                          onClick={() => this.deleteChosen}
                         />
                       </Tooltip>
                     </Grid>

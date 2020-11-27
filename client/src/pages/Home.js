@@ -19,19 +19,10 @@ import Trending from "../components/Trending/Trending";
 const TOTAL_RESULTS = 15;
 
 const styles = (theme) => ({
-  body: {
-    fontFamily: "Rubik",
-    textAlign: "center",
-    width: "100%",
-    height: "100vh",
-  },
-  row: {
-    overflow: "hidden",
-  },
   search: {
     width: "100%",
     margin: "auto",
-    padding: "35px",
+    padding: "15px",
     backgroundColor: "#FAFAFA",
     borderBottom: "1px solid #E0E0E0",
     boxShadow: "0 10px 15px -15px #2b2b2c",
@@ -183,7 +174,7 @@ export class Home extends Component {
     this.setState({
       song: "",
       data: null,
-      search: [],
+      search: null,
       chosen: null,
     });
   }
@@ -261,7 +252,10 @@ export class Home extends Component {
     return (
       <Fade>
         <MuiThemeProvider theme={lightTheme}>
-          <div className="row">
+          <div
+            className="row"
+            style={{ margin: "0px" }}
+          >
             <div
               className="col-xs-0 col-sm-0 col-md-0 col-lg-2"
               style={{ padding: "0px" }}
