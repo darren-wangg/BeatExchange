@@ -11,7 +11,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import axios from "axios";
 
 const styles = (theme) => ({
   container: {
@@ -109,11 +108,12 @@ const lightTheme = createMuiTheme({
     textPrimary: { main: "#000000" },
   },
   typography: {
+    useNextVariants: true,
     fontFamily: `"Rubik", "Helvetica", sans-serif`,
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    subtitle1: {
+    subheading: {
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -213,7 +213,7 @@ const Post = (props) => {
                 className={classes.userImg}
               />
             </a>
-            <Typography variant="subtitle1" color="textPrimary">
+            <Typography variant="subheading" color="textPrimary">
               {data.user.name}
             </Typography>
             {data.likes.includes(user.id) ? (
@@ -269,7 +269,7 @@ const Post = (props) => {
                     </a>
                   </Grid>
                   <Grid item xs={4} md={4}>
-                    <Typography variant="subtitle1" color="primary">
+                    <Typography variant="subheading" color="primary">
                       {data.post.name}
                     </Typography>
                     <Typography variant="body1" color="secondary">
@@ -277,12 +277,12 @@ const Post = (props) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3} md={3}>
-                    <Typography variant="subtitle1" color="primary">
+                    <Typography variant="subheading" color="primary">
                       {data.post.album}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} md={2}>
-                    <Typography variant="subtitle1" color="secondary">
+                    <Typography variant="subheading" color="secondary">
                       {millisToMinutesAndSeconds(data.post.duration)}
                     </Typography>
                   </Grid>
@@ -325,7 +325,7 @@ const Post = (props) => {
             >
               <Grid item xs={9} md={9}>
                 {/* message */}
-                <Typography variant="subtitle1" color="textPrimary">
+                <Typography variant="subheading" color="textPrimary">
                   {data.text}
                 </Typography>
               </Grid>

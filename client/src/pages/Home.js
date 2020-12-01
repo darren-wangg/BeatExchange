@@ -112,11 +112,12 @@ const lightTheme = createMuiTheme({
     secondary: { main: "#fafafa" },
   },
   typography: {
+    useNextVariants: true,
     fontFamily: `"Rubik", "Helvetica", sans-serif`,
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    subtitle1: {
+    subheading: {
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -234,7 +235,7 @@ export class Home extends Component {
               src={song.album.images[0].url}
               alt="Album Art"
             />
-            <Typography variant="subtitle1">
+            <Typography variant="subheading">
               <strong>{song.name}</strong>
             </Typography>
             <Typography variant="body1">{song.artists[0].name}</Typography>

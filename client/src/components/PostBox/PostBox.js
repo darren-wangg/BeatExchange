@@ -114,7 +114,8 @@ const lightTheme = createMuiTheme({
     textPrimary: { main: "#000000" },
   },
   typography: {
-    subtitle1: {
+    useNextVariants: true,
+    subheading: {
       display: "block",
       whiteSpace: "nowrap",
       overflow: "hidden",
@@ -134,16 +135,22 @@ const tags = [
   "EDM",
   "disco",
   "folk",
+  "guitar",
   "hiphop",
   "house",
   "indie",
   "jazz",
+  "live",
+  "lofi",
+  "love",
   "metal",
+  "old-school",
   "piano",
   "pop",
   "r&b",
   "rap",
   "reggae",
+  "remix",
   "rock",
   "soul",
   "soundtrack",
@@ -177,7 +184,7 @@ export class PostBox extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.chosen != nextProps.chosen) {
+    if (this.props.chosen !== nextProps.chosen) {
       this.setState({
         active: true,
       });
@@ -363,7 +370,7 @@ export class PostBox extends Component {
                             />
                           </Grid>
                           <Grid item xs={4} md={4}>
-                            <Typography variant="subtitle1" color="primary">
+                            <Typography variant="subheading" color="primary">
                               {chosen.name}
                             </Typography>
                             <Typography variant="body1" color="secondary">
@@ -371,19 +378,19 @@ export class PostBox extends Component {
                             </Typography>
                           </Grid>
                           <Grid item xs={4} md={4}>
-                            <Typography variant="subtitle1" color="primary">
+                            <Typography variant="subheading" color="primary">
                               {chosen.album.name}
                             </Typography>
                           </Grid>
                           <Grid item xs={2} md={2}>
                             {chosen.type === "track" ? (
-                              <Typography variant="subtitle1" color="secondary">
+                              <Typography variant="subheading" color="secondary">
                                 {this.millisToMinutesAndSeconds(
                                   chosen.duration_ms
                                 )}
                               </Typography>
                             ) : (
-                              <Typography variant="subtitle1" color="secondary">
+                              <Typography variant="subheading" color="secondary">
                                 {chosen.release_date}
                               </Typography>
                             )}
