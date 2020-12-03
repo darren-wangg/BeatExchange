@@ -30,7 +30,7 @@ const styles = (theme) => ({
   wall: {
     width: "100%",
     margin: "auto",
-    height: "100vh",
+    height: "115vh",
     overflowY: "scroll"
   },
 });
@@ -47,6 +47,12 @@ export class Feed extends Component {
 
   componentDidMount() {
     this.fetchPosts();
+    // refresh feed every 5 minutes
+    this.interval = setInterval(this.fetchPosts, 300000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   fetchPosts = () => {
@@ -68,7 +74,7 @@ export class Feed extends Component {
   createPosts = () => {
     const items = [];
     this.state.data.forEach((post) => {
-      items.push(<Post data={post} user={this.props.user} />);
+      items.push(<Post key={post.id} data={post} user={this.props.user} />);
     });
     this.setState({
       loading: false,

@@ -32,6 +32,7 @@ router.post("/", (req, res) => {
 // @desc    Delete A Post
 // @access  Public (should be private using authentication)
 router.delete("/:id", (req, res) => {
+  console.log("REQ: ", req);
   Post.findById(req.params.id)
     .then(post => post.remove().then(() => res.json({ success: true })))
     .catch(err => res.status(404).json({ success: false }));

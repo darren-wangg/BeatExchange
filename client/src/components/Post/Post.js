@@ -6,11 +6,13 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 import { MDBCol, MDBRow } from "mdbreact";
-import { Grid, Typography, Tooltip } from "@material-ui/core";
+import { Grid, Typography, Tooltip, Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import CancelIcon from "@material-ui/icons/Cancel";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import axios from "axios";
 
 const styles = (theme) => ({
   container: {
@@ -29,7 +31,7 @@ const styles = (theme) => ({
     height: "auto",
     cursor: "pointer",
     margin: "5px",
-    color: "#2B2B2C"
+    color: "#2B2B2C",
   },
   user: {},
   userImg: {
@@ -45,10 +47,9 @@ const styles = (theme) => ({
     height: "auto",
   },
   songContainer: {
-    width: "95%",
+    width: "90%",
     margin: "auto",
     marginBottom: "15px",
-    padding: "15px",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
@@ -81,6 +82,7 @@ const styles = (theme) => ({
     color: "#17A0FB",
   },
   tooltip: {
+    fontWeight: "300",
     fontSize: "0.8rem",
     margin: "10px auto",
   },
@@ -113,7 +115,7 @@ const lightTheme = createMuiTheme({
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    subheading: {
+    subtitle1: {
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -124,18 +126,41 @@ const lightTheme = createMuiTheme({
 
 const Post = (props) => {
   const { classes, data, user } = props;
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    severity: null,
+    msg: null,
+  });
 
-  function deletePost() {
-    // axios({
-    //   url: "/api/posts",
-    //   method: "DELETE",
-    //   data: data.id
-    // })
+  function deletePost(id) {
+    axios.delete(`/api/posts/${id}`)
+      .then((res) => {
+        setSnackbar({
+          open: true,
+          severity: res.status === 200 ? "success" : "error",
+          msg:
+            res.status === 200
+              ? "Successfully deleted your post."
+              : "Unable to delete your post. Please try again.",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        setSnackbar({
+          open: true,
+          severity: "error",
+          msg: "There was an error deleting your post. Please try again."
+        });
+      })
   }
 
-  function deleteLike() {}
+  function deleteLike() {
+    // axios;
+  }
 
-  function submitLike() {}
+  function submitLike() {
+    // axios;
+  }
 
   function millisToMinutesAndSeconds(millis) {
     const minutes = Math.floor(millis / 60000);
@@ -185,14 +210,35 @@ const Post = (props) => {
     );
   }
 
+  const handleSnackbarClose = (e, reason) => {
+    if (reason === "clickaway") return;
+    setSnackbar({
+      open: false,
+      severity: snackbar.severity
+    })
+  }
+
   return (
     <MuiThemeProvider theme={lightTheme}>
+      <Snackbar open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert severity={snackbar.severity}
+          onClose={handleSnackbarClose}
+          variant='filled'
+          style={{ fontWeight: "300", fontSize: 14, textTransform: 'none', maxWidth: 500 }}
+        >
+          {snackbar.msg}
+        </Alert>
+      </Snackbar>
+
       {user.id === data.user.id && (
         <Tooltip
           placement="bottom"
           title={<p className={classes.tooltip}>Delete your post</p>}
         >
-          <CancelIcon className={classes.close} onClick={() => deletePost()} />
+          <CancelIcon className={classes.close} onClick={() => deletePost(data._id)} />
         </Tooltip>
       )}
       <Grid
@@ -213,7 +259,7 @@ const Post = (props) => {
                 className={classes.userImg}
               />
             </a>
-            <Typography variant="subheading" color="textPrimary">
+            <Typography variant="subtitle1" color="textPrimary">
               {data.user.name}
             </Typography>
             {data.likes.includes(user.id) ? (
@@ -258,7 +304,7 @@ const Post = (props) => {
                 <Grid
                   container
                   direction="row"
-                  spacing={8}
+                  spacing={4}
                   justify="center"
                   alignItems="center"
                   className={classes.songContainer}
@@ -269,7 +315,7 @@ const Post = (props) => {
                     </a>
                   </Grid>
                   <Grid item xs={4} md={4}>
-                    <Typography variant="subheading" color="primary">
+                    <Typography variant="subtitle1" color="primary">
                       {data.post.name}
                     </Typography>
                     <Typography variant="body1" color="secondary">
@@ -277,12 +323,12 @@ const Post = (props) => {
                     </Typography>
                   </Grid>
                   <Grid item xs={3} md={3}>
-                    <Typography variant="subheading" color="primary">
+                    <Typography variant="subtitle1" color="primary">
                       {data.post.album}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} md={2}>
-                    <Typography variant="subheading" color="secondary">
+                    <Typography variant="subtitle1" color="secondary">
                       {millisToMinutesAndSeconds(data.post.duration)}
                     </Typography>
                   </Grid>
@@ -325,7 +371,7 @@ const Post = (props) => {
             >
               <Grid item xs={9} md={9}>
                 {/* message */}
-                <Typography variant="subheading" color="textPrimary">
+                <Typography variant="subtitle1" color="textPrimary">
                   {data.text}
                 </Typography>
               </Grid>

@@ -29,12 +29,12 @@ const styles = (theme) => ({
     width: "30px",
     height: "auto",
     cursor: "pointer",
+    margin: "auto",
+    display: "flex"
   },
   songContainer: {
     width: "100%",
-    margin: "auto",
-    marginBottom: "15px",
-    padding: "10px",
+    margin: "auto 25px 25px 0px",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
     boxShadow: "0 15px 10px -10px #2B2B2C",
@@ -115,7 +115,7 @@ const lightTheme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    subheading: {
+    subtitle1: {
       display: "block",
       whiteSpace: "nowrap",
       overflow: "hidden",
@@ -162,7 +162,7 @@ export class PostBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: false,
+      active: true,
       message: "",
       tags: [],
       currTime: new Date().toLocaleString([], {
@@ -183,14 +183,6 @@ export class PostBox extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.chosen !== nextProps.chosen) {
-      this.setState({
-        active: true,
-      });
-    }
-  }
-
   handleClose = (e, reason) => {
     if (reason === "clickaway") return;
     this.setState({
@@ -203,6 +195,8 @@ export class PostBox extends Component {
   deleteChosen() {
     this.setState({
       active: false,
+      message: "",
+      tags: [],
     });
   }
 
@@ -310,7 +304,7 @@ export class PostBox extends Component {
 
   render() {
     const { classes, chosen } = this.props;
-    if (!chosen || !this.state.active) {
+    if (!this.state.active) {
       return <div />;
     }
 
@@ -338,27 +332,27 @@ export class PostBox extends Component {
                   <Grid
                     container
                     direction="row"
-                    spacing={8}
+                    spacing={2}
                     justify="center"
                     alignItems="center"
                   >
-                    <Grid item xs={1} md={1}>
+                    <Grid item xs={2} md={2}>
                       <Tooltip
                         placement="bottom"
                         title={<p className={classes.tooltip}>Delete song</p>}
                       >
                         <CancelIcon
                           className={classes.close}
-                          onClick={() => this.deleteChosen}
+                          onClick={() => this.deleteChosen()}
                         />
                       </Tooltip>
                     </Grid>
-                    <Grid item xs={9} md={9}>
+                    <Grid item xs={8} md={8}>
                       <a href={chosen.external_urls.spotify} target="_blank">
                         <Grid
                           container
                           direction="row"
-                          spacing={8}
+                          spacing={4}
                           justify="center"
                           alignItems="center"
                           className={classes.songContainer}
@@ -370,7 +364,7 @@ export class PostBox extends Component {
                             />
                           </Grid>
                           <Grid item xs={4} md={4}>
-                            <Typography variant="subheading" color="primary">
+                            <Typography variant="subtitle1" color="primary">
                               {chosen.name}
                             </Typography>
                             <Typography variant="body1" color="secondary">
@@ -378,19 +372,19 @@ export class PostBox extends Component {
                             </Typography>
                           </Grid>
                           <Grid item xs={4} md={4}>
-                            <Typography variant="subheading" color="primary">
+                            <Typography variant="subtitle1" color="primary">
                               {chosen.album.name}
                             </Typography>
                           </Grid>
                           <Grid item xs={2} md={2}>
                             {chosen.type === "track" ? (
-                              <Typography variant="subheading" color="secondary">
+                              <Typography variant="subtitle1" color="secondary">
                                 {this.millisToMinutesAndSeconds(
                                   chosen.duration_ms
                                 )}
                               </Typography>
                             ) : (
-                              <Typography variant="subheading" color="secondary">
+                              <Typography variant="subtitle1" color="secondary">
                                 {chosen.release_date}
                               </Typography>
                             )}
@@ -398,7 +392,7 @@ export class PostBox extends Component {
                         </Grid>
                       </a>
                     </Grid>
-                    <Grid item xs={1} md={1}>
+                    <Grid item xs={2} md={2}>
                       <Typography variant="body1" color="textPrimary">
                         {this.state.currTime}
                       </Typography>

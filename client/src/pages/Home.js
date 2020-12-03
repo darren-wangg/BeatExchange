@@ -117,7 +117,7 @@ const lightTheme = createMuiTheme({
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    subheading: {
+    subtitle1: {
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -182,7 +182,6 @@ export class Home extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.reset();
     if (this.state.song.length > 0) {
       this.props.spotifyApi
         .searchTracks(this.state.song, { limit: TOTAL_RESULTS })
@@ -196,22 +195,18 @@ export class Home extends Component {
           console.error(error);
         });
     }
-    // reset to default
-    else {
-      this.reset();
-    }
+    this.reset();
   };
 
   handleInputChange = (e) => {
     e.preventDefault();
     this.setState({
-      song: e.target.value.trim(),
+      song: e.target.value,
     });
   };
 
   setSearchResult = (song) => {
     this.setState({
-      song: "",
       chosen: song,
       search: [],
     });
@@ -235,7 +230,7 @@ export class Home extends Component {
               src={song.album.images[0].url}
               alt="Album Art"
             />
-            <Typography variant="subheading">
+            <Typography variant="subtitle1">
               <strong>{song.name}</strong>
             </Typography>
             <Typography variant="body1">{song.artists[0].name}</Typography>
@@ -289,6 +284,7 @@ export class Home extends Component {
                       type="text"
                       placeholder="What do you want to share with the world?"
                       aria-label="Search"
+                      value={this.state.song}
                       onChange={this.handleInputChange}
                     />
                   </MDBFormInline>
@@ -321,7 +317,9 @@ export class Home extends Component {
                 </MDBRow>
               )}
 
-              <PostBox user={this.state.user} chosen={this.state.chosen} />
+              {this.state.chosen &&
+                <PostBox user={this.state.user} chosen={this.state.chosen} />
+              }
 
               <Feed user={this.state.user} />
             </div>
