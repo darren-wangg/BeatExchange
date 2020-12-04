@@ -6,7 +6,16 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 import { MDBCol, MDBRow } from "mdbreact";
-import { Grid, Typography, Tooltip, Snackbar } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Tooltip,
+  Snackbar,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Dialog,
+} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CancelIcon from "@material-ui/icons/Cancel";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -33,7 +42,17 @@ const styles = (theme) => ({
     margin: "5px",
     color: "#2B2B2C",
   },
-  user: {},
+  deleteBtn: {
+    background: "#1edd88",
+    color: "white",
+    padding: "15px 25px",
+    border: "none",
+    borderRadius: "5px",
+    margin: "auto 15px",
+    "&:hover": {
+      backgroundColor: "#1bcb7f",
+    },
+  },
   userImg: {
     width: "100px",
     height: "auto",
@@ -131,9 +150,11 @@ const Post = (props) => {
     severity: null,
     msg: null,
   });
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   function deletePost(id) {
-    axios.delete(`/api/posts/${id}`)
+    axios
+      .delete(`/api/posts/${id}`)
       .then((res) => {
         setSnackbar({
           open: true,
@@ -149,16 +170,39 @@ const Post = (props) => {
         setSnackbar({
           open: true,
           severity: "error",
-          msg: "There was an error deleting your post. Please try again."
+          msg: "There was an error deleting your post. Please try again.",
+        });
+      });
+    handleDeleteDialogClose();
+  }
+
+  function submitLike(id) {
+    axios({
+      url: `/api/posts/${id}`,
+      method: "POST",
+      data: user,
+    })
+      .then((res) => {
+        setSnackbar({
+          open: true,
+          severity: res.status === 200 ? "success" : "error",
+          msg:
+            res.status === 200
+              ? "Successfully liked this post."
+              : "Unable to like this post. Please try again.",
         });
       })
+      .catch((error) => {
+        console.error(error);
+        setSnackbar({
+          open: true,
+          severity: "error",
+          msg: "There was an error liking this post. Please try again.",
+        });
+      });
   }
 
-  function deleteLike() {
-    // axios;
-  }
-
-  function submitLike() {
+  function deleteLike(id) {
     // axios;
   }
 
@@ -214,31 +258,83 @@ const Post = (props) => {
     if (reason === "clickaway") return;
     setSnackbar({
       open: false,
-      severity: snackbar.severity
-    })
-  }
+      severity: snackbar.severity,
+    });
+  };
+
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+  };
 
   return (
     <MuiThemeProvider theme={lightTheme}>
-      <Snackbar open={snackbar.open}
-        autoHideDuration={4000}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert severity={snackbar.severity}
+        <Alert
+          severity={snackbar.severity}
           onClose={handleSnackbarClose}
-          variant='filled'
-          style={{ fontWeight: "300", fontSize: 14, textTransform: 'none', maxWidth: 500 }}
+          variant="filled"
+          style={{ fontWeight: "300", textTransform: "none", maxWidth: 500 }}
         >
           {snackbar.msg}
         </Alert>
       </Snackbar>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteDialogClose}
+        aria-labelledby="form-dialog-title"
+        PaperProps={{
+          style: {
+            backgroundColor: "#2b2b2c",
+            color: "#FAFAFA",
+            width: "500px",
+            padding: "25px",
+            fontFamily: "Rubik, sans serif",
+          },
+        }}
+      >
+        <DialogTitle id="form-dialog-title">
+          <Typography variant="h6" color="primary">
+            Delete Post 🗑️
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="body1" color="primary">
+              Are you sure you want to delete this post?
+            </Typography>
+          </DialogContentText>
+          <button
+            className={classes.deleteBtn}
+            onClick={handleDeleteDialogClose}
+            style={{
+              backgroundColor: "transparent",
+              border: "1px solid #FAFAFA",
+            }}
+          >
+            No
+          </button>
+          <button
+            className={classes.deleteBtn}
+            onClick={() => deletePost(data._id)}
+          >
+            Yes
+          </button>
+        </DialogContent>
+      </Dialog>
 
       {user.id === data.user.id && (
         <Tooltip
           placement="bottom"
           title={<p className={classes.tooltip}>Delete your post</p>}
         >
-          <CancelIcon className={classes.close} onClick={() => deletePost(data._id)} />
+          <CancelIcon
+            className={classes.close}
+            onClick={() => setDeleteDialogOpen(true)}
+          />
         </Tooltip>
       )}
       <Grid
@@ -270,7 +366,7 @@ const Post = (props) => {
                 <FavoriteIcon
                   className={classes.like}
                   style={{ color: "#1EDD88" }}
-                  onClick={() => deleteLike()}
+                  onClick={() => deleteLike(data._id)}
                 />
               </Tooltip>
             ) : (
@@ -280,11 +376,11 @@ const Post = (props) => {
               >
                 <FavoriteBorderIcon
                   className={classes.like}
-                  onClick={() => submitLike()}
+                  onClick={() => submitLike(data._id)}
                 />
               </Tooltip>
             )}
-            <Typography variany="body1" color="textPrimary">
+            <Typography variant="body1" color="textPrimary">
               {data.likes.length} Likes
             </Typography>
           </MDBCol>

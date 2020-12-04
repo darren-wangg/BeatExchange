@@ -79,6 +79,7 @@ const styles = (theme) => ({
     bottom: "15%",
   },
   tooltip: {
+    fontWeight: "300",
     fontSize: "0.8rem",
     margin: "10px auto",
   },

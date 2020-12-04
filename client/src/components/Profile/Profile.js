@@ -39,6 +39,7 @@ const styles = theme => ({
     }
   },
   tooltip: {
+    fontWeight: "300",
     fontSize: "0.8rem",
     margin: "10px auto"
   }

@@ -104,7 +104,9 @@ const styles = theme => ({
     }
   },
   tooltip: {
-    fontSize: "0.8rem"
+    fontWeight: "300",
+    fontSize: "0.8rem",
+    margin: "10px auto"
   }
 });
 
