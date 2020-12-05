@@ -61,7 +61,7 @@ export class Feed extends Component {
       if (res.status === 200) {
         this.setState(
           {
-            data: res.data,
+            data: res.data.slice(0, MAX_POSTS),
           },
           () => this.createPosts()
         );

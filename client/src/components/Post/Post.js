@@ -64,6 +64,10 @@ const styles = (theme) => ({
     marginTop: "10px",
     width: "35px",
     height: "auto",
+    "&:hover": {
+      transform: "scale(1.05)",
+      color: "#1bcb7f"
+    },
   },
   songContainer: {
     width: "90%",
@@ -178,9 +182,11 @@ const Post = (props) => {
 
   function submitLike(id) {
     axios({
-      url: `/api/posts/${id}`,
+      url: `/api/posts/${id}/like`,
       method: "POST",
-      data: user,
+      data: {
+        user: user
+      }
     })
       .then((res) => {
         setSnackbar({
@@ -203,7 +209,31 @@ const Post = (props) => {
   }
 
   function deleteLike(id) {
-    // axios;
+    axios({
+      url: `/api/posts/${id}/unlike`,
+      method: "POST",
+      data: {
+        user: user
+      }
+    })
+      .then((res) => {
+        setSnackbar({
+          open: true,
+          severity: res.status === 200 ? "success" : "error",
+          msg:
+            res.status === 200
+              ? "Successfully unliked this post."
+              : "Unable to unlike this post. Please try again.",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        setSnackbar({
+          open: true,
+          severity: "error",
+          msg: "There was an error unliking this post. Please try again.",
+        });
+      });
   }
 
   function millisToMinutesAndSeconds(millis) {
@@ -358,7 +388,7 @@ const Post = (props) => {
             <Typography variant="subtitle1" color="textPrimary">
               {data.user.name}
             </Typography>
-            {data.likes.includes(user.id) ? (
+            {data.likes.some(like => like.id === user.id) ? (
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>Unlike this post</p>}
