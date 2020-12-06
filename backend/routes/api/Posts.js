@@ -34,7 +34,9 @@ router.post("/", (req, res) => {
     tags: req.body.tags,
   });
 
-  newPost.save().then((post) => res.json(post));
+  newPost.save()
+    .then((post) => res.json({ post: post, success: true }))
+    .catch((err) => res.status(404).json({ error: err, success: false }));
 });
 
 // @route   DELETE api/posts/:id

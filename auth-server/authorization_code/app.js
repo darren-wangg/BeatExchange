@@ -60,7 +60,6 @@ app.get("/login", function(req, res) {
 app.get("/callback", function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
-
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -107,7 +106,7 @@ app.get("/callback", function(req, res) {
 
         // we can also pass the token to the browser to make requests from there
         res.redirect(
-          "http://localhost:3000/#" +
+          "http://localhost:3000/home#" +
             querystring.stringify({
               access_token: access_token,
               refresh_token: refresh_token
