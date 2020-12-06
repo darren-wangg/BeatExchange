@@ -89,7 +89,7 @@ const styles = theme => ({
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.08)"
+      transform: "scale(1.05)"
     },
     [theme.breakpoints.down("md")]: {
       width: "125px",

@@ -25,7 +25,7 @@ const styles = (theme) => ({
     padding: "15px",
     backgroundColor: "#FAFAFA",
     borderBottom: "1px solid #E0E0E0",
-    boxShadow: "0 10px 15px -15px #2b2b2c",
+    boxShadow: "0 15px 20px -20px #2b2b2c",
     zIndex: "99999",
   },
   form: {

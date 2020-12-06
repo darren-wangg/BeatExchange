@@ -5,7 +5,18 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { Grid, Typography, Tooltip, Snackbar, Input, InputLabel, MenuItem, FormControl, Select, Chip } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Tooltip,
+  Snackbar,
+  Input,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Chip,
+} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CancelIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
@@ -30,11 +41,11 @@ const styles = (theme) => ({
     height: "auto",
     cursor: "pointer",
     margin: "auto",
-    display: "flex"
+    display: "flex",
   },
   songContainer: {
     width: "100%",
-    margin: "auto 25px 25px 0px",
+    margin: "auto",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
     boxShadow: "0 15px 10px -10px #2B2B2C",
@@ -66,7 +77,7 @@ const styles = (theme) => ({
     borderRadius: "5px",
     [theme.breakpoints.down("md")]: {
       height: "150px",
-    }
+    },
   },
   postBtn: {
     background: "#1D87F0",
@@ -93,12 +104,12 @@ const styles = (theme) => ({
   },
   tags: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   tag: {
     margin: "3px",
-    color: "#1D87F0"
-  }
+    color: "#1D87F0",
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -189,6 +200,7 @@ export class PostBox extends Component {
     this.setState({
       snackbar: {
         open: false,
+        severity: this.state.snackbar.severity,
       },
     });
   };
@@ -211,9 +223,9 @@ export class PostBox extends Component {
   handleTagChange = (e) => {
     e.preventDefault();
     this.setState({
-      tags: e.target.value
-    })
-  }
+      tags: e.target.value,
+    });
+  };
 
   millisToMinutesAndSeconds(millis) {
     const minutes = Math.floor(millis / 60000);
@@ -254,7 +266,7 @@ export class PostBox extends Component {
         url: this.props.chosen.external_urls.spotify,
       },
       text: this.state.message,
-      tags: this.state.tags
+      tags: this.state.tags,
     };
     this.setState(
       {
@@ -273,7 +285,6 @@ export class PostBox extends Component {
       data: this.state.data,
     })
       .then((res) => {
-        console.log("SNACKBAR: ", this.state.snackbar);
         this.setState({
           snackbar: {
             open: true,
@@ -284,9 +295,9 @@ export class PostBox extends Component {
                 : "Unable to submit your post. Please try again.",
           },
         });
+        console.log("SNACKBAR SUCCESS: ", this.state.snackbar);
       })
       .catch((error) => {
-        console.log("SNACKBAR: ", this.state.snackbar);
         console.error(error);
         this.setState({
           snackbar: {
@@ -295,6 +306,7 @@ export class PostBox extends Component {
             msg: "There was an error submitting your post. Please try again.",
           },
         });
+        console.log("SNACKBAR ERROR: ", this.state.snackbar);
       });
     this.setState({
       active: false,
@@ -305,164 +317,158 @@ export class PostBox extends Component {
 
   render() {
     const { classes, chosen } = this.props;
-    if (!this.state.active) {
-      return <div />;
-    }
+    console.log("SNACKBAR: ", this.state.snackbar);
 
-    if (this.state.active) {
-      return (
-        <React.Fragment>
-          <Snackbar
-            open={this.state.snackbar.open}
-            autoHideDuration={6000}
+    return (
+      <MuiThemeProvider theme={lightTheme}>
+        <Snackbar
+          open={this.state.snackbar.open}
+          autoHideDuration={60000000}
+          onClose={this.handleClose}
+        >
+          <Alert
+            severity={this.state.snackbar.severity}
             onClose={this.handleClose}
-            message={this.state.snackbar.msg}
+            variant="filled"
+            style={{ fontWeight: "300", textTransform: "none", maxWidth: 500 }}
           >
-            <Alert
-              onClose={this.handleClose}
-              severity={this.state.snackbar.severity}
-              variant="filled"
-            >
-              {this.state.snackbar.msg}
-            </Alert>
-          </Snackbar>
+            {this.state.snackbar.msg}
+          </Alert>
+        </Snackbar>
+        {this.state.active && (
           <div className={classes.container}>
-            <MuiThemeProvider theme={lightTheme}>
-              {this.state.active ? (
-                <div>
-                  <Grid
-                    container
-                    direction="row"
-                    spacing={2}
-                    justify="center"
-                    alignItems="center"
-                  >
-                    <Grid item xs={2} md={2}>
-                      <Tooltip
-                        placement="bottom"
-                        title={<p className={classes.tooltip}>Delete song</p>}
-                      >
-                        <CancelIcon
-                          className={classes.close}
-                          onClick={() => this.deleteChosen()}
-                        />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={8} md={8}>
-                      <a href={chosen.external_urls.spotify} target="_blank">
-                        <Grid
-                          container
-                          direction="row"
-                          spacing={4}
-                          justify="center"
-                          alignItems="center"
-                          className={classes.songContainer}
-                        >
-                          <Grid item xs={2} md={2}>
-                            <img
-                              className={classes.songImg}
-                              src={chosen.album.images[0].url}
-                            />
-                          </Grid>
-                          <Grid item xs={4} md={4}>
-                            <Typography variant="subtitle1" color="primary">
-                              {chosen.name}
-                            </Typography>
-                            <Typography variant="body1" color="secondary">
-                              {chosen.artists[0].name}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} md={4}>
-                            <Typography variant="subtitle1" color="primary">
-                              {chosen.album.name}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={2} md={2}>
-                            {chosen.type === "track" ? (
-                              <Typography variant="subtitle1" color="secondary">
-                                {this.millisToMinutesAndSeconds(
-                                  chosen.duration_ms
-                                )}
-                              </Typography>
-                            ) : (
-                              <Typography variant="subtitle1" color="secondary">
-                                {chosen.release_date}
-                              </Typography>
-                            )}
-                          </Grid>
-                        </Grid>
-                      </a>
-                    </Grid>
-                    <Grid item xs={2} md={2}>
-                      <Typography variant="body1" color="textPrimary">
-                        {this.state.currTime}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </div>
-              ) : (
-                <div style={{ display: "none" }} />
-              )}
-              <form className={classes.formGroup} onSubmit={this.createPost}>
-                <textarea
-                  className={classes.textArea}
-                  id="exampleFormControlTextarea2"
-                  rows="3"
-                  type="text"
-                  maxLength="200"
-                  name="message"
-                  value={this.state.message}
-                  onChange={this.handleInputChange}
-                  required
-                ></textarea>
-
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="tags">Tags</InputLabel>
-                  <Select
-                    labelId="tags"
-                    id="post tags"
-                    multiple
-                    value={this.state.tags}
-                    onChange={this.handleTagChange}
-                    input={<Input id="post tags" />}
-                    renderValue={(selected) => (
-                      <div className={classes.tags}>
-                        {selected.map((value) => (
-                          <Chip
-                            key={value}
-                            label={value}
-                            className={classes.tag}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  >
-                    {tags.map((tag) => (
-                      <MenuItem
-                        key={tag}
-                        value={tag}
-                      >
-                        {tag}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <button
-                  className={classes.postBtn}
-                  style={{
-                    pointerEvents: this.state.message ? "" : "none",
-                    opacity: this.state.message ? "1" : "0.7",
-                  }}
+            {this.state.active ? (
+              <div>
+                <Grid
+                  container
+                  direction="row"
+                  spacing={2}
+                  justify="center"
+                  alignItems="center"
+                  style={{ marginBottom: "25px" }}
                 >
-                  Post
-                </button>
-              </form>
-            </MuiThemeProvider>
+                  <Grid item xs={2} md={2}>
+                    <Tooltip
+                      placement="bottom"
+                      title={<p className={classes.tooltip}>Delete song</p>}
+                    >
+                      <CancelIcon
+                        className={classes.close}
+                        onClick={() => this.deleteChosen()}
+                      />
+                    </Tooltip>
+                  </Grid>
+                  <Grid item xs={8} md={8}>
+                    <a href={chosen.external_urls.spotify} target="_blank">
+                      <Grid
+                        container
+                        direction="row"
+                        spacing={4}
+                        justify="center"
+                        alignItems="center"
+                        className={classes.songContainer}
+                      >
+                        <Grid item xs={2} md={2}>
+                          <img
+                            className={classes.songImg}
+                            src={chosen.album.images[0].url}
+                          />
+                        </Grid>
+                        <Grid item xs={4} md={4}>
+                          <Typography variant="subtitle1" color="primary">
+                            {chosen.name}
+                          </Typography>
+                          <Typography variant="body1" color="secondary">
+                            {chosen.artists[0].name}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} md={4}>
+                          <Typography variant="subtitle1" color="primary">
+                            {chosen.album.name}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={2} md={2}>
+                          {chosen.type === "track" ? (
+                            <Typography variant="subtitle1" color="secondary">
+                              {this.millisToMinutesAndSeconds(
+                                chosen.duration_ms
+                              )}
+                            </Typography>
+                          ) : (
+                            <Typography variant="subtitle1" color="secondary">
+                              {chosen.release_date}
+                            </Typography>
+                          )}
+                        </Grid>
+                      </Grid>
+                    </a>
+                  </Grid>
+                  <Grid item xs={2} md={2}>
+                    <Typography variant="body1" color="textPrimary">
+                      {this.state.currTime}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </div>
+            ) : (
+              <div style={{ display: "none" }} />
+            )}
+            <form className={classes.formGroup} onSubmit={this.createPost}>
+              <textarea
+                className={classes.textArea}
+                id="exampleFormControlTextarea2"
+                rows="3"
+                type="text"
+                maxLength="200"
+                name="message"
+                value={this.state.message}
+                onChange={this.handleInputChange}
+                required
+              ></textarea>
+
+              <FormControl className={classes.formControl}>
+                <InputLabel id="tags">Tags</InputLabel>
+                <Select
+                  labelId="tags"
+                  id="post tags"
+                  multiple
+                  value={this.state.tags}
+                  onChange={this.handleTagChange}
+                  input={<Input id="post tags" />}
+                  renderValue={(selected) => (
+                    <div className={classes.tags}>
+                      {selected.map((value) => (
+                        <Chip
+                          key={value}
+                          label={value}
+                          className={classes.tag}
+                        />
+                      ))}
+                    </div>
+                  )}
+                >
+                  {tags.map((tag) => (
+                    <MenuItem key={tag} value={tag}>
+                      {tag}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <button
+                className={classes.postBtn}
+                style={{
+                  pointerEvents: this.state.message ? "" : "none",
+                  opacity: this.state.message ? "1" : "0.7",
+                }}
+              >
+                Post
+              </button>
+            </form>
           </div>
-        </React.Fragment>
-      );
-    }
+        )}
+      </MuiThemeProvider>
+    );
   }
 }
 
