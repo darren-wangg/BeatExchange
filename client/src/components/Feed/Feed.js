@@ -31,7 +31,10 @@ const styles = (theme) => ({
     width: "100%",
     margin: "auto",
     height: "115vh",
-    overflowY: "scroll"
+    overflowY: "scroll",
+    [theme.breakpoints.down("lg")]: {
+      height: "150vh",
+    }
   },
 });
 

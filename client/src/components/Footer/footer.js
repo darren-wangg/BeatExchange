@@ -10,7 +10,7 @@ const LINKEDIN = "https://www.linkedin.com/in/darrenwangg/";
 
 const styles = (theme) => ({
   footer: {
-    height: "75px",
+    height: "65px",
     width: "100%",
     backgroundColor: "#2B2B2C",
     display: "flex",

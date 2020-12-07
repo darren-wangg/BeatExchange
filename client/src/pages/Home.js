@@ -98,6 +98,23 @@ const styles = (theme) => ({
     fontSize: "0.8rem",
     margin: "10px auto",
   },
+  profile: {
+    [theme.breakpoints.down("md")]: {
+      display: "none"
+    }
+  },
+  wall: {
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+      flex: "none",
+      maxWidth: "none"
+    }
+  },
+  trending: {
+    [theme.breakpoints.down("md")]: {
+      display: "none"
+    }
+  }
 });
 
 const darkTheme = createMuiTheme({
@@ -254,14 +271,14 @@ export class Home extends Component {
             style={{ margin: "0px" }}
           >
             <div
-              className="col-xs-0 col-sm-0 col-md-0 col-lg-2"
+              className={`col-xs-0 col-sm-0 col-md-0 col-lg-2 ${classes.profile}`}
               style={{ padding: "0px" }}
             >
               <Profile user={this.state.user} />
             </div>
 
             <div
-              className="col-xs-12 col-sm-12 col-md-12 col-lg-8"
+              className={`col-xs-12 col-sm-12 col-md-12 col-lg-8 ${classes.wall}`}
               style={{ padding: "0px" }}
             >
               <Grid
@@ -326,7 +343,7 @@ export class Home extends Component {
             </div>
 
             <div
-              className="col-xs-0 col-sm-0 col-md-0 col-lg-2"
+              className={`col-xs-0 col-sm-0 col-md-0 col-lg-2 ${classes.trending}`}
               style={{ padding: "0px" }}
             >
               <Trending spotifyApi={this.props.spotifyApi} />

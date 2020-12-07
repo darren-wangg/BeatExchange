@@ -32,7 +32,7 @@ const LAST_FM_ARTISTS_QUERY =
 const styles = theme => ({
   container: {
     fontFamily: "Rubik",
-    paddingTop: "15px",
+    paddingTop: "25px",
     backgroundColor: "#FAFAFA",
     textAlign: "center",
     height: "100%",

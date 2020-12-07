@@ -23,6 +23,9 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from "axios";
 
+const TITLE_SUBSTR = 40;
+const ALBUM_SUBSTR = 30;
+
 const styles = (theme) => ({
   container: {
     width: "100%",
@@ -66,7 +69,7 @@ const styles = (theme) => ({
     height: "auto",
     "&:hover": {
       transform: "scale(1.05)",
-      color: "#1bcb7f"
+      color: "#1bcb7f",
     },
   },
   songContainer: {
@@ -77,18 +80,21 @@ const styles = (theme) => ({
     borderRadius: "5px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     textAlign: "left",
+    fontSize: "1rem",
     [theme.breakpoints.down("md")]: {
-      width: "75%",
+      width: "85%",
     },
   },
   songImg: {
     display: "flex",
     margin: "auto",
     width: "70px",
+    maxWidth: "70px",
     height: "auto",
     borderRadius: "3px",
     [theme.breakpoints.down("md")]: {
-      width: "35px",
+      width: "60px",
+      maxWidth: "60px",
     },
   },
   textContainer: {
@@ -142,7 +148,6 @@ const lightTheme = createMuiTheme({
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      fontSize: "16px",
     },
   },
 });
@@ -185,8 +190,8 @@ const Post = (props) => {
       url: `/api/posts/${id}/like`,
       method: "POST",
       data: {
-        user: user
-      }
+        user: user,
+      },
     })
       .then((res) => {
         setSnackbar({
@@ -213,8 +218,8 @@ const Post = (props) => {
       url: `/api/posts/${id}/unlike`,
       method: "POST",
       data: {
-        user: user
-      }
+        user: user,
+      },
     })
       .then((res) => {
         setSnackbar({
@@ -388,7 +393,7 @@ const Post = (props) => {
             <Typography variant="subtitle1" color="textPrimary">
               {data.user.name}
             </Typography>
-            {data.likes.some(like => like.id === user.id) ? (
+            {data.likes.some((like) => like.id === user.id) ? (
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>Unlike this post</p>}
@@ -442,23 +447,51 @@ const Post = (props) => {
                   </Grid>
                   <Grid item xs={4} md={4}>
                     <Typography variant="subtitle1" color="primary">
-                      {data.post.name}
+                      {data.post.name.length > TITLE_SUBSTR ? (
+                        <Tooltip
+                          placement="bottom"
+                          title={
+                            <p className={classes.tooltip}>{data.post.name}</p>
+                          }
+                        >
+                          <Typography variant="subtitle1" color="primary">
+                            {data.post.name.substring(0, TITLE_SUBSTR) + "..."}
+                          </Typography>
+                        </Tooltip>
+                      ) : (
+                        <Typography variant="subtitle1" color="primary">
+                          {data.post.name}
+                        </Typography>
+                      )}
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {data.post.artist}
                     </Typography>
                   </Grid>
                   <Grid item xs={3} md={3}>
-                    <Typography variant="subtitle1" color="primary">
-                      {data.post.album}
-                    </Typography>
+                    {data.post.album.length > ALBUM_SUBSTR ? (
+                      <Tooltip
+                        placement="bottom"
+                        title={
+                          <p className={classes.tooltip}>{data.post.album}</p>
+                        }
+                      >
+                        <Typography variant="subtitle1" color="primary">
+                          {data.post.album.substring(0, ALBUM_SUBSTR) + "..."}
+                        </Typography>
+                      </Tooltip>
+                    ) : (
+                      <Typography variant="subtitle1" color="primary">
+                        {data.post.album}
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={2} md={2}>
                     <Typography variant="subtitle1" color="secondary">
                       {millisToMinutesAndSeconds(data.post.duration)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={1} md={1}>
+                  <Grid item xs={1} md={1} style={{ padding: "0px" }}>
                     <a href={data.post.url} target="_blank">
                       <Tooltip
                         placement="bottom"
