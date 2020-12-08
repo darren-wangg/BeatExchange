@@ -411,7 +411,10 @@ export class Trending extends Component {
 
     return (
       <Fade>
-        <MDBCol className={classes.container}>
+        <MDBCol
+          className={classes.container}
+          tourName="TrendingSidebar"
+        >
           <h2>
             <u>Trending</u>
           </h2>

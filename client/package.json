@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
+    "framer-motion": "^2.9.5",
     "mdbreact": "^4.19.0",
     "object-hash": "^2.0.3",
     "react": "^16.8.6",

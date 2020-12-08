@@ -60,7 +60,7 @@ const styles = (theme) => ({
     width: "25px",
     height: "auto",
     cursor: "pointer",
-    position: "fixed",
+    position: "absolute",
     margin: "5px",
     zIndex: "99999",
   },
@@ -213,7 +213,11 @@ export class Home extends Component {
           console.error(error);
         });
     }
-    this.reset();
+    this.setState({
+      song: "",
+      data: null,
+      chosen: null,
+    });
   };
 
   handleInputChange = (e) => {
@@ -288,6 +292,7 @@ export class Home extends Component {
                 justify="center"
                 alignItems="center"
                 className={classes.search}
+                tourName="Search"
               >
                 <Grid item xs={false} md={false}>
                   <MDBIcon icon="search" />
@@ -336,7 +341,7 @@ export class Home extends Component {
               )}
 
               {this.state.chosen &&
-                <PostBox user={this.state.user} chosen={this.state.chosen} />
+                <PostBox user={this.state.user} chosen={this.state.chosen} tourName="PostBox" />
               }
 
               <Feed user={this.state.user} />

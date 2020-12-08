@@ -23,6 +23,8 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from "axios";
 
+import { motion } from "framer-motion";
+
 const TITLE_SUBSTR = 40;
 const ALBUM_SUBSTR = 30;
 
@@ -379,6 +381,7 @@ const Post = (props) => {
         justify="center"
         alignItems="center"
         className={classes.container}
+        tourName="Post"
       >
         <Grid item xs={2} md={2}>
           <MDBCol className={classes.user}>
@@ -393,6 +396,10 @@ const Post = (props) => {
             <Typography variant="subtitle1" color="textPrimary">
               {data.user.name}
             </Typography>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2 }}
+            />
             {data.likes.some((like) => like.id === user.id) ? (
               <Tooltip
                 placement="bottom"

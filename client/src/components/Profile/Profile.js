@@ -6,7 +6,8 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 import { MDBCol } from "mdbreact";
-import { Tooltip, Typography } from "@material-ui/core";
+import { Tooltip, Typography, Button, Fab } from "@material-ui/core";
+import Tour from "reactour";
 
 const styles = (theme) => ({
   container: {
@@ -31,21 +32,29 @@ const styles = (theme) => ({
   name: {
     marginTop: "25px",
   },
-  profileBtn: {
-    background: "#1edd88",
-    color: "white",
-    marginTop: "50%",
-    padding: "10px 20px 10px 20px",
-    border: "none",
-    borderRadius: "5px",
-    "&:hover": {
-      backgroundColor: "#1bcb7f",
-    },
-  },
   tooltip: {
     fontWeight: "300",
     fontSize: "0.8rem",
     margin: "10px auto",
+  },
+  Tour: {
+    fontFamily: '"Rubik", sans-serif',
+  },
+  tourFab: {
+    marginTop: "50px",
+    color: "#000",
+    height: "55px",
+    width: "150px",
+    "&:hover": {
+      transform: "scale(1.05)",
+    },
+  },
+  tourBackground: {
+    filter: "blur(1px)",
+    opacity: "0.7",
+  },
+  Mask: {
+    outline: "solid 0px #FAFAFA",
   },
 });
 
@@ -79,13 +88,24 @@ const lightTheme = createMuiTheme({
 export class Profile extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isTourOpen: false,
+    };
   }
+
+  closeTour = () => {
+    this.setState({ isTourOpen: false });
+  };
+
+  openTour = () => {
+    this.setState({ isTourOpen: true });
+  };
 
   render() {
     const { classes, user } = this.props;
     return (
       <MuiThemeProvider theme={lightTheme}>
-        <MDBCol className={classes.container}>
+        <MDBCol className={classes.container} tourName="ProfileSidebar">
           <Tooltip
             placement="bottom"
             title={<p className={classes.tooltip}>Your Spotify account</p>}
@@ -137,6 +157,53 @@ export class Profile extends Component {
                   ID: {user.id}
                 </Typography>
               </Tooltip>
+
+              <Tour
+                steps={steps}
+                isOpen={this.state.isTourOpen}
+                onRequestClose={this.closeTour}
+                className={classes.Tour}
+                accentColor="#1edd88"
+                rounded={10}
+                disableInteraction
+                maskClassName={classes.tourBackground}
+                highlightedMaskClassName={classes.Mask}
+                nextButton={
+                  <Button
+                    size="medium"
+                    variant="outlined"
+                    style={{ fontWeight: 400 }}
+                    small
+                  >
+                    Next
+                  </Button>
+                }
+                prevButton={
+                  <Button
+                    size="medium"
+                    variant="outlined"
+                    style={{ fontWeight: 400 }}
+                  >
+                    Back
+                  </Button>
+                }
+                lastStepNextButton={
+                  <Button
+                    size="medium"
+                    variant="outlined"
+                    style={{ fontWeight: 400 }}
+                  >
+                    Done!
+                  </Button>
+                }
+              />
+              <Fab
+                className={classes.tourFab}
+                variant="extended"
+                onClick={this.openTour}
+              >
+                Tutorial
+              </Fab>
             </div>
           ) : (
             <h3>Please sign in...</h3>
@@ -146,6 +213,59 @@ export class Profile extends Component {
     );
   }
 }
+
+const steps = [
+  {
+    selector: '[tourName="ProfileSidebar"]',
+    content: (
+      <div>
+        <h3>👋 My Profile</h3>
+        <p>
+          Where you'll find all your relevant Spotify information. Click on your
+          profile picture to see your full profile!
+        </p>
+      </div>
+    ),
+  },
+  {
+    selector: '[tourName="Search"]',
+    content: (
+      <div>
+        <h3>Search</h3>
+        <p>Search</p>
+      </div>
+    ),
+  },
+  {
+    selector: '[tourName="Post"]',
+    content: (
+      <div>
+        <h3>Post</h3>
+        <p>Post</p>
+      </div>
+    ),
+  },
+  {
+    selector: '[tourName="TrendingSidebar"]',
+    content: (
+      <div>
+        <h3>Trending</h3>
+        <p>Trending</p>
+      </div>
+    ),
+  },
+  {
+    content: (
+      <div>
+        <h3>👏 That's it!</h3>
+        <p>
+          That's all for now. Start sharing some of your favorite music! The
+          world is waiting...
+        </p>
+      </div>
+    ),
+  },
+];
 
 Profile.propTypes = {
   classes: PropTypes.object.isRequired,
