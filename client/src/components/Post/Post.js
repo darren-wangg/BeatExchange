@@ -31,6 +31,7 @@ const ALBUM_SUBSTR = 30;
 const styles = (theme) => ({
   container: {
     width: "100%",
+    maxWidth: "100%",
     margin: "auto",
     padding: "25px 0px",
     display: "flex",
@@ -106,7 +107,7 @@ const styles = (theme) => ({
   tags: {
     color: "#17A0FB",
     display: "inline",
-    marginRight: "8px",
+    marginRight: "5px",
     textDecoration: "underline",
   },
   comments: {
@@ -334,7 +335,7 @@ const Post = (props) => {
         }}
       >
         <DialogTitle id="form-dialog-title">
-          <Typography variant="h6" color="primary">
+          <Typography variant="h5" color="primary">
             Delete Post 🗑️
           </Typography>
         </DialogTitle>

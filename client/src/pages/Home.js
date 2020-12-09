@@ -9,14 +9,13 @@ import { MDBRow, MDBCol, MDBFormInline, MDBIcon } from "mdbreact";
 import { Grid, Typography, Tooltip } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Fade from "react-reveal/Fade";
-import Tour from "reactour";
 
 import Profile from "../components/Profile/Profile";
 import Feed from "../components/Feed/Feed";
 import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
 
-const TOTAL_RESULTS = 15;
+const TOTAL_RESULTS = 10;
 
 const styles = (theme) => ({
   search: {

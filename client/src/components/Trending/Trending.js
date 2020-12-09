@@ -11,8 +11,8 @@ import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
 const TITLE_SUBSTR = 24;
 const NEWS_TITLE_SUBSTR = 50;
-const NEWS_DESCRIPTION_SUBSTR = 200;
-const NEWS_API_KEY = "0ae39ff91005420e99d096f5d224e223";
+const NEWS_DESCRIPTION_SUBSTR = 250;
+const NEWS_API_KEY = "80053926243a4d1b8e7be27da229fcb3";
 const NEWS_QUERY =
   "https://newsapi.org/v2/everything?q=music&apiKey=" + NEWS_API_KEY;
 const LAST_FM_KEY = "f6fb36743399303c53f0c7dbdcc4ea06";
@@ -52,7 +52,8 @@ const styles = theme => ({
   releases: {
     fontWeight: "500",
     textAlign: "left",
-    paddingLeft: "25px"
+    paddingLeft: "25px",
+    margin: "15px auto 10px auto"
   },
   releaseMenu: {
     display: "block",
@@ -82,6 +83,14 @@ const styles = theme => ({
       height: "350px",
       width: "250px"
     }
+  },
+  newsMenu: {
+    display: "block",
+    height: "500px",
+    overflowX: "auto",
+    overflowY: "hidden",
+    whiteSpace: "nowrap",
+    borderBottom: "2px solid #E0E0E0"
   },
   trendImg: {
     width: "175px",
@@ -473,7 +482,7 @@ export class Trending extends Component {
               >
                 <p className={classes.releases}>News</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.news}</MDBRow>
+              <MDBRow className={classes.newsMenu}>{this.state.news}</MDBRow>
             </div>
           )}
         </MDBCol>

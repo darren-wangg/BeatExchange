@@ -222,9 +222,19 @@ export class PostBox extends Component {
 
   handleTagChange = (e) => {
     e.preventDefault();
-    this.setState({
-      tags: e.target.value,
-    });
+    if (this.state.tags.length < 3) {
+      this.setState({
+        tags: e.target.value,
+      });
+    } else {
+      this.setState({
+        snackbar: {
+          open: true,
+          severity: "error",
+          msg: "Can only assign 3 tags. Please try again.",
+        },
+      });
+    }
   };
 
   millisToMinutesAndSeconds(millis) {
@@ -295,7 +305,6 @@ export class PostBox extends Component {
                 : "Unable to submit your post. Please try again.",
           },
         });
-        console.log("SNACKBAR SUCCESS: ", this.state.snackbar);
       })
       .catch((error) => {
         console.error(error);
@@ -306,7 +315,6 @@ export class PostBox extends Component {
             msg: "There was an error submitting your post. Please try again.",
           },
         });
-        console.log("SNACKBAR ERROR: ", this.state.snackbar);
       });
     this.setState({
       active: false,

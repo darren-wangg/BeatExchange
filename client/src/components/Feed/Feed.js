@@ -5,7 +5,6 @@ import { MDBCol, MDBRow } from "mdbreact";
 import { CircularProgress } from "@material-ui/core";
 import Post from "../Post/Post";
 import axios from "axios";
-import Tour from "reactour";
 // import InfiniteScroll from "react-infinite-scroller";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 
@@ -29,11 +28,16 @@ const styles = (theme) => ({
   },
   wall: {
     width: "100%",
+    maxWidth: "100%",
     margin: "auto",
-    height: "115vh",
+    height: "125vh",
+    overflowX: "hidden",
     overflowY: "scroll",
-    [theme.breakpoints.down("lg")]: {
+    [theme.breakpoints.down("md")]: {
       height: "150vh",
+    },
+    [theme.breakpoints.down("lg")]: {
+      height: "175vh",
     }
   },
 });

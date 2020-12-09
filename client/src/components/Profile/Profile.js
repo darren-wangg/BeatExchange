@@ -42,9 +42,9 @@ const styles = (theme) => ({
   },
   tourFab: {
     marginTop: "50px",
-    color: "#000",
     height: "55px",
     width: "150px",
+    color: '#fff',
     "&:hover": {
       transform: "scale(1.05)",
     },
@@ -221,8 +221,7 @@ const steps = [
       <div>
         <h3>👋 My Profile</h3>
         <p>
-          Where you'll find all your relevant Spotify information. Click on your
-          profile picture to see your full profile!
+            Where you'll find all your relevant Spotify information. Click on your profile picture to see your full profile!
         </p>
       </div>
     ),
@@ -231,8 +230,10 @@ const steps = [
     selector: '[tourName="Search"]',
     content: (
       <div>
-        <h3>Search</h3>
-        <p>Search</p>
+        <h3>🔍 Search & Post</h3>
+        <p>
+          Search for any song you want to share, select it, add a message and some tags (optional), and post. It's that easy!
+        </p>
       </div>
     ),
   },
@@ -240,8 +241,10 @@ const steps = [
     selector: '[tourName="Post"]',
     content: (
       <div>
-        <h3>Post</h3>
-        <p>Post</p>
+        <h3>🌎 Post</h3>
+        <p>
+          These are posts from the community, each with a user, a song, and a message. Like what you see? Give it a heart!
+        </p>
       </div>
     ),
   },
@@ -249,8 +252,10 @@ const steps = [
     selector: '[tourName="TrendingSidebar"]',
     content: (
       <div>
-        <h3>Trending</h3>
-        <p>Trending</p>
+        <h3>📈 Trending</h3>
+        <p>
+          "Me" is where you'll see new releases tailored for you and your favorite songs & artists on Spotify. "World" is what's trending on the charts today, including artists, songs, and general music news.
+        </p>
       </div>
     ),
   },
