@@ -42,9 +42,10 @@ const styles = (theme) => ({
   },
   tourFab: {
     marginTop: "50px",
-    height: "55px",
-    width: "150px",
-    color: '#fff',
+    height: "60px",
+    width: "175px",
+    color: '#2B2B2C',
+    border: "1px solid #2B2B2C",
     "&:hover": {
       transform: "scale(1.05)",
     },
@@ -137,10 +138,10 @@ export class Profile extends Component {
               </Typography>
               <br />
               <Typography variant="subtitle1" color="primary">
-                Followers: {user.followers}
+                Followers:  {user.followers}
               </Typography>
               <Typography variant="subtitle1" color="primary">
-                Country: {user.country}
+                Country:  {user.country}
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 Type: {user.type}

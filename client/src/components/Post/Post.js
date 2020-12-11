@@ -23,10 +23,8 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from "axios";
 
-import { motion } from "framer-motion";
-
-const TITLE_SUBSTR = 40;
-const ALBUM_SUBSTR = 30;
+const TITLE_SUBSTR = 45;
+const ALBUM_SUBSTR = 40;
 
 const styles = (theme) => ({
   container: {
@@ -45,16 +43,16 @@ const styles = (theme) => ({
     width: "20px",
     height: "auto",
     cursor: "pointer",
-    margin: "5px",
+    margin: "10px",
     color: "#2B2B2C",
   },
   deleteBtn: {
     background: "#1edd88",
     color: "white",
-    padding: "15px 25px",
+    padding: "12px 24px",
     border: "none",
     borderRadius: "5px",
-    margin: "auto 15px",
+    margin: "15px 15px 0px 15px",
     "&:hover": {
       backgroundColor: "#1bcb7f",
     },
@@ -342,7 +340,7 @@ const Post = (props) => {
         <DialogContent>
           <DialogContentText>
             <Typography variant="body1" color="primary">
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this post? It will be deleted permanently.
             </Typography>
           </DialogContentText>
           <button
@@ -397,10 +395,6 @@ const Post = (props) => {
             <Typography variant="subtitle1" color="textPrimary">
               {data.user.name}
             </Typography>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2 }}
-            />
             {data.likes.some((like) => like.id === user.id) ? (
               <Tooltip
                 placement="bottom"

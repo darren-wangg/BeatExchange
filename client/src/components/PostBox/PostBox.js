@@ -19,14 +19,18 @@ import {
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CancelIcon from "@material-ui/icons/Cancel";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
 import hash from "object-hash";
 
+const TITLE_SUBSTR = 32;
+const ALBUM_SUBSTR = 30;
+
 const styles = (theme) => ({
   container: {
-    maxHeight: "500px",
+    maxHeight: "450px",
     margin: "auto",
-    padding: "25px 0px",
+    padding: "25px 0px 15px 0px",
     backgroundColor: "#EFEFEF",
     width: "100%",
     display: "block",
@@ -41,7 +45,11 @@ const styles = (theme) => ({
     height: "auto",
     cursor: "pointer",
     margin: "auto",
-    display: "flex",
+    position: "absolute",
+    zIndex: "99999",
+    color: "#FAFAFA",
+    top: "-12px",
+    left: "-12px",
   },
   songContainer: {
     width: "100%",
@@ -49,6 +57,8 @@ const styles = (theme) => ({
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
     boxShadow: "0 15px 10px -10px #2B2B2C",
+    position: "relative",
+    display: "flex",
     [theme.breakpoints.down("md")]: {
       width: "90%",
     },
@@ -109,6 +119,12 @@ const styles = (theme) => ({
   tag: {
     margin: "3px",
     color: "#1D87F0",
+  },
+  more: {
+    width: "30px",
+    height: "auto",
+    cursor: "pointer",
+    color: "#CCCCCC",
   },
 });
 
@@ -355,61 +371,99 @@ export class PostBox extends Component {
                   alignItems="center"
                   style={{ marginBottom: "25px" }}
                 >
-                  <Grid item xs={2} md={2}>
-                    <Tooltip
-                      placement="bottom"
-                      title={<p className={classes.tooltip}>Delete song</p>}
-                    >
-                      <CancelIcon
-                        className={classes.close}
-                        onClick={() => this.deleteChosen()}
-                      />
-                    </Tooltip>
-                  </Grid>
+                  <Grid item xs={2} md={2} />
                   <Grid item xs={8} md={8}>
-                    <a href={chosen.external_urls.spotify} target="_blank">
-                      <Grid
-                        container
-                        direction="row"
-                        spacing={4}
-                        justify="center"
-                        alignItems="center"
-                        className={classes.songContainer}
+                    <Grid
+                      container
+                      direction="row"
+                      spacing={4}
+                      justify="center"
+                      alignItems="center"
+                      className={classes.songContainer}
+                    >
+                      <Tooltip
+                        placement="bottom"
+                        title={<p className={classes.tooltip}>Delete song</p>}
                       >
-                        <Grid item xs={2} md={2}>
-                          <img
-                            className={classes.songImg}
-                            src={chosen.album.images[0].url}
-                          />
-                        </Grid>
-                        <Grid item xs={4} md={4}>
+                        <CancelIcon
+                          className={classes.close}
+                          onClick={() => this.deleteChosen()}
+                        />
+                      </Tooltip>
+                      <Grid item xs={2} md={2}>
+                        <img
+                          className={classes.songImg}
+                          src={chosen.album.images[0].url}
+                        />
+                      </Grid>
+                      <Grid item xs={4} md={4}>
+                        {chosen.name.length > TITLE_SUBSTR ? (
+                          <Tooltip
+                            placement="bottom"
+                            title={
+                              <p className={classes.tooltip}>{chosen.name}</p>
+                            }
+                          >
+                            <Typography variant="subtitle1" color="primary">
+                              {chosen.name.substring(0, TITLE_SUBSTR) + "..."}
+                            </Typography>
+                          </Tooltip>
+                        ) : (
                           <Typography variant="subtitle1" color="primary">
                             {chosen.name}
                           </Typography>
-                          <Typography variant="body1" color="secondary">
-                            {chosen.artists[0].name}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={4} md={4}>
+                        )}
+                        <Typography variant="body1" color="secondary">
+                          {chosen.artists[0].name}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={3} md={3}>
+                        {chosen.album.name.length > ALBUM_SUBSTR ? (
+                          <Tooltip
+                            placement="bottom"
+                            title={
+                              <p className={classes.tooltip}>
+                                {chosen.album.name}
+                              </p>
+                            }
+                          >
+                            <Typography variant="subtitle1" color="primary">
+                              {chosen.album.name.substring(0, ALBUM_SUBSTR) +
+                                "..."}
+                            </Typography>
+                          </Tooltip>
+                        ) : (
                           <Typography variant="subtitle1" color="primary">
                             {chosen.album.name}
                           </Typography>
-                        </Grid>
-                        <Grid item xs={2} md={2}>
-                          {chosen.type === "track" ? (
-                            <Typography variant="subtitle1" color="secondary">
-                              {this.millisToMinutesAndSeconds(
-                                chosen.duration_ms
-                              )}
-                            </Typography>
-                          ) : (
-                            <Typography variant="subtitle1" color="secondary">
-                              {chosen.release_date}
-                            </Typography>
-                          )}
-                        </Grid>
+                        )}
                       </Grid>
-                    </a>
+                      <Grid item xs={2} md={2}>
+                        {chosen.type === "track" ? (
+                          <Typography variant="subtitle1" color="secondary">
+                            {this.millisToMinutesAndSeconds(chosen.duration_ms)}
+                          </Typography>
+                        ) : (
+                          <Typography variant="subtitle1" color="secondary">
+                            {chosen.release_date}
+                          </Typography>
+                        )}
+                      </Grid>
+                      <Grid item xs={1} md={1} style={{ padding: "0px" }}>
+                        <a href={chosen.external_urls.spotify} target="_blank">
+                          <Tooltip
+                            placement="bottom"
+                            title={
+                              <p className={classes.tooltip}>
+                                Click for full song info
+                              </p>
+                            }
+                          >
+                            <MoreVertIcon className={classes.more} />
+                          </Tooltip>
+                        </a>
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <Grid item xs={2} md={2}>
                     <Typography variant="body1" color="textPrimary">
@@ -466,8 +520,8 @@ export class PostBox extends Component {
               <button
                 className={classes.postBtn}
                 style={{
-                  pointerEvents: this.state.message ? "" : "none",
-                  opacity: this.state.message ? "1" : "0.7",
+                  pointerEvents: this.state.message.trim() ? "" : "none",
+                  opacity: this.state.message.trim() ? "1" : "0.7",
                 }}
               >
                 Post
