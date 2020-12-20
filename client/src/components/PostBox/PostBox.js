@@ -24,14 +24,14 @@ import axios from "axios";
 import hash from "object-hash";
 
 const TITLE_SUBSTR = 32;
-const ALBUM_SUBSTR = 30;
+const ALBUM_SUBSTR = 20;
 
 const styles = (theme) => ({
   container: {
     maxHeight: "450px",
     margin: "auto",
     padding: "25px 0px 15px 0px",
-    backgroundColor: "#EFEFEF",
+    backgroundColor: "#DEDEDE",
     width: "100%",
     display: "block",
     fontFamily: "Rubik",
@@ -46,7 +46,6 @@ const styles = (theme) => ({
     cursor: "pointer",
     margin: "auto",
     position: "absolute",
-    zIndex: "99999",
     color: "#FAFAFA",
     top: "-12px",
     left: "-12px",
@@ -78,8 +77,9 @@ const styles = (theme) => ({
     width: "100%",
   },
   textArea: {
-    width: "80%",
-    height: "200px",
+    resize: "none",
+    width: "70%",
+    height: "190px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -96,7 +96,7 @@ const styles = (theme) => ({
     border: "none",
     borderRadius: "5px",
     position: "absolute",
-    right: "15%",
+    right: "20%",
     bottom: "15%",
   },
   tooltip: {
@@ -109,7 +109,7 @@ const styles = (theme) => ({
     minWidth: "100px",
     maxWidth: "250px",
     position: "absolute",
-    left: "15%",
+    left: "20%",
     bottom: "15%",
   },
   tags: {
@@ -172,6 +172,7 @@ const tags = [
   "lofi",
   "love",
   "metal",
+  "new",
   "old-school",
   "piano",
   "pop",

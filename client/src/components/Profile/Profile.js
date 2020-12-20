@@ -45,6 +45,7 @@ const styles = (theme) => ({
     height: "60px",
     width: "175px",
     color: '#2B2B2C',
+    backgroundColor: '#DEDEDE',
     border: "1px solid #2B2B2C",
     "&:hover": {
       transform: "scale(1.05)",

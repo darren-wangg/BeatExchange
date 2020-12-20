@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+require('dotenv').config();
 
 const posts = require("./routes/api/posts");
 
@@ -9,16 +10,15 @@ const app = express();
 // Body Parser Middleware
 app.use(bodyParser.json());
 
-// DB COnfig
-const db = require("./config/keys").mongoURI;
-
 // Connect to Mongo
+console.log("MONGO URI: ", process.env.MONGO_URI);
+
 mongoose
-  .connect(db)
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true })
   .then(() => {
     console.log("MongoDB Connected...");
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));
 
 // Use Routes
 app.use("/api/posts", posts);

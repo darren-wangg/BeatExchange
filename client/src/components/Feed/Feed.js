@@ -96,7 +96,7 @@ export class Feed extends Component {
         <MDBCol className={classes.container}>
           <CircularProgress
             size={150}
-            style={{ margin: "auto", color: "#1edd88" }}
+            style={{ margin: "10% auto auto auto", color: "#1edd88" }}
           />
         </MDBCol>
       );

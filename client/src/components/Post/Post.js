@@ -35,7 +35,7 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderBottom: "2px solid #E0E0E0",
+    borderBottom: "2px solid #DEDEDE",
     textAlign: "center",
   },
   close: {

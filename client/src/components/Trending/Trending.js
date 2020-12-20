@@ -12,10 +12,10 @@ const TOTAL_RELEASES = 10;
 const TITLE_SUBSTR = 24;
 const NEWS_TITLE_SUBSTR = 50;
 const NEWS_DESCRIPTION_SUBSTR = 250;
-const NEWS_API_KEY = "80053926243a4d1b8e7be27da229fcb3";
+const NEWS_API_KEY = process.env.REACT_APP_NEWS_API_KEY;
 const NEWS_QUERY =
   "https://newsapi.org/v2/everything?q=music&apiKey=" + NEWS_API_KEY;
-const LAST_FM_KEY = "f6fb36743399303c53f0c7dbdcc4ea06";
+const LAST_FM_KEY = process.env.REACT_APP_LASTFM_API_KEY;
 const LAST_FM_TRACKS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=" +
   LAST_FM_KEY +
@@ -60,7 +60,7 @@ const styles = theme => ({
     overflowX: "auto",
     whiteSpace: "nowrap",
     paddingBottom: "25px",
-    borderBottom: "2px solid #E0E0E0"
+    borderBottom: "2px solid #DEDEDE"
   },
   releaseCol: {
     marginTop: "10px",
