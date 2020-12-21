@@ -238,7 +238,7 @@ export class Trending extends Component {
                   {artist.playcount
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                  Plays
+                  plays
                 </p>
               </MDBCol>
             );

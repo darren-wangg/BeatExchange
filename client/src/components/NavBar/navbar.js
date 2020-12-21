@@ -12,7 +12,7 @@ const styles = theme => ({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#2b2b2c",
-    fontSize: "1rem"
+    fontSize: "1.2rem"
   },
   logoContainer: {
     marginLeft: "10%"
