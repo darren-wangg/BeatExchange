@@ -7,10 +7,13 @@
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 var request = require("request"); // "Request" library
 
-var client_id = "CLIENT_ID"; // Your client id
-var client_secret = "CLIENT_SECRET"; // Your secret
+var client_id = process.env.SPOTIFY_API_CLIENT;
+var client_secret = process.env.SPOTIFY_API_SECRET;
 
 // your application requests authorization
 var authOptions = {
@@ -30,7 +33,7 @@ request.post(authOptions, function(error, response, body) {
     // use the access token to access the Spotify Web API
     var token = body.access_token;
     var options = {
-      url: "https://api.spotify.com/v1/users/1219702411",
+      url: `https://api.spotify.com/v1/users/${process.env.SPOTIFY_API_ID}`,
       headers: {
         Authorization: "Bearer " + token
       },

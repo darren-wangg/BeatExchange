@@ -156,7 +156,7 @@ export class Trending extends Component {
         <img
           className={classes.trendImg}
           src={loading}
-          alt="Please log in..."
+          alt="blank album art"
         />
       </MDBCol>
     );
@@ -294,6 +294,9 @@ export class Trending extends Component {
     this.props.spotifyApi
       .getMyTopArtists({ limit: TOTAL_RELEASES })
       .then(data => {
+        if (data.items.length == 0) {
+          return;
+        }
         data.items.forEach(artist =>
           artists.push(
             <MDBCol className={classes.releaseCol} key={artist.id}>
@@ -326,6 +329,9 @@ export class Trending extends Component {
     this.props.spotifyApi
       .getMyTopTracks({ limit: TOTAL_RELEASES })
       .then(data => {
+        if (data.items.length == 0) {
+          return;
+        }
         data.items.forEach(track =>
           tracks.push(
             <MDBCol className={classes.releaseCol} key={track.id}>

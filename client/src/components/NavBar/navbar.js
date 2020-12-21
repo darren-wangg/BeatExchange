@@ -19,9 +19,6 @@ const styles = theme => ({
   },
   logo: {
     color: "white",
-    "&:hover": {
-      color: "#1e87f0"
-    }
   },
   navbar: {
     marginRight: "10%"
