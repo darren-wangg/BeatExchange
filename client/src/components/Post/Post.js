@@ -499,7 +499,7 @@ const Post = (props) => {
                         placement="bottom"
                         title={
                           <p className={classes.tooltip}>
-                            Click for full song info
+                            More song info
                           </p>
                         }
                       >

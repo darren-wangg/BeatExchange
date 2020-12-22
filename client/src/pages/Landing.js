@@ -49,7 +49,7 @@ const styles = (theme) => ({
     }
   },
   image: {
-    opacity: "0.4"
+    opacity: "0.7"
   }
 });
 

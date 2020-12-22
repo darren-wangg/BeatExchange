@@ -414,6 +414,12 @@ export class Trending extends Component {
       });
   }
 
+  handleSelect(k) {
+    let scrollBar = document.getElementById("releases");
+    scrollBar.scrollLeft = 0;
+    this.setState({ key: k });
+  }
+
   render() {
     const { classes } = this.props;
     if (this.state.loading) {
@@ -437,7 +443,7 @@ export class Trending extends Component {
             className={classes.tabs}
             id="controlled-tab-example"
             activeKey={this.state.key}
-            onSelect={k => this.setState({ key: k })}
+            onSelect={k => this.handleSelect(k)}
           >
             <Tab eventKey="me" title="Me" />
             <Tab eventKey="world" title="World" />
@@ -450,21 +456,21 @@ export class Trending extends Component {
               >
                 <p className={classes.releases}>New Albums</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.myAlbums}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myAlbums}</MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>Your all-time top artists on Spotify</p>}
               >
                 <p className={classes.releases}>My Artists</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.myArtists}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myArtists}</MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>Your all-time top songs on Spotify</p>}
               >
                 <p className={classes.releases}>My Songs</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.myTracks}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myTracks}</MDBRow>
             </div>
           ) : (
             <div className={classes.world}>
@@ -474,21 +480,21 @@ export class Trending extends Component {
               >
                 <p className={classes.releases}>Top Artists</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.artists}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.artists}</MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>World top songs</p>}
               >
                 <p className={classes.releases}>Top Songs</p>
               </Tooltip>
-              <MDBRow className={classes.releaseMenu}>{this.state.songs}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.songs}</MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>World music news</p>}
               >
                 <p className={classes.releases}>News</p>
               </Tooltip>
-              <MDBRow className={classes.newsMenu}>{this.state.news}</MDBRow>
+              <MDBRow id="releases" className={classes.newsMenu}>{this.state.news}</MDBRow>
             </div>
           )}
         </MDBCol>

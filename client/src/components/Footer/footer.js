@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-const GITHUB = "https://github.com/darren-wangg";
+const GITHUB = "https://github.com/darren-wangg/BeatExchange";
 const INSTA = "https://instagram.com/darrenwang_";
 const FACEBOOK = "https://www.facebook.com/darrenwangg";
 const TWITTER = "https://www.twitter.com/darren_yupio";
