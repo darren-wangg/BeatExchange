@@ -340,7 +340,8 @@ const Post = (props) => {
         <DialogContent>
           <DialogContentText>
             <Typography variant="body1" color="primary">
-              Are you sure you want to delete this post? It will be deleted permanently.
+              Are you sure you want to delete this post? It will be deleted
+              permanently.
             </Typography>
           </DialogContentText>
           <button
@@ -498,9 +499,7 @@ const Post = (props) => {
                       <Tooltip
                         placement="bottom"
                         title={
-                          <p className={classes.tooltip}>
-                            More song info
-                          </p>
+                          <p className={classes.tooltip}>More song info</p>
                         }
                       >
                         <MoreVertIcon className={classes.more} />
@@ -536,17 +535,21 @@ const Post = (props) => {
                   {data.text}
                 </Typography>
               </Grid>
-              <Tooltip
-                placement="bottom"
-                title={<p className={classes.tooltip}>Related tags</p>}
-              >
-                <Grid item xs={3} md={3}>
-                  {/* tags, comments */}
-                  <Typography variant="body1">
-                    {displayTags(data.tags)}
-                  </Typography>
-                </Grid>
-              </Tooltip>
+              {data.tags.length > 0 ? (
+                <Tooltip
+                  placement="bottom"
+                  title={<p className={classes.tooltip}>Related tags</p>}
+                >
+                  <Grid item xs={3} md={3}>
+                    {/* tags, comments */}
+                    <Typography variant="body1">
+                      {displayTags(data.tags)}
+                    </Typography>
+                  </Grid>
+                </Tooltip>
+              ) : (
+                <Grid item xs={3} md={3} />
+              )}
             </Grid>
           </MDBRow>
         </Grid>

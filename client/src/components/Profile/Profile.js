@@ -152,7 +152,7 @@ export class Profile extends Component {
                 placement="bottom"
                 title={
                   <p className={classes.tooltip}>
-                    Your unique Spotify ID number
+                    Your unique Spotify ID
                   </p>
                 }
               >

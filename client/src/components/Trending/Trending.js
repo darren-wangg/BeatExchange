@@ -10,11 +10,12 @@ import { CircularProgress, Tooltip } from "@material-ui/core";
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
 const TITLE_SUBSTR = 24;
-const NEWS_TITLE_SUBSTR = 50;
-const NEWS_DESCRIPTION_SUBSTR = 250;
-const NEWS_API_KEY = process.env.REACT_APP_NEWS_API_KEY;
+const NEWS_TITLE_SUBSTR = 100;
+const NEWS_DESCRIPTION_SUBSTR = 200;
+const NYT_KEY = process.env.REACT_APP_NYT_API_KEY;
 const NEWS_QUERY =
-  "https://newsapi.org/v2/everything?q=music&apiKey=" + NEWS_API_KEY;
+  "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=music&api-key=" +
+  NYT_KEY;
 const LAST_FM_KEY = process.env.REACT_APP_LASTFM_API_KEY;
 const LAST_FM_TRACKS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=" +
@@ -29,7 +30,7 @@ const LAST_FM_ARTISTS_QUERY =
   "&limit=" +
   TOTAL_RELEASES;
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     fontFamily: "Rubik",
     paddingTop: "25px",
@@ -37,30 +38,30 @@ const styles = theme => ({
     textAlign: "center",
     height: "100%",
     [theme.breakpoints.down("md")]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
   tabs: {
-    margin: "auto"
+    margin: "auto",
   },
   me: {
-    marginTop: "25px"
+    marginTop: "25px",
   },
   world: {
-    marginTop: "25px"
+    marginTop: "25px",
   },
   releases: {
     fontWeight: "500",
     textAlign: "left",
     paddingLeft: "25px",
-    margin: "15px auto 10px auto"
+    margin: "15px auto 10px auto",
   },
   releaseMenu: {
     display: "block",
     overflowX: "auto",
     whiteSpace: "nowrap",
     paddingBottom: "25px",
-    borderBottom: "2px solid #DEDEDE"
+    borderBottom: "2px solid #DEDEDE",
   },
   releaseCol: {
     marginTop: "10px",
@@ -68,21 +69,27 @@ const styles = theme => ({
     display: "inline-block",
     float: "none",
     [theme.breakpoints.down("md")]: {
-      width: "200px"
-    }
+      width: "200px",
+    },
   },
   newsCol: {
     display: "inline-block",
     float: "none",
-    bottom: "50px",
     height: "400px",
     width: "300px",
     wordBreak: "break-all",
     whiteSpace: "normal",
+    marginRight: "20px",
     [theme.breakpoints.down("md")]: {
       height: "350px",
-      width: "250px"
-    }
+      width: "275px",
+      marginRight: "10px",
+    },
+  },
+  newsRow: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   newsMenu: {
     display: "block",
@@ -90,7 +97,7 @@ const styles = theme => ({
     overflowX: "auto",
     overflowY: "hidden",
     whiteSpace: "nowrap",
-    borderBottom: "2px solid #E0E0E0"
+    borderBottom: "2px solid #E0E0E0",
   },
   trendImg: {
     width: "175px",
@@ -98,25 +105,27 @@ const styles = theme => ({
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.05)"
+      transform: "scale(1.05)",
     },
     [theme.breakpoints.down("md")]: {
       width: "125px",
-      height: "125px"
-    }
+      height: "125px",
+    },
   },
   newsImg: {
+    width: "200px",
+    height: "auto",
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.05)"
-    }
+      transform: "scale(1.05)",
+    },
   },
   tooltip: {
     fontWeight: "300",
     fontSize: "0.8rem",
-    margin: "10px auto"
-  }
+    margin: "10px auto",
+  },
 });
 
 export class Trending extends Component {
@@ -130,7 +139,7 @@ export class Trending extends Component {
       artists: [],
       songs: [],
       news: [],
-      loading: true
+      loading: true,
     };
   }
 
@@ -143,7 +152,7 @@ export class Trending extends Component {
     this.getWorldReleases();
     this.getNews();
     this.setState({
-      loading: false
+      loading: false,
     });
   }
 
@@ -153,11 +162,7 @@ export class Trending extends Component {
     let key = 1;
     cols.push(
       <MDBCol className={classes.releaseCol} key={key++}>
-        <img
-          className={classes.trendImg}
-          src={loading}
-          alt="blank album art"
-        />
+        <img className={classes.trendImg} src={loading} alt="blank album art" />
       </MDBCol>
     );
     this.setState({
@@ -166,7 +171,7 @@ export class Trending extends Component {
       myTracks: cols,
       artists: cols,
       songs: cols,
-      news: cols
+      news: cols,
     });
   }
 
@@ -175,8 +180,8 @@ export class Trending extends Component {
     const cols = [];
     this.props.spotifyApi
       .getNewReleases({ limit: TOTAL_RELEASES })
-      .then(data => {
-        data.albums.items.forEach(album =>
+      .then((data) => {
+        data.albums.items.forEach((album) =>
           cols.push(
             <MDBCol className={classes.releaseCol} key={album.id}>
               <a href={album.external_urls.spotify} target="_blank">
@@ -198,10 +203,10 @@ export class Trending extends Component {
           )
         );
         this.setState({
-          myAlbums: cols
+          myAlbums: cols,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -210,11 +215,11 @@ export class Trending extends Component {
     const { classes } = this.props;
     const artistCols = [];
     const trackCols = [];
-    axios.get(LAST_FM_ARTISTS_QUERY).then(res => {
-      res.data.artists.artist.forEach(artist =>
+    axios.get(LAST_FM_ARTISTS_QUERY).then((res) => {
+      res.data.artists.artist.forEach((artist) =>
         this.props.spotifyApi
           .searchArtists(artist.name, { limit: 1 })
-          .then(data => {
+          .then((data) => {
             artistCols.push(
               <MDBCol className={classes.releaseCol} key={artist.name}>
                 <a
@@ -245,16 +250,16 @@ export class Trending extends Component {
           })
       );
       this.setState({
-        artists: artistCols
+        artists: artistCols,
       });
     });
     axios
       .get(LAST_FM_TRACKS_QUERY)
-      .then(res => {
-        res.data.tracks.track.forEach(track =>
+      .then((res) => {
+        res.data.tracks.track.forEach((track) =>
           this.props.spotifyApi
             .searchTracks(track.name, { limit: 1 })
-            .then(data => {
+            .then((data) => {
               trackCols.push(
                 <MDBCol className={classes.releaseCol} key={track.name}>
                   <a
@@ -280,10 +285,10 @@ export class Trending extends Component {
             })
         );
         this.setState({
-          songs: trackCols
+          songs: trackCols,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -293,11 +298,11 @@ export class Trending extends Component {
     const artists = [];
     this.props.spotifyApi
       .getMyTopArtists({ limit: TOTAL_RELEASES })
-      .then(data => {
+      .then((data) => {
         if (data.items.length == 0) {
           return;
         }
-        data.items.forEach(artist =>
+        data.items.forEach((artist) =>
           artists.push(
             <MDBCol className={classes.releaseCol} key={artist.id}>
               <a href={artist.external_urls.spotify} target="_blank">
@@ -318,21 +323,21 @@ export class Trending extends Component {
           )
         );
         this.setState({
-          myArtists: artists
+          myArtists: artists,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
     const tracks = [];
     this.props.spotifyApi
       .getMyTopTracks({ limit: TOTAL_RELEASES })
-      .then(data => {
+      .then((data) => {
         if (data.items.length == 0) {
           return;
         }
-        data.items.forEach(track =>
+        data.items.forEach((track) =>
           tracks.push(
             <MDBCol className={classes.releaseCol} key={track.id}>
               <a href={track.external_urls.spotify} target="_blank">
@@ -355,10 +360,10 @@ export class Trending extends Component {
           )
         );
         this.setState({
-          myTracks: tracks
+          myTracks: tracks,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -379,37 +384,55 @@ export class Trending extends Component {
     const cols = [];
     axios
       .get(NEWS_QUERY)
-      .then(data => {
+      .then((data) => {
         data = data.data;
-        data.articles.slice(0, TOTAL_RELEASES).map(article =>
+        data.response.docs.slice(0, TOTAL_RELEASES).map((article) =>
           cols.push(
-            <MDBCol className={classes.newsCol} key={article.title}>
-              <a href={article.url} target="_blank">
-                <img
-                  className={classes.newsImg}
-                  src={article.urlToImage}
-                  alt="Album Art"
-                />
-              </a>
-              <p style={{ margin: "7px" }}>
-                <strong>
-                  {article.title.length > NEWS_TITLE_SUBSTR
-                    ? article.title.substring(0, NEWS_TITLE_SUBSTR) + "..."
-                    : article.title}
-                </strong>
-              </p>
-              <p style={{ margin: "5px" }}>
-                {article.description.substring(0, NEWS_DESCRIPTION_SUBSTR) +
-                  "..."}
-              </p>
+            <MDBCol className={classes.newsCol} key={article.web_url}>
+              <MDBRow className={classes.newsRow}>
+                <a href={article.web_url} target="_blank">
+                  <img
+                    className={classes.newsImg}
+                    src={`https://static01.nyt.com/${article.multimedia[29].url}`}
+                    alt="News Image"
+                  />
+                </a>
+              </MDBRow>
+              <MDBRow className={classes.newsRow}>
+                <p style={{ margin: "10px" }}>
+                  {article.snippet.length > NEWS_TITLE_SUBSTR ? (
+                    <Tooltip
+                      placement="bottom"
+                      title={
+                        <p className={classes.tooltip}>{article.snippet}</p>
+                      }
+                    >
+                      <strong>
+                        {article.snippet.substring(0, NEWS_TITLE_SUBSTR) +
+                          "..."}
+                      </strong>
+                    </Tooltip>
+                  ) : (
+                    <strong>{article.snippet}</strong>
+                  )}
+                </p>
+              </MDBRow>
+              <MDBRow className={classes.newsRow}>
+                <p style={{ margin: "8px", textAlign: "left" }}>
+                  {article.lead_paragraph.substring(
+                    0,
+                    NEWS_DESCRIPTION_SUBSTR
+                  ) + "..."}
+                </p>
+              </MDBRow>
             </MDBCol>
           )
         );
         this.setState({
-          news: cols
+          news: cols,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -432,10 +455,7 @@ export class Trending extends Component {
 
     return (
       <Fade>
-        <MDBCol
-          className={classes.container}
-          tourName="TrendingSidebar"
-        >
+        <MDBCol className={classes.container} tourName="TrendingSidebar">
           <h2>
             <u>Trending</u>
           </h2>
@@ -443,7 +463,7 @@ export class Trending extends Component {
             className={classes.tabs}
             id="controlled-tab-example"
             activeKey={this.state.key}
-            onSelect={k => this.handleSelect(k)}
+            onSelect={(k) => this.handleSelect(k)}
           >
             <Tab eventKey="me" title="Me" />
             <Tab eventKey="world" title="World" />
@@ -452,25 +472,43 @@ export class Trending extends Component {
             <div className={classes.me}>
               <Tooltip
                 placement="bottom"
-                title={<p className={classes.tooltip}>New album releases tailored for you</p>}
+                title={
+                  <p className={classes.tooltip}>
+                    New album releases tailored for you
+                  </p>
+                }
               >
                 <p className={classes.releases}>New Albums</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myAlbums}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>
+                {this.state.myAlbums}
+              </MDBRow>
               <Tooltip
                 placement="bottom"
-                title={<p className={classes.tooltip}>Your all-time top artists on Spotify</p>}
+                title={
+                  <p className={classes.tooltip}>
+                    Your all-time top artists on Spotify
+                  </p>
+                }
               >
                 <p className={classes.releases}>My Artists</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myArtists}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>
+                {this.state.myArtists}
+              </MDBRow>
               <Tooltip
                 placement="bottom"
-                title={<p className={classes.tooltip}>Your all-time top songs on Spotify</p>}
+                title={
+                  <p className={classes.tooltip}>
+                    Your all-time top songs on Spotify
+                  </p>
+                }
               >
                 <p className={classes.releases}>My Songs</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.myTracks}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>
+                {this.state.myTracks}
+              </MDBRow>
             </div>
           ) : (
             <div className={classes.world}>
@@ -480,21 +518,27 @@ export class Trending extends Component {
               >
                 <p className={classes.releases}>Top Artists</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.artists}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>
+                {this.state.artists}
+              </MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>World top songs</p>}
               >
                 <p className={classes.releases}>Top Songs</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>{this.state.songs}</MDBRow>
+              <MDBRow id="releases" className={classes.releaseMenu}>
+                {this.state.songs}
+              </MDBRow>
               <Tooltip
                 placement="bottom"
                 title={<p className={classes.tooltip}>World music news</p>}
               >
                 <p className={classes.releases}>News</p>
               </Tooltip>
-              <MDBRow id="releases" className={classes.newsMenu}>{this.state.news}</MDBRow>
+              <MDBRow id="releases" className={classes.newsMenu}>
+                {this.state.news}
+              </MDBRow>
             </div>
           )}
         </MDBCol>
@@ -505,7 +549,7 @@ export class Trending extends Component {
 
 Trending.propTypes = {
   classes: PropTypes.object.isRequired,
-  spotifyApi: PropTypes.object.isRequired
+  spotifyApi: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Trending);

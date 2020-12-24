@@ -30,14 +30,14 @@ const styles = (theme) => ({
     width: "100%",
     maxWidth: "100%",
     margin: "auto",
-    height: "125vh",
+    height: "130vh",
     overflowX: "hidden",
     overflowY: "scroll",
     [theme.breakpoints.down("md")]: {
-      height: "150vh",
+      height: "175vh",
     },
     [theme.breakpoints.down("lg")]: {
-      height: "175vh",
+      height: "200vh",
     }
   },
 });
