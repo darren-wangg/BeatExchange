@@ -299,7 +299,7 @@ export class Trending extends Component {
     this.props.spotifyApi
       .getMyTopArtists({ limit: TOTAL_RELEASES })
       .then((data) => {
-        if (data.items.length == 0) {
+        if (data.items.length === 0) {
           return;
         }
         data.items.forEach((artist) =>
@@ -334,7 +334,7 @@ export class Trending extends Component {
     this.props.spotifyApi
       .getMyTopTracks({ limit: TOTAL_RELEASES })
       .then((data) => {
-        if (data.items.length == 0) {
+        if (data.items.length === 0) {
           return;
         }
         data.items.forEach((track) =>
@@ -394,7 +394,7 @@ export class Trending extends Component {
                   <img
                     className={classes.newsImg}
                     src={`https://static01.nyt.com/${article.multimedia[29].url}`}
-                    alt="News Image"
+                    alt="News"
                   />
                 </a>
               </MDBRow>
@@ -455,7 +455,7 @@ export class Trending extends Component {
 
     return (
       <Fade>
-        <MDBCol className={classes.container} tourName="TrendingSidebar">
+        <MDBCol className={classes.container} tourname="TrendingSidebar">
           <h2>
             <u>Trending</u>
           </h2>

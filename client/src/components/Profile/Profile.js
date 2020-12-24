@@ -108,7 +108,7 @@ export class Profile extends Component {
     const { classes, user } = this.props;
     return (
       <MuiThemeProvider theme={lightTheme}>
-        <MDBCol className={classes.container} tourName="ProfileSidebar">
+        <MDBCol className={classes.container} tourname="ProfileSidebar">
           <Tooltip
             placement="bottom"
             title={<p className={classes.tooltip}>Your Spotify account</p>}
@@ -222,9 +222,9 @@ const steps = [
     selector: '[tourName="ProfileSidebar"]',
     content: (
       <div>
-        <h3>👋 My Profile</h3>
+        <h3><span role="img" aria-label="wave">👋</span> My Profile</h3>
         <p>
-            Where you'll find all your relevant Spotify information. Click on your profile picture to see your full profile!
+            Where you'll find all your relevant Spotify information. Click on your profile picture to see your full Spotify profile!
         </p>
       </div>
     ),
@@ -233,7 +233,7 @@ const steps = [
     selector: '[tourName="Search"]',
     content: (
       <div>
-        <h3>🔍 Search & Post</h3>
+        <h3><span role="img" aria-label="magnifying glass">🔍</span> Search & Post</h3>
         <p>
           Search for any song you want to share, select it, add a message and some tags (optional), and post. It's that easy!
         </p>
@@ -244,7 +244,7 @@ const steps = [
     selector: '[tourName="Post"]',
     content: (
       <div>
-        <h3>🌎 Post</h3>
+        <h3><span role="img" aria-label="world">🌎</span> Post</h3>
         <p>
           These are posts from the community, each with a user, a song, and a message. Like what you see? Give it a heart!
         </p>
@@ -255,7 +255,7 @@ const steps = [
     selector: '[tourName="TrendingSidebar"]',
     content: (
       <div>
-        <h3>📈 Trending</h3>
+        <h3><span role="img" aria-label="chart">📈</span> Trending</h3>
         <p>
           "Me" is where you'll see new releases tailored for you and your favorite songs & artists on Spotify. "World" is what's trending on the charts today, including artists, songs, and general music news.
         </p>
@@ -265,7 +265,7 @@ const steps = [
   {
     content: (
       <div>
-        <h3>👏 That's it!</h3>
+        <h3><span role="img" aria-label="clap">👏</span> That's it!</h3>
         <p>
           That's all for now. Start sharing some of your favorite music! The
           world is waiting...

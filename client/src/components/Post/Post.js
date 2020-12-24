@@ -334,7 +334,7 @@ const Post = (props) => {
       >
         <DialogTitle id="form-dialog-title">
           <Typography variant="h5" color="primary">
-            Delete Post 🗑️
+            Delete Post <span role="img" aria-label="trash">🗑️</span>
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -381,7 +381,7 @@ const Post = (props) => {
         justify="center"
         alignItems="center"
         className={classes.container}
-        tourName="Post"
+        tourname="Post"
       >
         <Grid item xs={2} md={2}>
           <MDBCol className={classes.user}>
@@ -389,7 +389,7 @@ const Post = (props) => {
             <a href={user.link} target="_blank">
               <img
                 src={data.user.image}
-                alt="User Image"
+                alt="User"
                 className={classes.userImg}
               />
             </a>
@@ -445,7 +445,7 @@ const Post = (props) => {
                 >
                   <Grid item xs={2} md={2}>
                     <a href={data.post.url} target="_blank">
-                      <img className={classes.songImg} src={data.post.image} />
+                      <img className={classes.songImg} src={data.post.image} alt="Track Art" />
                     </a>
                   </Grid>
                   <Grid item xs={4} md={4}>

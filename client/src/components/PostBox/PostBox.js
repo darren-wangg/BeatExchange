@@ -395,6 +395,7 @@ export class PostBox extends Component {
                         <img
                           className={classes.songImg}
                           src={chosen.album.images[0].url}
+                          alt="Track Art"
                         />
                       </Grid>
                       <Grid item xs={4} md={4}>

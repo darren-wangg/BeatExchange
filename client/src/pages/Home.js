@@ -291,7 +291,7 @@ export class Home extends Component {
                 justify="center"
                 alignItems="center"
                 className={classes.search}
-                tourName="Search"
+                tourname="Search"
               >
                 <Grid item xs={false} md={false}>
                   <MDBIcon icon="search" />
@@ -340,7 +340,7 @@ export class Home extends Component {
               )}
 
               {this.state.chosen &&
-                <PostBox user={this.state.user} chosen={this.state.chosen} tourName="PostBox" />
+                <PostBox user={this.state.user} chosen={this.state.chosen} tourname="PostBox" />
               }
 
               <Feed user={this.state.user} />
