@@ -10,7 +10,8 @@ const Post = require("../../models/Post");
 router.get("/", (req, res) => {
   Post.find()
     .sort({ date: -1 })
-    .then((posts) => res.json(posts));
+    .then((posts) => res.json(posts))
+    .catch((err) => res.status(404).json({ error: err, success: false }));
 });
 
 // @route   GET api/posts/:id
@@ -34,8 +35,9 @@ router.post("/", (req, res) => {
     tags: req.body.tags,
   });
 
-  newPost.save()
-    .then((post) => res.json({ post: post, success: true }))
+  newPost
+    .save()
+    .then((post) => res.status(200).json({ post: post, success: true }))
     .catch((err) => res.status(404).json({ error: err, success: false }));
 });
 
@@ -80,6 +82,15 @@ router.post("/:id/unlike", (req, res) => {
     }
   )
     .then(res.json({ user: req.body.user, success: true }))
+    .catch((err) => res.status(404).json({ error: err, success: false }));
+});
+
+// @route   PATCH api/posts/:id
+// @desc    Edit a post's text
+// @access  Public (should be private using authentication)
+router.patch("/:id", (req, res) => {
+  Post.updateOne({ _id: req.params.id }, { $set: { text: req.body.text } })
+    .then(res.status(200).json({ text: req.body.text, success: true }))
     .catch((err) => res.status(404).json({ error: err, success: false }));
 });
 
