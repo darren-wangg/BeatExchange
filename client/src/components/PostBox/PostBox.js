@@ -31,7 +31,7 @@ const styles = (theme) => ({
     maxHeight: "450px",
     margin: "auto",
     padding: "25px 0px 15px 0px",
-    backgroundColor: "#DEDEDE",
+    backgroundColor: "#FAFAFA",
     width: "100%",
     display: "block",
     fontFamily: "Rubik",
@@ -46,9 +46,12 @@ const styles = (theme) => ({
     cursor: "pointer",
     margin: "auto",
     position: "absolute",
-    color: "#FAFAFA",
+    color: "#DEDEDE",
     top: "-12px",
     left: "-12px",
+    [theme.breakpoints.down("md")]: {
+      width: "25px",
+    },
   },
   songContainer: {
     width: "100%",
@@ -79,7 +82,7 @@ const styles = (theme) => ({
   textArea: {
     resize: "none",
     width: "70%",
-    height: "190px",
+    height: "200px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -104,7 +107,7 @@ const styles = (theme) => ({
     fontSize: "0.8rem",
     margin: "10px auto",
   },
-  formControl: {
+  tagsForm: {
     margin: "auto",
     minWidth: "100px",
     maxWidth: "250px",
@@ -117,7 +120,7 @@ const styles = (theme) => ({
     flexWrap: "wrap",
   },
   tag: {
-    margin: "3px",
+    margin: "4px",
     color: "#1D87F0",
   },
   more: {
@@ -125,6 +128,9 @@ const styles = (theme) => ({
     height: "auto",
     cursor: "pointer",
     color: "#CCCCCC",
+    [theme.breakpoints.down("md")]: {
+      width: "25px",
+    },
   },
 });
 
@@ -139,7 +145,7 @@ const lightTheme = createMuiTheme({
     type: "light",
     primary: { main: "#fff" },
     secondary: { main: "#CCCCCC" },
-    textPrimary: { main: "#000000" },
+    textPrimary: { main: "#2b2b2c" },
   },
   typography: {
     useNextVariants: true,
@@ -213,6 +219,7 @@ export class PostBox extends Component {
   }
 
   handleClose = (e, reason) => {
+    e.preventDefault();
     if (reason === "clickaway") return;
     this.setState({
       snackbar: {
@@ -262,47 +269,51 @@ export class PostBox extends Component {
 
   createPost = (e) => {
     e.preventDefault();
-    if (this.state.message.length < 2) {
+    if (this.state.message.length <= 1) {
       this.setState({
         snackbar: {
           open: true,
           severity: "error",
-          msg: "Message is too short. Please try again.",
+          msg: "Message is too short.",
         },
       });
       return;
     }
-    const postID = this.props.chosen.id + this.props.user.id + new Date();
-    const newPost = {
-      id: hash(postID),
-      user: {
-        id: this.props.user.id,
-        name: this.props.user.username,
-        status: "author",
-        image: this.props.user.profile,
-        url: this.props.user.link,
-      },
-      post: {
-        id: this.props.chosen.id,
-        type: this.props.chosen.type,
-        name: this.props.chosen.name,
-        duration: this.props.chosen.duration_ms,
-        album: this.props.chosen.album.name,
-        artist: this.props.chosen.artists[0].name,
-        image: this.props.chosen.album.images[0].url,
-        url: this.props.chosen.external_urls.spotify,
-      },
-      text: this.state.message,
-      tags: this.state.tags,
-    };
-    this.setState(
-      {
-        data: newPost,
-      },
-      () => {
-        this.submitPost();
-      }
-    );
+    try {
+      const postID = this.props.chosen.id + this.props.user.id + new Date();
+      const newPost = {
+        id: hash(postID),
+        user: {
+          id: this.props.user.id,
+          name: this.props.user.username,
+          status: "author",
+          image: this.props.user.img,
+          url: this.props.user.link,
+        },
+        post: {
+          id: this.props.chosen.id,
+          type: this.props.chosen.type,
+          name: this.props.chosen.name,
+          duration: this.props.chosen.duration_ms,
+          album: this.props.chosen.album.name,
+          artist: this.props.chosen.artists[0].name,
+          image: this.props.chosen.album.images[0].url,
+          url: this.props.chosen.external_urls.spotify,
+        },
+        text: this.state.message,
+        tags: this.state.tags,
+      };
+      this.setState(
+        {
+          data: newPost,
+        },
+        () => {
+          this.submitPost();
+        }
+      );
+    } catch (err) {
+      console.error("Failed to create new post: ", err);
+    }
   };
 
   submitPost = () => {
@@ -324,7 +335,7 @@ export class PostBox extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to submit post: ", error);
         this.setState({
           snackbar: {
             open: true,
@@ -342,13 +353,12 @@ export class PostBox extends Component {
 
   render() {
     const { classes, chosen } = this.props;
-    console.log("SNACKBAR: ", this.state.snackbar);
 
     return (
       <MuiThemeProvider theme={lightTheme}>
         <Snackbar
           open={this.state.snackbar.open}
-          autoHideDuration={60000000}
+          autoHideDuration={4000}
           onClose={this.handleClose}
         >
           <Alert
@@ -441,10 +451,20 @@ export class PostBox extends Component {
                         )}
                       </Grid>
                       <Grid item xs={2} md={2}>
+                      {/* edit here for adding album, artist, podcast, etc. */}
                         {chosen.type === "track" ? (
-                          <Typography variant="subtitle1" color="secondary">
-                            {this.millisToMinutesAndSeconds(chosen.duration_ms)}
-                          </Typography>
+                          <Tooltip
+                            placement="bottom"
+                            title={
+                              <p className={classes.tooltip}>Song length</p>
+                            }
+                          >
+                            <Typography variant="subtitle1" color="secondary">
+                              {this.millisToMinutesAndSeconds(
+                                chosen.duration_ms
+                              )}
+                            </Typography>
+                          </Tooltip>
                         ) : (
                           <Typography variant="subtitle1" color="secondary">
                             {chosen.release_date}
@@ -456,9 +476,7 @@ export class PostBox extends Component {
                           <Tooltip
                             placement="bottom"
                             title={
-                              <p className={classes.tooltip}>
-                                Click for full song info
-                              </p>
+                              <p className={classes.tooltip}>More song info</p>
                             }
                           >
                             <MoreVertIcon className={classes.more} />
@@ -490,33 +508,38 @@ export class PostBox extends Component {
                 required
               ></textarea>
 
-              <FormControl className={classes.formControl}>
+              <FormControl className={classes.tagsForm}>
                 <InputLabel id="tags">Tags</InputLabel>
-                <Select
-                  labelId="tags"
-                  id="post tags"
-                  multiple
-                  value={this.state.tags}
-                  onChange={this.handleTagChange}
-                  input={<Input id="post tags" />}
-                  renderValue={(selected) => (
-                    <div className={classes.tags}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value}
-                          label={value}
-                          className={classes.tag}
-                        />
-                      ))}
-                    </div>
-                  )}
+                <Tooltip
+                  placement="left"
+                  title={<p className={classes.tooltip}> Add up to 3 tags</p>}
                 >
-                  {tags.map((tag) => (
-                    <MenuItem key={tag} value={tag}>
-                      {tag}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  <Select
+                    labelId="tags"
+                    id="post tags"
+                    multiple
+                    value={this.state.tags}
+                    onChange={this.handleTagChange}
+                    input={<Input id="post tags" />}
+                    renderValue={(selected) => (
+                      <div className={classes.tags}>
+                        {selected.map((value) => (
+                          <Chip
+                            key={value}
+                            label={value}
+                            className={classes.tag}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  >
+                    {tags.map((tag) => (
+                      <MenuItem key={tag} value={tag}>
+                        {tag}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Tooltip>
               </FormControl>
 
               <button

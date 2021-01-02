@@ -74,7 +74,7 @@ const styles = (theme) => ({
     },
   },
   songContainer: {
-    width: "90%",
+    width: "95%",
     margin: "auto",
     marginBottom: "15px",
     backgroundColor: "#2B2B2C",
@@ -137,7 +137,7 @@ const lightTheme = createMuiTheme({
     type: "light",
     primary: { main: "#fff" },
     secondary: { main: "#CCCCCC" },
-    textPrimary: { main: "#000000" },
+    textPrimary: { main: "#2b2b2c" },
   },
   typography: {
     useNextVariants: true,
@@ -306,7 +306,7 @@ const Post = (props) => {
     <MuiThemeProvider theme={lightTheme}>
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={handleSnackbarClose}
       >
         <Alert
@@ -334,7 +334,10 @@ const Post = (props) => {
       >
         <DialogTitle id="form-dialog-title">
           <Typography variant="h5" color="primary">
-            Delete Post <span role="img" aria-label="trash">🗑️</span>
+            Delete Post{" "}
+            <span role="img" aria-label="trash">
+              🗑️
+            </span>
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -445,7 +448,11 @@ const Post = (props) => {
                 >
                   <Grid item xs={2} md={2}>
                     <a href={data.post.url} target="_blank">
-                      <img className={classes.songImg} src={data.post.image} alt="Track Art" />
+                      <img
+                        className={classes.songImg}
+                        src={data.post.image}
+                        alt="Track Art"
+                      />
                     </a>
                   </Grid>
                   <Grid item xs={4} md={4}>
@@ -490,9 +497,14 @@ const Post = (props) => {
                     )}
                   </Grid>
                   <Grid item xs={2} md={2}>
-                    <Typography variant="subtitle1" color="secondary">
-                      {millisToMinutesAndSeconds(data.post.duration)}
-                    </Typography>
+                    <Tooltip
+                      placement="bottom"
+                      title={<p className={classes.tooltip}>Song length</p>}
+                    >
+                      <Typography variant="subtitle1" color="secondary">
+                        {millisToMinutesAndSeconds(data.post.duration)}
+                      </Typography>
+                    </Tooltip>
                   </Grid>
                   <Grid item xs={1} md={1} style={{ padding: "0px" }}>
                     <a href={data.post.url} target="_blank">

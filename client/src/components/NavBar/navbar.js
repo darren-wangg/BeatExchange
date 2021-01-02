@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({
+const styles = (theme) => ({
   nav: {
     fontFamily: "Rubik",
     height: "65px",
@@ -12,36 +12,35 @@ const styles = theme => ({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#2b2b2c",
-    fontSize: "1.2rem"
+    fontSize: "1rem",
   },
   logoContainer: {
-    marginLeft: "10%"
+    marginLeft: "10%",
   },
   logo: {
     color: "white",
   },
   navbar: {
-    marginRight: "10%"
+    marginRight: "15%",
   },
   home: {
     color: "white",
     padding: "10px 25px 0px 0px",
     "&:hover": {
       textDecoration: "none",
-      color: "#1e87f0"
-    }
+      color: "#1e87f0",
+    },
   },
   loginBtn: {
     background: "#1edd88",
     color: "white",
-    padding: "8px 20px",
+    padding: "6px 18px",
     border: "none",
     borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#1bcb7f",
-      color: "#1e87f0"
-    }
-  }
+    },
+  },
 });
 
 export class NavBar extends Component {
@@ -51,9 +50,7 @@ export class NavBar extends Component {
       <nav className={classes.nav}>
         <div className={classes.logoContainer}>
           <Link to="/">
-            <i
-              className={`fas fa-compact-disc fa-2x ${classes.logo}`}
-            ></i>
+            <i className={`fas fa-compact-disc fa-2x ${classes.logo}`} />
           </Link>
         </div>
         <div className={classes.navbar}>
@@ -70,7 +67,7 @@ export class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(NavBar);

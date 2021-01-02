@@ -46,7 +46,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="wave">👋</span> My Profile</h3>
         <p>
-            Where you'll find all your relevant Spotify information. Click on your profile picture to see your full Spotify profile!
+            Your Spotify information. Click on your profile picture to see your full Spotify profile!
         </p>
       </div>
     ),
@@ -57,7 +57,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="magnifying glass">🔍</span> Search & Post</h3>
         <p>
-          Search for any song you want to share, select it, add a message and some tags (optional), and post. It's that easy!
+          Search for any song you want to share, select it, add a message and tags (optional), and post. It's that easy!
         </p>
       </div>
     ),
@@ -79,7 +79,10 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="chart">📈</span> Trending</h3>
         <p>
-          "Me" is where you'll see new releases tailored for you and your favorite songs & artists on Spotify. "World" is what's trending on the charts today, including artists, songs, and general music news.
+          "Me": new releases tailored for you and your favorite songs & artists on Spotify.
+        </p>
+        <p>
+          "World": what's trending on the charts today, including artists, songs, and general music news.
         </p>
       </div>
     ),
@@ -89,7 +92,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="clap">👏</span> That's it!</h3>
         <p>
-          That's all for now. Start sharing some of your favorite music! The
+          Start sharing some of your favorite music! The
           world is waiting...
         </p>
       </div>

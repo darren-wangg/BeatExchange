@@ -20,8 +20,7 @@ const LAST_FM_KEY = process.env.REACT_APP_LASTFM_API_KEY;
 const LAST_FM_TRACKS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=" +
   LAST_FM_KEY +
-  "&format=json" +
-  "&limit=" +
+  "&format=json&limit=" +
   TOTAL_RELEASES;
 const LAST_FM_ARTISTS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=" +
@@ -37,6 +36,7 @@ const styles = (theme) => ({
     backgroundColor: "#FAFAFA",
     textAlign: "center",
     height: "100%",
+    color: "#2b2b2c",
     [theme.breakpoints.down("md")]: {
       display: "none",
     },
@@ -105,7 +105,7 @@ const styles = (theme) => ({
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.05)",
+      transform: "scale(1.02)",
     },
     [theme.breakpoints.down("md")]: {
       width: "125px",
@@ -118,7 +118,7 @@ const styles = (theme) => ({
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.05)",
+      transform: "scale(1.02)",
     },
   },
   tooltip: {

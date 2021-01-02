@@ -54,8 +54,8 @@ export class Feed extends Component {
 
   componentDidMount() {
     this.fetchPosts();
-    // refresh feed every 5 minutes
-    this.interval = setInterval(this.fetchPosts, 300000);
+    // refresh feed every 3 minutes
+    this.interval = setInterval(this.fetchPosts, 180000);
   }
 
   componentWillUnmount() {
@@ -95,8 +95,8 @@ export class Feed extends Component {
       return (
         <MDBCol className={classes.container}>
           <CircularProgress
-            size={150}
-            style={{ margin: "10% auto auto auto", color: "#1edd88" }}
+            size={100}
+            style={{ margin: "15% auto auto auto", color: "#1edd88" }}
           />
         </MDBCol>
       );
@@ -107,7 +107,7 @@ export class Feed extends Component {
         <MDBCol>
           <MDBRow className={classes.container}>
             <SentimentVeryDissatisfiedIcon
-              style={{ margin: "auto", width: "10%", height: "auto" }}
+              style={{ margin: "15% auto 2% auto", width: "10%", height: "auto" }}
             />
           </MDBRow>
           <MDBRow className={classes.container}>

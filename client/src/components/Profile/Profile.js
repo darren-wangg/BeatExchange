@@ -17,12 +17,13 @@ const styles = (theme) => ({
     textAlign: "center",
     height: "100%",
     margin: "auto",
+    color: "#2b2b2c",
     [theme.breakpoints.down("md")]: {
       display: "none",
     },
   },
   profileImg: {
-    width: "275px",
+    width: "250px",
     height: "auto",
     borderRadius: "3px",
     [theme.breakpoints.down("md")]: {
@@ -53,11 +54,11 @@ const styles = (theme) => ({
     },
   },
   tourBackground: {
-    filter: "blur(1px)",
-    opacity: "0.7",
+    filter: "blur(0px)",
+    opacity: "0.8",
   },
   Mask: {
-    outline: "solid 0px #FAFAFA",
+    outline: "solid 1px #fff",
   },
 });
 
@@ -72,7 +73,7 @@ const darkTheme = createMuiTheme({
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
-    primary: { main: "#000" },
+    primary: { main: "#2b2b2c" },
     secondary: { main: "#CCCCCC" },
   },
   typography: {
@@ -83,7 +84,7 @@ const lightTheme = createMuiTheme({
     fontWeightMedium: 500,
     subtitle1: {
       margin: "15px auto",
-      fontSize: "18px",
+      fontSize: "16px",
     },
   },
 });
@@ -130,7 +131,7 @@ export class Profile extends Component {
                 >
                   <img
                     className={classes.profileImg}
-                    src={user.profile}
+                    src={user.img}
                     alt="Profile"
                   />
                 </Tooltip>
@@ -167,7 +168,7 @@ export class Profile extends Component {
                 onRequestClose={this.closeTour}
                 className={classes.Tour}
                 accentColor="#1edd88"
-                rounded={10}
+                rounded={8}
                 disableInteraction
                 maskClassName={classes.tourBackground}
                 highlightedMaskClassName={classes.Mask}
@@ -178,7 +179,7 @@ export class Profile extends Component {
                     style={{ fontWeight: 400 }}
                     small
                   >
-                    Next
+                    &#62;
                   </Button>
                 }
                 prevButton={
@@ -187,7 +188,7 @@ export class Profile extends Component {
                     variant="outlined"
                     style={{ fontWeight: 400 }}
                   >
-                    Back
+                    &#60;
                   </Button>
                 }
                 lastStepNextButton={
@@ -209,7 +210,7 @@ export class Profile extends Component {
               </Fab>
             </div>
           ) : (
-            <h3>Please sign in...</h3>
+            <h3 className={classes.name}>Please sign in...</h3>
           )}
         </MDBCol>
       </MuiThemeProvider>
@@ -224,7 +225,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="wave">👋</span> My Profile</h3>
         <p>
-            Where you'll find all your relevant Spotify information. Click on your profile picture to see your full Spotify profile!
+            Your Spotify information. Click on your profile picture to see your full Spotify profile!
         </p>
       </div>
     ),
@@ -235,7 +236,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="magnifying glass">🔍</span> Search & Post</h3>
         <p>
-          Search for any song you want to share, select it, add a message and some tags (optional), and post. It's that easy!
+          Search for any song you want to share, select it, add a message and tags (optional), and post. It's that easy!
         </p>
       </div>
     ),
@@ -257,7 +258,10 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="chart">📈</span> Trending</h3>
         <p>
-          "Me" is where you'll see new releases tailored for you and your favorite songs & artists on Spotify. "World" is what's trending on the charts today, including artists, songs, and general music news.
+          "Me": new releases tailored for you and your favorite songs & artists on Spotify.
+        </p>
+        <p>
+          "World": what's trending on the charts today, including artists, songs, and general music news.
         </p>
       </div>
     ),
@@ -267,7 +271,7 @@ const steps = [
       <div>
         <h3><span role="img" aria-label="clap">👏</span> That's it!</h3>
         <p>
-          That's all for now. Start sharing some of your favorite music! The
+          Start sharing some of your favorite music! The
           world is waiting...
         </p>
       </div>

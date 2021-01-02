@@ -16,6 +16,7 @@ import PostBox from "../components/PostBox/PostBox";
 import Trending from "../components/Trending/Trending";
 
 const TOTAL_RESULTS = 10;
+const TITLE_SUBSTR = 30;
 
 const styles = (theme) => ({
   search: {
@@ -40,6 +41,9 @@ const styles = (theme) => ({
     padding: "10px 20px 10px 20px",
     border: "none",
     borderRadius: "5px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "7px 15px 7px 15px",
+    },
   },
   searchImg: {
     width: "125px",
@@ -49,9 +53,12 @@ const styles = (theme) => ({
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
-      transform: "scale(1.03)",
+      transform: "scale(1.02)",
     },
     [theme.breakpoints.down("md")]: {
+      width: "100px",
+    },
+    [theme.breakpoints.down("sm")]: {
       width: "75px",
     },
   },
@@ -62,11 +69,14 @@ const styles = (theme) => ({
     position: "absolute",
     margin: "5px",
     zIndex: "99999",
+    [theme.breakpoints.down("sm")]: {
+      width: "15px",
+    },
   },
   searchResults: {
     width: "100%",
     margin: "auto",
-    backgroundColor: "#DEDEDE",
+    backgroundColor: "#FAFAFA",
     borderBottomLeftRadius: "5px",
     borderBottomRightRadius: "5px",
     display: "block",
@@ -85,12 +95,11 @@ const styles = (theme) => ({
     display: "inline-block",
     float: "none",
     [theme.breakpoints.down("md")]: {
+      width: "200px",
+    },
+    [theme.breakpoints.down("sm")]: {
       width: "175px",
     },
-  },
-  disabled: {
-    opacity: "0.7",
-    pointerEvents: "none",
   },
   tooltip: {
     fontWeight: "300",
@@ -99,21 +108,21 @@ const styles = (theme) => ({
   },
   profile: {
     [theme.breakpoints.down("md")]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
   wall: {
     [theme.breakpoints.down("md")]: {
       width: "100%",
       flex: "none",
-      maxWidth: "none"
-    }
+      maxWidth: "none",
+    },
   },
   trending: {
     [theme.breakpoints.down("md")]: {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -125,7 +134,7 @@ const darkTheme = createMuiTheme({
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
-    primary: { main: "#fff" },
+    primary: { main: "#2b2b2c" },
     secondary: { main: "#fafafa" },
   },
   typography: {
@@ -149,7 +158,7 @@ export class Home extends Component {
     this.state = {
       user: {
         id: null,
-        profile: null,
+        img: null,
         url: null,
         username: null,
         country: null,
@@ -157,7 +166,7 @@ export class Home extends Component {
         type: null,
       },
       song: "",
-      data: null,
+      searchData: null,
       search: null,
       chosen: null,
     };
@@ -174,7 +183,7 @@ export class Home extends Component {
         this.setState({
           user: {
             id: data.id,
-            profile: data.images[0].url,
+            img: data.images[0].url,
             url: data.external_urls.spotify,
             username: data.display_name,
             country: data.country,
@@ -184,14 +193,14 @@ export class Home extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to fetch user: ", error);
       });
   }
 
   reset() {
     this.setState({
       song: "",
-      data: null,
+      searchData: null,
       search: null,
       chosen: null,
     });
@@ -204,17 +213,17 @@ export class Home extends Component {
         .searchTracks(this.state.song, { limit: TOTAL_RESULTS })
         .then((data) => {
           this.setState({
-            data: data,
+            searchData: data,
           });
           this.createSongs();
         })
         .catch((error) => {
-          console.error(error);
+          console.error("Failed to submit search: ", error);
         });
     }
     this.setState({
       song: "",
-      data: null,
+      searchData: null,
       chosen: null,
     });
   };
@@ -236,8 +245,8 @@ export class Home extends Component {
   createSongs = () => {
     const { classes } = this.props;
     const cols = [];
-    if (this.state.data) {
-      this.state.data.tracks.items.forEach((song) =>
+    if (this.state.searchData) {
+      this.state.searchData.tracks.items.forEach((song) =>
         cols.push(
           <MDBCol
             className={classes.searchCol}
@@ -251,10 +260,21 @@ export class Home extends Component {
               src={song.album.images[0].url}
               alt="Album Art"
             />
-            <Typography variant="subtitle1">
-              <strong>{song.name}</strong>
-            </Typography>
-            <Typography variant="body1">{song.artists[0].name}</Typography>
+            {song.name.length > TITLE_SUBSTR ? (
+              <Tooltip
+                placement="bottom"
+                title={<p className={classes.tooltip}>{song.name}</p>}
+              >
+                <Typography variant="subtitle1" color="primary">
+                  {song.name.substring(0, TITLE_SUBSTR) + "..."}
+                </Typography>
+              </Tooltip>
+            ) : (
+              <Typography variant="subtitle1" color="primary">
+                {song.name}
+              </Typography>
+            )}
+            <Typography variant="subtitle1" color="primary">{song.artists[0].name}</Typography>
           </MDBCol>
         )
       );
@@ -269,10 +289,7 @@ export class Home extends Component {
     return (
       <Fade>
         <MuiThemeProvider theme={lightTheme}>
-          <div
-            className="row"
-            style={{ margin: "0px" }}
-          >
+          <div className="row" style={{ margin: "0px" }}>
             <div
               className={`col-xs-0 col-sm-0 col-md-0 col-lg-2 ${classes.profile}`}
               style={{ padding: "0px" }}
@@ -293,7 +310,7 @@ export class Home extends Component {
                 className={classes.search}
                 tourname="Search"
               >
-                <Grid item xs={false} md={false}>
+                <Grid item xs={1} md={1}>
                   <MDBIcon icon="search" />
                 </Grid>
                 <Grid item xs={10} md={10}>
@@ -311,7 +328,7 @@ export class Home extends Component {
                     />
                   </MDBFormInline>
                 </Grid>
-                <Grid item xs={false} md={false}>
+                <Grid item xs={1} md={1}>
                   <button
                     className={classes.searchBtn}
                     style={{
@@ -339,9 +356,13 @@ export class Home extends Component {
                 </MDBRow>
               )}
 
-              {this.state.chosen &&
-                <PostBox user={this.state.user} chosen={this.state.chosen} tourname="PostBox" />
-              }
+              {this.state.chosen && (
+                <PostBox
+                  user={this.state.user}
+                  chosen={this.state.chosen}
+                  tourname="PostBox"
+                />
+              )}
 
               <Feed user={this.state.user} />
             </div>
