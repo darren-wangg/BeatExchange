@@ -63,7 +63,7 @@ const styles = (theme) => ({
     },
   },
   close: {
-    width: "25px",
+    width: "20px",
     height: "auto",
     cursor: "pointer",
     position: "absolute",
@@ -266,15 +266,19 @@ export class Home extends Component {
                 title={<p className={classes.tooltip}>{song.name}</p>}
               >
                 <Typography variant="subtitle1" color="primary">
-                  {song.name.substring(0, TITLE_SUBSTR) + "..."}
+                  <strong>
+                    {song.name.substring(0, TITLE_SUBSTR) + "..."}
+                  </strong>
                 </Typography>
               </Tooltip>
             ) : (
               <Typography variant="subtitle1" color="primary">
-                {song.name}
+                <strong>{song.name}</strong>
               </Typography>
             )}
-            <Typography variant="subtitle1" color="primary">{song.artists[0].name}</Typography>
+            <Typography variant="subtitle1" color="primary">
+              {song.artists[0].name}
+            </Typography>
           </MDBCol>
         )
       );
@@ -310,7 +314,7 @@ export class Home extends Component {
                 className={classes.search}
                 tourname="Search"
               >
-                <Grid item xs={1} md={1}>
+                <Grid item xs={false} md={false}>
                   <MDBIcon icon="search" />
                 </Grid>
                 <Grid item xs={10} md={10}>
@@ -328,7 +332,7 @@ export class Home extends Component {
                     />
                   </MDBFormInline>
                 </Grid>
-                <Grid item xs={1} md={1}>
+                <Grid item xs={false} md={false}>
                   <button
                     className={classes.searchBtn}
                     style={{

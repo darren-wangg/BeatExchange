@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Tabs, Tab } from "react-bootstrap";
 import axios from "axios";
@@ -9,7 +14,7 @@ import { CircularProgress, Tooltip } from "@material-ui/core";
 
 import loading from "../../assets/images/loading.png";
 const TOTAL_RELEASES = 10;
-const TITLE_SUBSTR = 24;
+const TITLE_SUBSTR = 22;
 const NEWS_TITLE_SUBSTR = 100;
 const NEWS_DESCRIPTION_SUBSTR = 200;
 const NYT_KEY = process.env.REACT_APP_NYT_API_KEY;
@@ -25,8 +30,7 @@ const LAST_FM_TRACKS_QUERY =
 const LAST_FM_ARTISTS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=" +
   LAST_FM_KEY +
-  "&format=json" +
-  "&limit=" +
+  "&format=json&limit=" +
   TOTAL_RELEASES;
 
 const styles = (theme) => ({
@@ -43,6 +47,7 @@ const styles = (theme) => ({
   },
   tabs: {
     margin: "auto",
+    color: "#2b2b2c",
   },
   me: {
     marginTop: "25px",
@@ -61,15 +66,15 @@ const styles = (theme) => ({
     overflowX: "auto",
     whiteSpace: "nowrap",
     paddingBottom: "25px",
-    borderBottom: "2px solid #DEDEDE",
+    borderBottom: "1px solid #DEDEDE",
   },
   releaseCol: {
     marginTop: "10px",
-    width: "250px",
+    width: "225px",
     display: "inline-block",
     float: "none",
     [theme.breakpoints.down("md")]: {
-      width: "200px",
+      width: "150px",
     },
   },
   newsCol: {
@@ -82,7 +87,7 @@ const styles = (theme) => ({
     marginRight: "20px",
     [theme.breakpoints.down("md")]: {
       height: "350px",
-      width: "275px",
+      width: "250px",
       marginRight: "10px",
     },
   },
@@ -93,27 +98,26 @@ const styles = (theme) => ({
   },
   newsMenu: {
     display: "block",
-    height: "500px",
+    height: "450px",
     overflowX: "auto",
     overflowY: "hidden",
     whiteSpace: "nowrap",
-    borderBottom: "2px solid #E0E0E0",
   },
   trendImg: {
-    width: "175px",
-    height: "175px",
+    width: "150px",
+    height: "150px",
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
       transform: "scale(1.02)",
     },
     [theme.breakpoints.down("md")]: {
-      width: "125px",
-      height: "125px",
+      width: "100px",
+      height: "100px",
     },
   },
   newsImg: {
-    width: "200px",
+    width: "175px",
     height: "auto",
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
@@ -125,6 +129,35 @@ const styles = (theme) => ({
     fontWeight: "300",
     fontSize: "0.8rem",
     margin: "10px auto",
+  },
+});
+
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: { main: "#fff" },
+    secondary: { main: "#fafafa" },
+  },
+});
+
+const lightTheme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary: { main: "#2b2b2c" },
+    secondary: { main: "#CCCCCC" },
+    textPrimary: { main: "#2b2b2c" },
+  },
+  typography: {
+    useNextVariants: true,
+    fontFamily: `"Rubik", "Helvetica", sans-serif`,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    subtitle1: {
+      display: "block",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    },
   },
 });
 
@@ -159,10 +192,9 @@ export class Trending extends Component {
   setupReleases() {
     const { classes } = this.props;
     const cols = [];
-    let key = 1;
     cols.push(
-      <MDBCol className={classes.releaseCol} key={key++}>
-        <img className={classes.trendImg} src={loading} alt="blank album art" />
+      <MDBCol className={classes.releaseCol}>
+        <img className={classes.trendImg} src={loading} alt="Blank Album Art" />
       </MDBCol>
     );
     this.setState({
@@ -192,11 +224,22 @@ export class Trending extends Component {
                 />
               </a>
               <p style={{ wordWrap: "break-word", margin: "7px" }}>
-                <strong>
-                  {album.name.length > TITLE_SUBSTR
-                    ? album.name.substring(0, TITLE_SUBSTR) + "..."
-                    : album.name}
-                </strong>
+                {album.name.length > TITLE_SUBSTR ? (
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>{album.name}</p>}
+                  >
+                    <Typography variant="subtitle1" color="primary">
+                      <strong>
+                        {album.name.substring(0, TITLE_SUBSTR) + "..."}
+                      </strong>
+                    </Typography>
+                  </Tooltip>
+                ) : (
+                  <Typography variant="subtitle1" color="primary">
+                    <strong>{album.name}</strong>
+                  </Typography>
+                )}
               </p>
               <p style={{ margin: "5px" }}>{album.artists[0].name}</p>
             </MDBCol>
@@ -207,7 +250,7 @@ export class Trending extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to get my releases: ", error);
       });
   }
 
@@ -273,11 +316,22 @@ export class Trending extends Component {
                     />
                   </a>
                   <p style={{ wordWrap: "break-word", margin: "7px" }}>
-                    <strong>
-                      {track.name.length > TITLE_SUBSTR
-                        ? track.name.substring(0, TITLE_SUBSTR) + "..."
-                        : track.name}
-                    </strong>
+                    {track.name.length > TITLE_SUBSTR ? (
+                      <Tooltip
+                        placement="bottom"
+                        title={<p className={classes.tooltip}>{track.name}</p>}
+                      >
+                        <Typography variant="subtitle1" color="primary">
+                          <strong>
+                            {track.name.substring(0, TITLE_SUBSTR) + "..."}
+                          </strong>
+                        </Typography>
+                      </Tooltip>
+                    ) : (
+                      <Typography variant="subtitle1" color="primary">
+                        <strong>{track.name}</strong>
+                      </Typography>
+                    )}
                   </p>
                   <p style={{ margin: "5px" }}>{track.artist.name}</p>
                 </MDBCol>
@@ -289,7 +343,7 @@ export class Trending extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to get world releases: ", error);
       });
   }
 
@@ -327,7 +381,7 @@ export class Trending extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to get my top artists: ", error);
       });
 
     const tracks = [];
@@ -348,13 +402,30 @@ export class Trending extends Component {
                 />
               </a>
               <p style={{ wordWrap: "break-word", margin: "7px" }}>
-                <strong>
-                  {track.name.length > TITLE_SUBSTR
-                    ? track.name.substring(0, TITLE_SUBSTR) + "..."
-                    : track.name}
-                </strong>
-                <br />
-                <em>{track.popularity}</em>
+                {track.name.length > TITLE_SUBSTR ? (
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>{track.name}</p>}
+                  >
+                    <Typography variant="subtitle1" color="primary">
+                      <strong>
+                        {track.name.substring(0, TITLE_SUBSTR) + "..."}
+                      </strong>
+                    </Typography>
+                  </Tooltip>
+                ) : (
+                  <Typography variant="subtitle1" color="primary">
+                    <strong>{track.name}</strong>
+                  </Typography>
+                )}
+                <Tooltip
+                  placement="bottom"
+                  title={
+                    <p className={classes.tooltip}>Popularity (out of 100)</p>
+                  }
+                >
+                  <em>{track.popularity}</em>
+                </Tooltip>
               </p>
             </MDBCol>
           )
@@ -364,7 +435,7 @@ export class Trending extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to get my top tracks: ", error);
       });
   }
 
@@ -433,7 +504,7 @@ export class Trending extends Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to get music news: ", error);
       });
   }
 
@@ -455,93 +526,95 @@ export class Trending extends Component {
 
     return (
       <Fade>
-        <MDBCol className={classes.container} tourname="TrendingSidebar">
-          <h2>
-            <u>Trending</u>
-          </h2>
-          <Tabs
-            className={classes.tabs}
-            id="controlled-tab-example"
-            activeKey={this.state.key}
-            onSelect={(k) => this.handleSelect(k)}
-          >
-            <Tab eventKey="me" title="Me" />
-            <Tab eventKey="world" title="World" />
-          </Tabs>
-          {this.state.key === "me" ? (
-            <div className={classes.me}>
-              <Tooltip
-                placement="bottom"
-                title={
-                  <p className={classes.tooltip}>
-                    New album releases tailored for you
-                  </p>
-                }
-              >
-                <p className={classes.releases}>New Albums</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>
-                {this.state.myAlbums}
-              </MDBRow>
-              <Tooltip
-                placement="bottom"
-                title={
-                  <p className={classes.tooltip}>
-                    Your all-time top artists on Spotify
-                  </p>
-                }
-              >
-                <p className={classes.releases}>My Artists</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>
-                {this.state.myArtists}
-              </MDBRow>
-              <Tooltip
-                placement="bottom"
-                title={
-                  <p className={classes.tooltip}>
-                    Your all-time top songs on Spotify
-                  </p>
-                }
-              >
-                <p className={classes.releases}>My Songs</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>
-                {this.state.myTracks}
-              </MDBRow>
-            </div>
-          ) : (
-            <div className={classes.world}>
-              <Tooltip
-                placement="bottom"
-                title={<p className={classes.tooltip}>World top artists</p>}
-              >
-                <p className={classes.releases}>Top Artists</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>
-                {this.state.artists}
-              </MDBRow>
-              <Tooltip
-                placement="bottom"
-                title={<p className={classes.tooltip}>World top songs</p>}
-              >
-                <p className={classes.releases}>Top Songs</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.releaseMenu}>
-                {this.state.songs}
-              </MDBRow>
-              <Tooltip
-                placement="bottom"
-                title={<p className={classes.tooltip}>World music news</p>}
-              >
-                <p className={classes.releases}>News</p>
-              </Tooltip>
-              <MDBRow id="releases" className={classes.newsMenu}>
-                {this.state.news}
-              </MDBRow>
-            </div>
-          )}
-        </MDBCol>
+        <MuiThemeProvider theme={lightTheme}>
+          <MDBCol className={classes.container} tourname="TrendingSidebar">
+            <h2>
+              <u>Trending</u>
+            </h2>
+            <Tabs
+              className={classes.tabs}
+              id="controlled-tab-example"
+              activeKey={this.state.key}
+              onSelect={(k) => this.handleSelect(k)}
+            >
+              <Tab eventKey="me" title="Me" />
+              <Tab eventKey="world" title="World" />
+            </Tabs>
+            {this.state.key === "me" ? (
+              <div className={classes.me}>
+                <Tooltip
+                  placement="bottom"
+                  title={
+                    <p className={classes.tooltip}>
+                      New album releases tailored for you
+                    </p>
+                  }
+                >
+                  <p className={classes.releases}>New Albums</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.releaseMenu}>
+                  {this.state.myAlbums}
+                </MDBRow>
+                <Tooltip
+                  placement="bottom"
+                  title={
+                    <p className={classes.tooltip}>
+                      Your all-time top artists on Spotify
+                    </p>
+                  }
+                >
+                  <p className={classes.releases}>My Artists</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.releaseMenu}>
+                  {this.state.myArtists}
+                </MDBRow>
+                <Tooltip
+                  placement="bottom"
+                  title={
+                    <p className={classes.tooltip}>
+                      Your all-time top songs on Spotify
+                    </p>
+                  }
+                >
+                  <p className={classes.releases}>My Songs</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.releaseMenu}>
+                  {this.state.myTracks}
+                </MDBRow>
+              </div>
+            ) : (
+              <div className={classes.world}>
+                <Tooltip
+                  placement="bottom"
+                  title={<p className={classes.tooltip}>World top artists</p>}
+                >
+                  <p className={classes.releases}>Top Artists</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.releaseMenu}>
+                  {this.state.artists}
+                </MDBRow>
+                <Tooltip
+                  placement="bottom"
+                  title={<p className={classes.tooltip}>World top songs</p>}
+                >
+                  <p className={classes.releases}>Top Songs</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.releaseMenu}>
+                  {this.state.songs}
+                </MDBRow>
+                <Tooltip
+                  placement="bottom"
+                  title={<p className={classes.tooltip}>World music news</p>}
+                >
+                  <p className={classes.releases}>News</p>
+                </Tooltip>
+                <MDBRow id="releases" className={classes.newsMenu}>
+                  {this.state.news}
+                </MDBRow>
+              </div>
+            )}
+          </MDBCol>
+        </MuiThemeProvider>
       </Fade>
     );
   }

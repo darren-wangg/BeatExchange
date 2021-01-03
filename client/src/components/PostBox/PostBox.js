@@ -254,7 +254,7 @@ export class PostBox extends Component {
       this.setState({
         snackbar: {
           open: true,
-          severity: "error",
+          severity: "warning",
           msg: "Can only assign 3 tags. Please try again.",
         },
       });
@@ -450,8 +450,8 @@ export class PostBox extends Component {
                           </Typography>
                         )}
                       </Grid>
-                      <Grid item xs={2} md={2}>
-                      {/* edit here for adding album, artist, podcast, etc. */}
+                      <Grid item xs={2} md={2} style={{ textAlign: "center" }}>
+                        {/* edit here for adding album, artist, podcast, etc. */}
                         {chosen.type === "track" ? (
                           <Tooltip
                             placement="bottom"

@@ -35,15 +35,15 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderBottom: "2px solid #DEDEDE",
+    borderBottom: "1px solid #DEDEDE",
     textAlign: "center",
   },
   close: {
     position: "absolute",
-    width: "20px",
+    width: "15px",
     height: "auto",
     cursor: "pointer",
-    margin: "10px",
+    margin: "5px",
     color: "#2B2B2C",
   },
   deleteBtn: {
@@ -58,18 +58,21 @@ const styles = (theme) => ({
     },
   },
   userImg: {
-    width: "100px",
+    width: "110px",
     height: "auto",
     margin: "auto",
     borderRadius: "3px",
+    [theme.breakpoints.down("sm")]: {
+      width: "90px",
+    },
   },
   like: {
     cursor: "pointer",
-    marginTop: "10px",
+    marginTop: "20px",
     width: "35px",
     height: "auto",
     "&:hover": {
-      transform: "scale(1.05)",
+      transform: "scale(1.03)",
       color: "#1bcb7f",
     },
   },
@@ -79,7 +82,7 @@ const styles = (theme) => ({
     marginBottom: "15px",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
-    boxShadow: "0 10px 8px -8px #2B2B2C",
+    boxShadow: "0 5px 5px -5px #2B2B2C",
     textAlign: "left",
     fontSize: "1rem",
     [theme.breakpoints.down("md")]: {
@@ -93,9 +96,9 @@ const styles = (theme) => ({
     maxWidth: "70px",
     height: "auto",
     borderRadius: "3px",
-    [theme.breakpoints.down("md")]: {
-      width: "60px",
-      maxWidth: "60px",
+    [theme.breakpoints.down("sm")]: {
+      width: "50px",
+      maxWidth: "50px",
     },
   },
   textContainer: {
@@ -105,7 +108,7 @@ const styles = (theme) => ({
   tags: {
     color: "#17A0FB",
     display: "inline",
-    marginRight: "5px",
+    marginRight: "7px",
     textDecoration: "underline",
   },
   comments: {
@@ -327,14 +330,14 @@ const Post = (props) => {
             backgroundColor: "#2b2b2c",
             color: "#FAFAFA",
             width: "500px",
-            padding: "25px",
+            padding: "15px",
             fontFamily: "Rubik, sans serif",
           },
         }}
       >
         <DialogTitle id="form-dialog-title">
           <Typography variant="h5" color="primary">
-            Delete Post{" "}
+            Delete Post
             <span role="img" aria-label="trash">
               🗑️
             </span>
@@ -496,7 +499,7 @@ const Post = (props) => {
                       </Typography>
                     )}
                   </Grid>
-                  <Grid item xs={2} md={2}>
+                  <Grid item xs={2} md={2} style={{ textAlign: "center" }}>
                     <Tooltip
                       placement="bottom"
                       title={<p className={classes.tooltip}>Song length</p>}
@@ -547,21 +550,20 @@ const Post = (props) => {
                   {data.text}
                 </Typography>
               </Grid>
-              {data.tags.length > 0 ? (
-                <Tooltip
-                  placement="bottom"
-                  title={<p className={classes.tooltip}>Related tags</p>}
-                >
-                  <Grid item xs={3} md={3}>
-                    {/* tags, comments */}
+              <Grid item xs={3} md={3}>
+                {/* tags, comments */}
+                {data.tags.length > 0 && (
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>Related tags</p>}
+                  >
                     <Typography variant="body1">
                       {displayTags(data.tags)}
                     </Typography>
-                  </Grid>
-                </Tooltip>
-              ) : (
-                <Grid item xs={3} md={3} />
-              )}
+                  </Tooltip>
+                )}
+                <Typography variant="body1">comments</Typography>
+              </Grid>
             </Grid>
           </MDBRow>
         </Grid>
