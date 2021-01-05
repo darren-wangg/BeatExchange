@@ -77,7 +77,7 @@ const styles = (theme) => ({
     },
   },
   songContainer: {
-    width: "95%",
+    width: "90%",
     margin: "auto",
     marginBottom: "15px",
     backgroundColor: "#2B2B2C",
@@ -86,14 +86,14 @@ const styles = (theme) => ({
     textAlign: "left",
     fontSize: "1rem",
     [theme.breakpoints.down("md")]: {
-      width: "85%",
+      width: "80%",
     },
   },
   songImg: {
     display: "flex",
     margin: "auto",
-    width: "70px",
-    maxWidth: "70px",
+    width: "75px",
+    maxWidth: "75px",
     height: "auto",
     borderRadius: "3px",
     [theme.breakpoints.down("sm")]: {
@@ -108,8 +108,7 @@ const styles = (theme) => ({
   tags: {
     color: "#17A0FB",
     display: "inline",
-    marginRight: "7px",
-    textDecoration: "underline",
+    marginRight: "7px"
   },
   comments: {
     color: "#17A0FB",
@@ -544,25 +543,27 @@ const Post = (props) => {
               alignItems="center"
               className={classes.textContainer}
             >
-              <Grid item xs={9} md={9}>
+              <Grid item xs={8} md={8}>
                 {/* message */}
                 <Typography variant="subtitle1" color="textPrimary">
                   {data.text}
                 </Typography>
               </Grid>
-              <Grid item xs={3} md={3}>
+              <Grid item xs={4} md={4}>
                 {/* tags, comments */}
                 {data.tags.length > 0 && (
-                  <Tooltip
-                    placement="bottom"
-                    title={<p className={classes.tooltip}>Related tags</p>}
-                  >
-                    <Typography variant="body1">
+                  <Typography variant="body1">
+                    <Tooltip
+                      placement="bottom"
+                      title={<p className={classes.tooltip}>Related tags</p>}
+                    >
                       {displayTags(data.tags)}
-                    </Typography>
-                  </Tooltip>
+                    </Tooltip>
+                  </Typography>
                 )}
-                <Typography variant="body1">comments</Typography>
+                <Typography variant="body1" style={{ color: "#17A0FB" }}>
+                  <u>{data.comments.length} comments</u>
+                </Typography>
               </Grid>
             </Grid>
           </MDBRow>

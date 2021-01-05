@@ -104,16 +104,16 @@ const styles = (theme) => ({
     whiteSpace: "nowrap",
   },
   trendImg: {
-    width: "150px",
-    height: "150px",
+    width: "170px",
+    height: "170px",
     borderRadius: "3px",
     boxShadow: "0 10px 8px -8px #2B2B2C",
     "&:hover": {
       transform: "scale(1.02)",
     },
     [theme.breakpoints.down("md")]: {
-      width: "100px",
-      height: "100px",
+      width: "130px",
+      height: "130px",
     },
   },
   newsImg: {

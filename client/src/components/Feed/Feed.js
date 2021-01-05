@@ -33,6 +33,7 @@ const styles = (theme) => ({
     height: "130vh",
     overflowX: "hidden",
     overflowY: "scroll",
+    padding: "0",
     [theme.breakpoints.down("md")]: {
       height: "175vh",
     },
