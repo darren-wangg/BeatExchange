@@ -63,6 +63,7 @@ const styles = (theme) => ({
   },
   releaseMenu: {
     display: "block",
+    overflow: "scroll",
     overflowX: "auto",
     whiteSpace: "nowrap",
     paddingBottom: "25px",
@@ -509,8 +510,10 @@ export class Trending extends Component {
   }
 
   handleSelect(k) {
-    let scrollBar = document.getElementById("releases");
-    scrollBar.scrollLeft = 0;
+    let scrollBar = document.getElementsByClassName("releases");
+    Array.from(scrollBar).forEach((el) => {
+      el.scrollLeft = 0;
+    });
     this.setState({ key: k });
   }
 
@@ -552,7 +555,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>New Albums</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.releaseMenu}>
+                <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.myAlbums}
                 </MDBRow>
                 <Tooltip
@@ -565,7 +568,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>My Artists</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.releaseMenu}>
+                <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.myArtists}
                 </MDBRow>
                 <Tooltip
@@ -578,7 +581,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>My Songs</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.releaseMenu}>
+                <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.myTracks}
                 </MDBRow>
               </div>
@@ -590,7 +593,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>Top Artists</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.releaseMenu}>
+                <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.artists}
                 </MDBRow>
                 <Tooltip
@@ -599,7 +602,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>Top Songs</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.releaseMenu}>
+                <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.songs}
                 </MDBRow>
                 <Tooltip
@@ -608,7 +611,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>News</p>
                 </Tooltip>
-                <MDBRow id="releases" className={classes.newsMenu}>
+                <MDBRow className={classes.newsMenu}>
                   {this.state.news}
                 </MDBRow>
               </div>
