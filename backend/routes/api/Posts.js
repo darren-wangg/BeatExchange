@@ -23,6 +23,16 @@ router.get("/:id", (req, res) => {
     .catch((err) => res.status(404).json({ error: err, success: false }));
 });
 
+// @route   GET api/posts/tags/:tag
+// @desc    Get all posts with a specific tag
+// @access  Public
+router.get("/tags/:tag", (req, res) => {
+  Post.find({ tags: req.params.tag })
+    .sort({ date: -1 })
+    .then((posts) => res.json(posts))
+    .catch((err) => res.status(404).json({ error: err, success: false }));
+});
+
 // @route   POST api/posts
 // @desc    Create a post
 // @access  Public (should be private using authentication)
@@ -63,6 +73,7 @@ router.post("/:id/like", (req, res) => {
     },
     {
       $push: { likes: req.body.user },
+      $inc: { likeCount: 1 }
     }
   )
     .then(res.json({ user: req.body.user, success: true }))
@@ -79,6 +90,7 @@ router.post("/:id/unlike", (req, res) => {
     },
     {
       $pull: { likes: req.body.user },
+      $inc: { likeCount: -1 }
     }
   )
     .then(res.json({ user: req.body.user, success: true }))
