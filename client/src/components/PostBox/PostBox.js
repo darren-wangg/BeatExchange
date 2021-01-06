@@ -69,9 +69,10 @@ const styles = (theme) => ({
     display: "flex",
     margin: "auto",
     width: "75px",
+    maxWidth: "75px",
     height: "auto",
     borderRadius: "3px",
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "50px",
     },
   },
@@ -100,7 +101,7 @@ const styles = (theme) => ({
     borderRadius: "5px",
     position: "absolute",
     right: "20%",
-    bottom: "15%",
+    bottom: "10%",
   },
   tooltip: {
     fontWeight: "300",
@@ -113,7 +114,7 @@ const styles = (theme) => ({
     maxWidth: "250px",
     position: "absolute",
     left: "20%",
-    bottom: "15%",
+    bottom: "10%",
   },
   tags: {
     display: "flex",
@@ -486,7 +487,7 @@ export class PostBox extends Component {
                     </Grid>
                   </Grid>
                   <Grid item xs={2} md={2}>
-                    <Typography variant="body1" color="textPrimary">
+                    <Typography variant="body1" color="textPrimary" style={{ marginLeft: "15px" }}>
                       {this.state.currTime}
                     </Typography>
                   </Grid>

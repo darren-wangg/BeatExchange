@@ -31,7 +31,7 @@ const styles = (theme) => ({
     width: "100%",
     maxWidth: "100%",
     margin: "auto",
-    padding: "25px 0px",
+    padding: "20px 10px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -79,7 +79,6 @@ const styles = (theme) => ({
   songContainer: {
     width: "90%",
     margin: "auto",
-    marginBottom: "15px",
     backgroundColor: "#2B2B2C",
     borderRadius: "5px",
     boxShadow: "0 5px 5px -5px #2B2B2C",
@@ -424,7 +423,7 @@ const Post = (props) => {
               </Tooltip>
             )}
             <Typography variant="body1" color="textPrimary">
-              {data.likes.length} Likes
+              {data.likeCount} Likes
             </Typography>
           </MDBCol>
         </Grid>
