@@ -549,11 +549,11 @@ export class Trending extends Component {
                   placement="bottom"
                   title={
                     <p className={classes.tooltip}>
-                      New album releases tailored for you
+                      New music releases tailored for you
                     </p>
                   }
                 >
-                  <p className={classes.releases}>New Albums</p>
+                  <p className={classes.releases}>New Releases</p>
                 </Tooltip>
                 <MDBRow className={`releases ${classes.releaseMenu}`}>
                   {this.state.myAlbums}

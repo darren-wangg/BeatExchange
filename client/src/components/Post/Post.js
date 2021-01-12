@@ -5,7 +5,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { MDBCol, MDBRow } from "mdbreact";
+import { MDBCol } from "mdbreact";
 import {
   Grid,
   Typography,
@@ -43,7 +43,7 @@ const styles = (theme) => ({
     width: "15px",
     height: "auto",
     cursor: "pointer",
-    margin: "5px",
+    margin: "10px",
     color: "#2B2B2C",
   },
   deleteBtn: {
@@ -101,13 +101,12 @@ const styles = (theme) => ({
     },
   },
   textContainer: {
-    margin: "auto",
-    marginTop: "25px",
+    margin: "20px auto",
   },
   tags: {
     color: "#17A0FB",
     display: "inline",
-    marginRight: "7px"
+    marginRight: "7px",
   },
   comments: {
     color: "#17A0FB",
@@ -429,143 +428,137 @@ const Post = (props) => {
         </Grid>
 
         <Grid item xs={10} md={10}>
-          <MDBRow>
-            <Grid
-              container
-              direction="row"
-              spacing={0}
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item xs={10} md={10}>
-                {/* song data */}
-                <Grid
-                  container
-                  direction="row"
-                  spacing={4}
-                  justify="center"
-                  alignItems="center"
-                  className={classes.songContainer}
-                >
-                  <Grid item xs={2} md={2}>
-                    <a href={data.post.url} target="_blank">
-                      <img
-                        className={classes.songImg}
-                        src={data.post.image}
-                        alt="Track Art"
-                      />
-                    </a>
-                  </Grid>
-                  <Grid item xs={4} md={4}>
-                    <Typography variant="subtitle1" color="primary">
-                      {data.post.name.length > TITLE_SUBSTR ? (
-                        <Tooltip
-                          placement="bottom"
-                          title={
-                            <p className={classes.tooltip}>{data.post.name}</p>
-                          }
-                        >
-                          <Typography variant="subtitle1" color="primary">
-                            {data.post.name.substring(0, TITLE_SUBSTR) + "..."}
-                          </Typography>
-                        </Tooltip>
-                      ) : (
-                        <Typography variant="subtitle1" color="primary">
-                          {data.post.name}
-                        </Typography>
-                      )}
-                    </Typography>
-                    <Typography variant="body1" color="secondary">
-                      {data.post.artist}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={3} md={3}>
-                    {data.post.album.length > ALBUM_SUBSTR ? (
+          <Grid
+            container
+            direction="row"
+            spacing={0}
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item xs={10} md={10}>
+              {/* song data */}
+              <Grid
+                container
+                direction="row"
+                spacing={4}
+                justify="center"
+                alignItems="center"
+                className={classes.songContainer}
+              >
+                <Grid item xs={2} md={2}>
+                  <a href={data.post.url} target="_blank">
+                    <img
+                      className={classes.songImg}
+                      src={data.post.image}
+                      alt="Track Art"
+                    />
+                  </a>
+                </Grid>
+                <Grid item xs={4} md={4}>
+                  <Typography variant="subtitle1" color="primary">
+                    {data.post.name.length > TITLE_SUBSTR ? (
                       <Tooltip
                         placement="bottom"
                         title={
-                          <p className={classes.tooltip}>{data.post.album}</p>
+                          <p className={classes.tooltip}>{data.post.name}</p>
                         }
                       >
                         <Typography variant="subtitle1" color="primary">
-                          {data.post.album.substring(0, ALBUM_SUBSTR) + "..."}
+                          {data.post.name.substring(0, TITLE_SUBSTR) + "..."}
                         </Typography>
                       </Tooltip>
                     ) : (
                       <Typography variant="subtitle1" color="primary">
-                        {data.post.album}
+                        {data.post.name}
                       </Typography>
                     )}
-                  </Grid>
-                  <Grid item xs={2} md={2} style={{ textAlign: "center" }}>
+                  </Typography>
+                  <Typography variant="body1" color="secondary">
+                    {data.post.artist}
+                  </Typography>
+                </Grid>
+                <Grid item xs={3} md={3}>
+                  {data.post.album.length > ALBUM_SUBSTR ? (
                     <Tooltip
                       placement="bottom"
-                      title={<p className={classes.tooltip}>Song length</p>}
+                      title={
+                        <p className={classes.tooltip}>{data.post.album}</p>
+                      }
                     >
-                      <Typography variant="subtitle1" color="secondary">
-                        {millisToMinutesAndSeconds(data.post.duration)}
+                      <Typography variant="subtitle1" color="primary">
+                        {data.post.album.substring(0, ALBUM_SUBSTR) + "..."}
                       </Typography>
                     </Tooltip>
-                  </Grid>
-                  <Grid item xs={1} md={1} style={{ padding: "0px" }}>
-                    <a href={data.post.url} target="_blank">
-                      <Tooltip
-                        placement="bottom"
-                        title={
-                          <p className={classes.tooltip}>More song info</p>
-                        }
-                      >
-                        <MoreVertIcon className={classes.more} />
-                      </Tooltip>
-                    </a>
-                  </Grid>
+                  ) : (
+                    <Typography variant="subtitle1" color="primary">
+                      {data.post.album}
+                    </Typography>
+                  )}
                 </Grid>
-              </Grid>
-              <Grid item xs={2} md={2}>
-                {/* time stamp */}
-                <Typography variant="body1" color="textPrimary">
-                  {formatDate(data.date)}
-                </Typography>
-                <Typography variant="body1" color="textPrimary">
-                  {formatTime(data.date)}
-                </Typography>
-              </Grid>
-            </Grid>
-          </MDBRow>
-
-          <MDBRow>
-            <Grid
-              container
-              direction="row"
-              spacing={0}
-              justify="center"
-              alignItems="center"
-              className={classes.textContainer}
-            >
-              <Grid item xs={8} md={8}>
-                {/* message */}
-                <Typography variant="subtitle1" color="textPrimary">
-                  {data.text}
-                </Typography>
-              </Grid>
-              <Grid item xs={4} md={4}>
-                {/* tags, comments */}
-                {data.tags.length > 0 && (
-                  <Typography variant="body1">
+                <Grid item xs={2} md={2} style={{ textAlign: "center" }}>
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>Song length</p>}
+                  >
+                    <Typography variant="subtitle1" color="secondary">
+                      {millisToMinutesAndSeconds(data.post.duration)}
+                    </Typography>
+                  </Tooltip>
+                </Grid>
+                <Grid item xs={1} md={1} style={{ padding: "0px" }}>
+                  <a href={data.post.url} target="_blank">
                     <Tooltip
                       placement="bottom"
-                      title={<p className={classes.tooltip}>Related tags</p>}
+                      title={<p className={classes.tooltip}>More song info</p>}
                     >
-                      {displayTags(data.tags)}
+                      <MoreVertIcon className={classes.more} />
                     </Tooltip>
-                  </Typography>
-                )}
-                <Typography variant="body1" style={{ color: "#17A0FB" }}>
-                  <u>{data.comments.length} comments</u>
-                </Typography>
+                  </a>
+                </Grid>
               </Grid>
             </Grid>
-          </MDBRow>
+            <Grid item xs={2} md={2}>
+              {/* time stamp */}
+              <Typography variant="body1" color="textPrimary">
+                {formatDate(data.date)}
+              </Typography>
+              <Typography variant="body1" color="textPrimary">
+                {formatTime(data.date)}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            spacing={0}
+            justify="center"
+            alignItems="center"
+            className={classes.textContainer}
+          >
+            <Grid item xs={8} md={8}>
+              {/* message */}
+              <Typography variant="subtitle1" color="textPrimary">
+                {data.text}
+              </Typography>
+            </Grid>
+            <Grid item xs={4} md={4}>
+              {/* tags, comments */}
+              {data.tags.length > 0 && (
+                <Typography variant="body1">
+                  <Tooltip
+                    placement="bottom"
+                    title={<p className={classes.tooltip}>Related tags</p>}
+                  >
+                    {displayTags(data.tags)}
+                  </Tooltip>
+                </Typography>
+              )}
+              <Typography variant="body1" style={{ color: "#17A0FB" }}>
+                <u>{data.comments.length} comments</u>
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </MuiThemeProvider>

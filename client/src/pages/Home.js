@@ -22,14 +22,13 @@ const styles = (theme) => ({
   search: {
     width: "100%",
     margin: "auto",
-    padding: "15px",
+    padding: "10px",
     backgroundColor: "#FAFAFA",
     borderBottom: "1px solid #DEDEDE",
-    boxShadow: "0 15px 20px -20px #2b2b2c",
     zIndex: "99999",
   },
   form: {
-    margin: "auto 10px",
+    margin: "5px",
     height: "50px",
     backgroundColor: "#ECECEC",
     width: "90% !important",

@@ -1,14 +1,27 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
 import { MDBCol, MDBRow } from "mdbreact";
-import { CircularProgress } from "@material-ui/core";
+import {
+  CircularProgress,
+  Grid,
+  Typography,
+  Input,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@material-ui/core";
 import Post from "../Post/Post";
 import axios from "axios";
 // import InfiniteScroll from "react-infinite-scroller";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 
 const MAX_POSTS = 100;
+const allTags = ["all", ...process.env.REACT_APP_ALL_TAGS.split(",")];
 
 const styles = (theme) => ({
   container: {
@@ -18,13 +31,27 @@ const styles = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  row: {
+  filterContainer: {
+    margin: "1px auto",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#FAFAFA",
+    boxShadow: "0 15px 20px -20px #2b2b2c",
+  },
+  tagsForm: {
     margin: "auto",
-    marginBottom: "25px",
-    textAlign: "center",
+    minWidth: "100px",
+    maxWidth: "100px",
+  },
+  tags: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  tag: {
+    margin: "auto",
+    padding: "0px",
+    color: "#1D87F0",
   },
   wall: {
     width: "100%",
@@ -39,7 +66,37 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.down("lg")]: {
       height: "200vh",
-    }
+    },
+  },
+});
+
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: { main: "#fff" },
+    secondary: { main: "#fafafa" },
+  },
+});
+
+const lightTheme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary: { main: "#fff" },
+    secondary: { main: "#CCCCCC" },
+    textPrimary: { main: "#2b2b2c" },
+  },
+  typography: {
+    useNextVariants: true,
+    fontFamily: `"Rubik", "Helvetica", sans-serif`,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    subtitle1: {
+      display: "block",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      marginTop: "5px"
+    },
   },
 });
 
@@ -50,6 +107,7 @@ export class Feed extends Component {
       loading: true,
       data: null,
       posts: [],
+      tag: "all",
     };
   }
 
@@ -63,9 +121,21 @@ export class Feed extends Component {
     clearInterval(this.interval);
   }
 
+  handleTagChange = (e) => {
+    e.preventDefault();
+    this.setState(
+      {
+        tag: e.target.value,
+        loading: true,
+        data: null,
+        posts: [],
+      },
+      () => this.fetchTags()
+    );
+  };
+
   fetchPosts = () => {
     axios.get("/api/posts").then((res) => {
-      // loop through each post in mongo, pass in entire post, create a Post component
       if (res.status === 200) {
         this.setState(
           {
@@ -77,6 +147,25 @@ export class Feed extends Component {
         console.error("Failed to load from Mongo" + res.statusText);
       }
     });
+  };
+
+  fetchTags = () => {
+    if (this.state.tag === "all") {
+      this.fetchPosts();
+    } else {
+      axios.get(`/api/posts/tags/${this.state.tag}`).then((res) => {
+        if (res.status === 200) {
+          this.setState(
+            {
+              data: res.data.slice(0, MAX_POSTS),
+            },
+            () => this.createPosts()
+          );
+        } else {
+          console.error("Failed to load from Mongo" + res.statusText);
+        }
+      });
+    }
   };
 
   createPosts = () => {
@@ -108,7 +197,11 @@ export class Feed extends Component {
         <MDBCol>
           <MDBRow className={classes.container}>
             <SentimentVeryDissatisfiedIcon
-              style={{ margin: "15% auto 2% auto", width: "10%", height: "auto" }}
+              style={{
+                margin: "15% auto 2% auto",
+                width: "10%",
+                height: "auto",
+              }}
             />
           </MDBRow>
           <MDBRow className={classes.container}>
@@ -120,7 +213,61 @@ export class Feed extends Component {
       );
     }
 
-    return <MDBCol className={classes.wall}>{this.state.posts}</MDBCol>;
+    return (
+      <MuiThemeProvider theme={lightTheme}>
+        <Grid
+          container
+          direction="row"
+          spacing={3}
+          justify="center"
+          alignItems="center"
+          className={classes.filterContainer}
+        >
+          <Grid item xs={7} md={7} />
+          <Grid item xs={2} md={2}>
+            <MDBRow>
+              <Typography variant="subtitle1" color="textPrimary">
+                Sort By:
+              </Typography>
+
+              <FormControl className={classes.tagsForm}>
+                <Select
+                  labelId="tags"
+                  id="post tags"
+                  value={this.state.tag}
+                  onChange={this.handleTagChange}
+                  input={<Input id="post tags" />}
+                  renderValue={() => (
+                    <div className={classes.tags}>
+                      <MenuItem
+                        key={this.state.tag}
+                        value={this.state.tag}
+                        className={classes.tag}
+                      >
+                        {this.state.tag}
+                      </MenuItem>
+                    </div>
+                  )}
+                >
+                  {allTags.map((tag) => (
+                    <MenuItem key={tag} value={tag}>
+                      {tag}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </MDBRow>
+          </Grid>
+          <Grid item xs={2} md={2}>
+            <Typography variant="subtitle1" color="textPrimary">
+              Filter:
+            </Typography>
+          </Grid>
+          <Grid item xs={1} md={1} />
+        </Grid>
+        <MDBCol className={classes.wall}>{this.state.posts}</MDBCol>
+      </MuiThemeProvider>
+    );
   }
 }
 

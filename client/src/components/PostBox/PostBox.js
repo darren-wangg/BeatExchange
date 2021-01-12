@@ -25,12 +25,13 @@ import hash from "object-hash";
 
 const TITLE_SUBSTR = 32;
 const ALBUM_SUBSTR = 20;
+const allTags = process.env.REACT_APP_ALL_TAGS.split(',');
 
 const styles = (theme) => ({
   container: {
     maxHeight: "450px",
     margin: "auto",
-    padding: "25px 0px 15px 0px",
+    padding: "15px 0px",
     backgroundColor: "#FAFAFA",
     width: "100%",
     display: "block",
@@ -96,7 +97,7 @@ const styles = (theme) => ({
   postBtn: {
     background: "#1D87F0",
     color: "white",
-    padding: "10px 20px 10px 20px",
+    padding: "10px 20px",
     border: "none",
     borderRadius: "5px",
     position: "absolute",
@@ -158,41 +159,6 @@ const lightTheme = createMuiTheme({
     },
   },
 });
-
-const tags = [
-  "alt",
-  "ambient",
-  "blues",
-  "classical",
-  "comedy",
-  "country",
-  "dance",
-  "EDM",
-  "disco",
-  "folk",
-  "guitar",
-  "hiphop",
-  "house",
-  "indie",
-  "jazz",
-  "live",
-  "lofi",
-  "love",
-  "metal",
-  "new",
-  "old-school",
-  "piano",
-  "pop",
-  "r&b",
-  "rap",
-  "reggae",
-  "remix",
-  "rock",
-  "soul",
-  "soundtrack",
-  "trap",
-  "world",
-];
 
 export class PostBox extends Component {
   constructor(props) {
@@ -381,7 +347,7 @@ export class PostBox extends Component {
                   spacing={2}
                   justify="center"
                   alignItems="center"
-                  style={{ marginBottom: "25px" }}
+                  style={{ marginBottom: "15px" }}
                 >
                   <Grid item xs={2} md={2} />
                   <Grid item xs={8} md={8}>
@@ -487,7 +453,11 @@ export class PostBox extends Component {
                     </Grid>
                   </Grid>
                   <Grid item xs={2} md={2}>
-                    <Typography variant="body1" color="textPrimary" style={{ marginLeft: "15px" }}>
+                    <Typography
+                      variant="body1"
+                      color="textPrimary"
+                      style={{ marginLeft: "15px" }}
+                    >
                       {this.state.currTime}
                     </Typography>
                   </Grid>
@@ -513,7 +483,7 @@ export class PostBox extends Component {
                 <InputLabel id="tags">Tags</InputLabel>
                 <Tooltip
                   placement="left"
-                  title={<p className={classes.tooltip}> Add up to 3 tags</p>}
+                  title={<p className={classes.tooltip}>Add up to 3 tags</p>}
                 >
                   <Select
                     labelId="tags"
@@ -534,7 +504,7 @@ export class PostBox extends Component {
                       </div>
                     )}
                   >
-                    {tags.map((tag) => (
+                    {allTags.map((tag) => (
                       <MenuItem key={tag} value={tag}>
                         {tag}
                       </MenuItem>
