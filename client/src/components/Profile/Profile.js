@@ -58,7 +58,7 @@ const styles = (theme) => ({
     opacity: "0.8",
   },
   Mask: {
-    outline: "solid 1px #fff",
+    outline: "none",
   },
 });
 

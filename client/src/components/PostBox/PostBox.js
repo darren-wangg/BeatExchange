@@ -186,7 +186,6 @@ export class PostBox extends Component {
   }
 
   handleClose = (e, reason) => {
-    e.preventDefault();
     if (reason === "clickaway") return;
     this.setState({
       snackbar: {

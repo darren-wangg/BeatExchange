@@ -31,7 +31,7 @@ const styles = (theme) => ({
     width: "100%",
     maxWidth: "100%",
     margin: "auto",
-    padding: "20px 15px",
+    padding: "15px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

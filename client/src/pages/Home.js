@@ -22,7 +22,7 @@ const styles = (theme) => ({
   search: {
     width: "100%",
     margin: "auto",
-    padding: "10px",
+    padding: "8px",
     backgroundColor: "#FAFAFA",
     borderBottom: "1px solid #DEDEDE",
     zIndex: "99999",
@@ -250,14 +250,14 @@ export class Home extends Component {
           <MDBCol
             className={classes.searchCol}
             key={song.id}
-            onClick={() => {
-              this.setSearchResult(song);
-            }}
           >
             <img
               className={classes.searchImg}
               src={song.album.images[0].url}
               alt="Album Art"
+              onClick={() => {
+                this.setSearchResult(song);
+              }}
             />
             {song.name.length > TITLE_SUBSTR ? (
               <Tooltip

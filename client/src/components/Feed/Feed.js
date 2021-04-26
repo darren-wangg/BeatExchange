@@ -32,7 +32,7 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   filterContainer: {
-    margin: "1px auto",
+    margin: "auto",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -40,9 +40,9 @@ const styles = (theme) => ({
     boxShadow: "0 15px 20px -20px #2b2b2c",
   },
   tagsForm: {
-    margin: "auto",
-    minWidth: "100px",
-    maxWidth: "100px",
+    marginLeft: "20px",
+    minWidth: "90px",
+    maxWidth: "90px",
   },
   tags: {
     display: "flex",
@@ -57,8 +57,7 @@ const styles = (theme) => ({
     width: "100%",
     maxWidth: "100%",
     margin: "auto",
-    height: "130vh",
-    overflowX: "hidden",
+    height: "95vh",
     overflowY: "scroll",
     padding: "0",
     [theme.breakpoints.down("md")]: {
@@ -95,7 +94,8 @@ const lightTheme = createMuiTheme({
       display: "block",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      marginTop: "5px"
+      marginTop: "5px",
+      fontSize: "16px"
     },
   },
 });
