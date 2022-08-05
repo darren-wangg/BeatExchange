@@ -21,7 +21,7 @@ import axios from "axios";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 
 const MAX_POSTS = 100;
-const allTags = ["all", ...process.env.REACT_APP_ALL_TAGS.split(",")];
+const allTags = ["all", ...process.env.ALL_TAGS.split(",")];
 
 const styles = (theme) => ({
   container: {
@@ -95,7 +95,7 @@ const lightTheme = createMuiTheme({
       overflow: "hidden",
       textOverflow: "ellipsis",
       marginTop: "5px",
-      fontSize: "16px"
+      fontSize: "16px",
     },
   },
 });

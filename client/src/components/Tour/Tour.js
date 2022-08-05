@@ -44,9 +44,15 @@ const steps = [
     selector: '[tourName="ProfileSidebar"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="wave">👋</span> My Profile</h3>
+        <h3>
+          <span role="img" aria-label="wave">
+            👋
+          </span>{" "}
+          My Profile
+        </h3>
         <p>
-            Your Spotify information. Click on your profile picture to see your full Spotify profile!
+          Your Spotify information. Click on your profile picture to see your
+          full Spotify profile!
         </p>
       </div>
     ),
@@ -55,9 +61,15 @@ const steps = [
     selector: '[tourName="Search"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="magnifying glass">🔍</span> Search & Post</h3>
+        <h3>
+          <span role="img" aria-label="magnifying glass">
+            🔍
+          </span>{" "}
+          Search & Post
+        </h3>
         <p>
-          Search for any song you want to share, select it, add a message and tags (optional), and post. It's that easy!
+          Search for any song you want to share, select it, add a message and
+          tags (optional), and post. It's that easy!
         </p>
       </div>
     ),
@@ -66,9 +78,15 @@ const steps = [
     selector: '[tourName="Post"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="world">🌎</span> Post</h3>
+        <h3>
+          <span role="img" aria-label="world">
+            🌎
+          </span>{" "}
+          Post
+        </h3>
         <p>
-          These are posts from the community, each with a user, a song, and a message. Like what you see? Give it a heart!
+          These are posts from the community, each with a user, a song, and a
+          message. Like what you see? Give it a heart!
         </p>
       </div>
     ),
@@ -77,12 +95,19 @@ const steps = [
     selector: '[tourName="TrendingSidebar"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="chart">📈</span> Trending</h3>
+        <h3>
+          <span role="img" aria-label="chart">
+            📈
+          </span>{" "}
+          Trending
+        </h3>
         <p>
-          "Me": new releases tailored for you and your favorite songs & artists on Spotify.
+          "Me": new releases tailored for you and your favorite songs & artists
+          on Spotify.
         </p>
         <p>
-          "World": what's trending on the charts today, including artists, songs, and general music news.
+          "World": what's trending on the charts today, including artists,
+          songs, and general music news.
         </p>
       </div>
     ),
@@ -90,10 +115,14 @@ const steps = [
   {
     content: (
       <div>
-        <h3><span role="img" aria-label="clap">👏</span> That's it!</h3>
+        <h3>
+          <span role="img" aria-label="clap">
+            👏
+          </span>{" "}
+          That's it!
+        </h3>
         <p>
-          Start sharing some of your favorite music! The
-          world is waiting...
+          Start sharing some of your favorite music! The world is waiting...
         </p>
       </div>
     ),

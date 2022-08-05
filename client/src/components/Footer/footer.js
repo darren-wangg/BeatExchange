@@ -18,21 +18,20 @@ const styles = (theme) => ({
     justifyContent: "space-between",
     padding: "0px 100px",
     color: "rgba(0,0,0,0.3)",
-    bottom: "0"
+    bottom: "0",
   },
   footerLinks: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   socials: {
     color: "white",
     opacity: "0.5",
     textDecoration: "none",
     fontSize: "24px",
-    padding: "0px 10px"
+    padding: "0px 10px",
   },
 });
-
 
 export class Footer extends Component {
   render() {

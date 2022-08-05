@@ -10,7 +10,7 @@ import {
   MDBCarouselInner,
   MDBCarouselItem,
   MDBView,
-  MDBCarouselCaption
+  MDBCarouselCaption,
 } from "mdbreact";
 import Fade from "react-reveal/Fade";
 
@@ -19,7 +19,7 @@ const styles = (theme) => ({
     backgroundColor: "#DEDEDE",
     width: "100%",
     margin: "auto",
-    position: "relative"
+    position: "relative",
   },
   header: {
     position: "absolute",
@@ -28,14 +28,14 @@ const styles = (theme) => ({
     fontWeight: "500",
     top: "30%",
 
-    display: "none"
+    display: "none",
   },
   desc: {
     fontSize: "1.5rem",
     fontFamily: "Rubik",
     color: "#2B2B2C",
 
-    display: "none"
+    display: "none",
   },
   carousel: {
     width: "100%",
@@ -46,11 +46,11 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       height: "600px",
-    }
+    },
   },
   image: {
-    opacity: "0.7"
-  }
+    opacity: "0.7",
+  },
 });
 
 export class Landing extends Component {
@@ -78,7 +78,9 @@ export class Landing extends Component {
                   />
                 </MDBView>
                 <MDBCarouselCaption>
-                  <p className={classes.desc}>share and discover music with the world</p>
+                  <p className={classes.desc}>
+                    share and discover music with the world
+                  </p>
                 </MDBCarouselCaption>
               </MDBCarouselItem>
               <MDBCarouselItem itemId="2">
@@ -90,7 +92,9 @@ export class Landing extends Component {
                   />
                 </MDBView>
                 <MDBCarouselCaption>
-                  <p className={classes.desc}>share and discover music with the world</p>
+                  <p className={classes.desc}>
+                    share and discover music with the world
+                  </p>
                 </MDBCarouselCaption>
               </MDBCarouselItem>
               <MDBCarouselItem itemId="3">
@@ -102,7 +106,9 @@ export class Landing extends Component {
                   />
                 </MDBView>
                 <MDBCarouselCaption>
-                  <p className={classes.desc}>share and discover music with the world</p>
+                  <p className={classes.desc}>
+                    share and discover music with the world
+                  </p>
                 </MDBCarouselCaption>
               </MDBCarouselItem>
             </MDBCarouselInner>

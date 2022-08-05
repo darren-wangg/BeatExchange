@@ -5,40 +5,40 @@ const Schema = mongoose.Schema;
 const PostSchema = new Schema({
   id: {
     type: String,
-    required: true
+    required: true,
   },
   user: {
     type: Object,
-    required: true
+    required: true,
   },
   post: {
     type: Object,
-    required: true
+    required: true,
   },
   tags: {
     type: Array,
-    default: []
+    default: [],
   },
   likes: {
     type: Array,
-    default: []
+    default: [],
   },
   likeCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   text: {
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   comments: {
     type: Array,
-    default: []
-  }
+    default: [],
+  },
 });
 
 module.exports = Post = mongoose.model("post", PostSchema);

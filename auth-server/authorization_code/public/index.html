@@ -111,7 +111,8 @@
         })
         .then((data) => {
           document.getElementById("quote").innerHTML = data.quote.body;
-          document.getElementById("author").innerHTML = "- " + data.quote.author;
+          document.getElementById("author").innerHTML =
+            "- " + data.quote.author;
         })
         .catch((err) => {
           console.error(err);
@@ -120,7 +121,8 @@
 
     <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>
-        Logged in as {{display_name}}
+        Logged in as
+        {{display_name}}
       </h1>
       <div class="media">
         <div class="pull-left">
@@ -220,8 +222,9 @@
           return hashParams;
         }
 
-        var userProfileSource = document.getElementById("user-profile-template")
-            .innerHTML,
+        var userProfileSource = document.getElementById(
+            "user-profile-template"
+          ).innerHTML,
           userProfileTemplate = Handlebars.compile(userProfileSource),
           userProfilePlaceholder = document.getElementById("user-profile");
 
@@ -251,9 +254,8 @@
                 Authorization: "Bearer " + access_token,
               },
               success: function (response) {
-                userProfilePlaceholder.innerHTML = userProfileTemplate(
-                  response
-                );
+                userProfilePlaceholder.innerHTML =
+                  userProfileTemplate(response);
 
                 $("#login").hide();
                 $("#loggedin").show();

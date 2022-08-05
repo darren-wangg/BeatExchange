@@ -45,12 +45,12 @@ const styles = (theme) => ({
     marginTop: "50px",
     height: "60px",
     width: "175px",
-    color: '#2B2B2C',
-    backgroundColor: '#FAFAFA',
+    color: "#2B2B2C",
+    backgroundColor: "#FAFAFA",
     border: "1px solid #2B2B2C",
     "&:hover": {
       transform: "scale(1.03)",
-      backgroundColor: '#FAFAFA',
+      backgroundColor: "#FAFAFA",
     },
   },
   tourBackground: {
@@ -141,10 +141,10 @@ export class Profile extends Component {
               </Typography>
               <br />
               <Typography variant="subtitle1" color="primary">
-                Followers:  {user.followers}
+                Followers: {user.followers}
               </Typography>
               <Typography variant="subtitle1" color="primary">
-                Country:  {user.country}
+                Country: {user.country}
               </Typography>
               <Typography variant="subtitle1" color="primary">
                 Type: {user.type}
@@ -152,9 +152,7 @@ export class Profile extends Component {
               <Tooltip
                 placement="bottom"
                 title={
-                  <p className={classes.tooltip}>
-                    Your unique Spotify ID
-                  </p>
+                  <p className={classes.tooltip}>Your unique Spotify ID</p>
                 }
               >
                 <Typography variant="subtitle1" color="primary">
@@ -223,9 +221,15 @@ const steps = [
     selector: '[tourName="ProfileSidebar"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="wave">👋</span> My Profile</h3>
+        <h3>
+          <span role="img" aria-label="wave">
+            👋
+          </span>{" "}
+          My Profile
+        </h3>
         <p>
-            Your Spotify information. Click on your profile picture to see your full Spotify profile!
+          Your Spotify information. Click on your profile picture to see your
+          full Spotify profile!
         </p>
       </div>
     ),
@@ -234,9 +238,15 @@ const steps = [
     selector: '[tourName="Search"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="magnifying glass">🔍</span> Search & Post</h3>
+        <h3>
+          <span role="img" aria-label="magnifying glass">
+            🔍
+          </span>{" "}
+          Search & Post
+        </h3>
         <p>
-          Search for any song you want to share, select it, add a message and tags (optional), and post. It's that easy!
+          Search for any song you want to share, select it, add a message and
+          tags (optional), and post. It's that easy!
         </p>
       </div>
     ),
@@ -245,9 +255,15 @@ const steps = [
     selector: '[tourName="Post"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="world">🌎</span> Post</h3>
+        <h3>
+          <span role="img" aria-label="world">
+            🌎
+          </span>{" "}
+          Post
+        </h3>
         <p>
-          These are posts from the community, each with a user, a song, and a message. Like what you see? Give it a heart!
+          These are posts from the community, each with a user, a song, and a
+          message. Like what you see? Give it a heart!
         </p>
       </div>
     ),
@@ -256,12 +272,19 @@ const steps = [
     selector: '[tourName="TrendingSidebar"]',
     content: (
       <div>
-        <h3><span role="img" aria-label="chart">📈</span> Trending</h3>
+        <h3>
+          <span role="img" aria-label="chart">
+            📈
+          </span>{" "}
+          Trending
+        </h3>
         <p>
-          "Me": new releases tailored for you and your favorite songs & artists on Spotify.
+          "Me": new releases tailored for you and your favorite songs & artists
+          on Spotify.
         </p>
         <p>
-          "World": what's trending on the charts today, including artists, songs, and general music news.
+          "World": what's trending on the charts today, including artists,
+          songs, and general music news.
         </p>
       </div>
     ),
@@ -269,10 +292,14 @@ const steps = [
   {
     content: (
       <div>
-        <h3><span role="img" aria-label="clap">👏</span> That's it!</h3>
+        <h3>
+          <span role="img" aria-label="clap">
+            👏
+          </span>{" "}
+          That's it!
+        </h3>
         <p>
-          Start sharing some of your favorite music! The
-          world is waiting...
+          Start sharing some of your favorite music! The world is waiting...
         </p>
       </div>
     ),

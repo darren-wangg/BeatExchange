@@ -247,10 +247,7 @@ export class Home extends Component {
     if (this.state.searchData) {
       this.state.searchData.tracks.items.forEach((song) =>
         cols.push(
-          <MDBCol
-            className={classes.searchCol}
-            key={song.id}
-          >
+          <MDBCol className={classes.searchCol} key={song.id}>
             <img
               className={classes.searchImg}
               src={song.album.images[0].url}

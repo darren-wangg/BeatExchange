@@ -25,7 +25,7 @@ import hash from "object-hash";
 
 const TITLE_SUBSTR = 32;
 const ALBUM_SUBSTR = 20;
-const allTags = process.env.REACT_APP_ALL_TAGS.split(',');
+const allTags = process.env.ALL_TAGS.split(",");
 
 const styles = (theme) => ({
   container: {

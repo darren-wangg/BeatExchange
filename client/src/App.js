@@ -18,7 +18,7 @@ class App extends Component {
       spotifyApi.setAccessToken(token);
     }
     this.state = {
-      loggedIn: token ? true : false
+      loggedIn: token ? true : false,
     };
   }
 
@@ -39,20 +39,18 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <React.Fragment>
-            <NavBar></NavBar>
-            <Route exact path="/" component={Landing} />
-            <Route
-              path="/home"
-              render={props => <Home {...props} spotifyApi={spotifyApi} />}
-            />
-            <Footer></Footer>
-          </React.Fragment>
+          <NavBar />
+          <Route exact path="/" component={Landing} />
+          <Route
+            path="/home"
+            render={(props) => <Home {...props} spotifyApi={spotifyApi} />}
+          />
+          <Footer />
         </Switch>
       </Router>
     );
   }
 }
 
-// client: npm start, authorization_code: nodemon app.js
+// client: npm start, authorization_code: nodemon app.js, backend: yarn start
 export default App;

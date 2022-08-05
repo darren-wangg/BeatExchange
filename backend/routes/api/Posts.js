@@ -73,7 +73,7 @@ router.post("/:id/like", (req, res) => {
     },
     {
       $push: { likes: req.body.user },
-      $inc: { likeCount: 1 }
+      $inc: { likeCount: 1 },
     }
   )
     .then(res.json({ user: req.body.user, success: true }))
@@ -90,7 +90,7 @@ router.post("/:id/unlike", (req, res) => {
     },
     {
       $pull: { likes: req.body.user },
-      $inc: { likeCount: -1 }
+      $inc: { likeCount: -1 },
     }
   )
     .then(res.json({ user: req.body.user, success: true }))

@@ -7,8 +7,8 @@
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 var request = require("request"); // "Request" library
 
@@ -20,24 +20,24 @@ var authOptions = {
   url: "https://accounts.spotify.com/api/token",
   headers: {
     Authorization:
-      "Basic " + new Buffer(client_id + ":" + client_secret).toString("base64")
+      "Basic " + new Buffer(client_id + ":" + client_secret).toString("base64"),
   },
   form: {
-    grant_type: "client_credentials"
+    grant_type: "client_credentials",
   },
-  json: true
+  json: true,
 };
 
-request.post(authOptions, function(error, response, body) {
+request.post(authOptions, function (error, response, body) {
   if (!error && response.statusCode === 200) {
     // use the access token to access the Spotify Web API
     var token = body.access_token;
     var options = {
       url: `https://api.spotify.com/v1/users/${process.env.SPOTIFY_API_ID}`,
       headers: {
-        Authorization: "Bearer " + token
+        Authorization: "Bearer " + token,
       },
-      json: true
+      json: true,
     };
   }
 });

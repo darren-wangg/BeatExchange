@@ -17,11 +17,11 @@ const TOTAL_RELEASES = 10;
 const TITLE_SUBSTR = 22;
 const NEWS_TITLE_SUBSTR = 100;
 const NEWS_DESCRIPTION_SUBSTR = 200;
-const NYT_KEY = process.env.REACT_APP_NYT_API_KEY;
+const NYT_KEY = process.env.NYT_API_KEY;
 const NEWS_QUERY =
   "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=music&api-key=" +
   NYT_KEY;
-const LAST_FM_KEY = process.env.REACT_APP_LASTFM_API_KEY;
+const LAST_FM_KEY = process.env.LASTFM_API_KEY;
 const LAST_FM_TRACKS_QUERY =
   "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=" +
   LAST_FM_KEY +
@@ -86,6 +86,7 @@ const styles = (theme) => ({
     wordBreak: "break-all",
     whiteSpace: "normal",
     marginRight: "20px",
+    verticalAlign: "top",
     [theme.breakpoints.down("md")]: {
       height: "350px",
       width: "250px",
@@ -611,9 +612,7 @@ export class Trending extends Component {
                 >
                   <p className={classes.releases}>News</p>
                 </Tooltip>
-                <MDBRow className={classes.newsMenu}>
-                  {this.state.news}
-                </MDBRow>
+                <MDBRow className={classes.newsMenu}>{this.state.news}</MDBRow>
               </div>
             )}
           </MDBCol>
